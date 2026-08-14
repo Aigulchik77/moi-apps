@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#e94560">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Хинди: фразы для путешествий</title>
+<style>
+  :root {
+    --bg1: #2a1a3e;
+    --bg2: #3e1621;
+    --bg3: #0f3460;
+    --accent: #e94560;
+    --gold: #ffd166;
+    --green: #06d6a0;
+    --card: rgba(255,255,255,0.08);
+    --text: #f0f0f5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg1), var(--bg3));
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .app {
+    width: 100%;
+    max-width: 560px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  h1 { font-size: 1.4rem; text-align: center; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: rgba(255,255,255,0.65); font-size: .9rem; margin-bottom: 20px; }
+  .dev { font-family: 'Nirmala UI', 'Segoe UI', sans-serif; }
+  .hidden { display: none !important; }
+
+  .lang-switch { display: flex; justify-content: center; gap: 8px; margin-bottom: 18px; }
+  .lbtn {
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+    font-family: inherit;
+  }
+  .lbtn:hover { background: rgba(255,255,255,0.16); }
+  .lbtn.active { background: var(--accent); border-color: var(--accent); }
+
+  .level-card {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+  }
+  .level-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.14); }
+  .level-card .lvl-name { font-weight: 700; font-size: 1.05rem; }
+  .level-card .lvl-desc { color: rgba(255,255,255,0.7); font-size: .85rem; margin-top: 4px; }
+  .level-card .lvl-tags { margin-top: 8px; }
+  .tag {
+    display: inline-block; background: rgba(233,69,96,.25);
+    border: 1px solid rgba(233,69,96,.5);
+    color: #ffb3c1;
+    font-size: .75rem; padding: 2px 10px; border-radius: 999px; margin: 2px 4px 2px 0;
+  }
+
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; }
+  .hearts { font-size: 1.1rem; letter-spacing: 2px; }
+  .score { font-weight: 700; color: var(--gold); }
+  .streak { font-size: .8rem; color: rgba(255,255,255,0.7); }
+  .prog-bar { height: 8px; background: rgba(255,255,255,0.12); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
+  .prog-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 999px; transition: width .3s; }
+
+  .word-card {
+    background: linear-gradient(140deg, var(--bg2), var(--bg3));
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 26px 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .direction { font-size: .8rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+  .word-big { font-size: 1.7rem; margin-top: 8px; word-break: break-word; }
+  .word-tran { font-size: .95rem; color: var(--gold); margin-top: 6px; font-style: italic; }
+  .word-topic { margin-top: 10px; }
+  .timer { height: 6px; background: rgba(255,255,255,0.12); border-radius: 999px; margin-top: 14px; overflow: hidden; }
+  .timer-fill { height: 100%; width: 100%; background: var(--green); transition: width .1s linear; }
+
+  .answers { display: grid; grid-template-columns: 1fr; gap: 9px; }
+  .answer {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 13px 12px;
+    font-size: .95rem;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform .1s, background .15s, border-color .15s;
+  }
+  .answer:hover:not(:disabled) { transform: translateY(-2px); background: rgba(255,255,255,0.14); }
+  .answer.correct { background: rgba(6,214,160,0.25); border-color: var(--green); }
+  .answer.wrong { background: rgba(233,69,96,0.3); border-color: var(--accent); }
+  .answer:disabled { cursor: default; }
+
+  .feedback { text-align: center; min-height: 40px; margin-top: 12px; font-size: .95rem; }
+  .feedback.ok { color: var(--green); }
+  .feedback.no { color: #ff8095; }
+
+  .result-big { font-size: 3rem; text-align: center; margin: 10px 0; }
+  .result-stats { text-align: center; margin-bottom: 16px; }
+  .result-stats .stat { display: inline-block; margin: 0 12px; font-size: .95rem; }
+  .result-stats .stat b { display: block; font-size: 1.4rem; color: var(--gold); }
+  .mistakes { margin-top: 16px; }
+  .mistakes h3 { font-size: .95rem; margin-bottom: 8px; color: rgba(255,255,255,0.8); }
+  .mistake-item {
+    background: var(--card); border-radius: 10px; padding: 8px 12px;
+    margin-bottom: 6px; font-size: .9rem;
+  }
+  .mistake-item .dev { color: var(--gold); }
+
+  .btn {
+    display: block; width: 100%;
+    padding: 14px; border: none; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    background: linear-gradient(90deg, var(--accent), var(--bg3));
+    color: #fff;
+    margin-top: 14px;
+    transition: transform .1s, opacity .15s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  .btn.secondary { background: rgba(255,255,255,0.12); }
+  .install {
+    position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 999;
+    display: none; align-items: center; gap: 10px;
+    background: linear-gradient(90deg, var(--accent), var(--bg3)); color: #fff;
+    border: none; border-radius: 999px; padding: 13px 24px; font-weight: 700; font-size: .95rem;
+    cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,.45);
+    font-family: inherit;
+  }
+</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+<div class="app">
+  <div class="lang-switch">
+    <button class="lbtn" data-lang="ru" onclick="setLang('ru')">🇷🇺 Русский</button>
+    <button class="lbtn" data-lang="en" onclick="setLang('en')">🇬🇧 English</button>
+    <button class="lbtn" data-lang="kk" onclick="setLang('kk')">🇰🇿 Қазақша</button>
+  </div>
+  <div id="app"></div>
+</div>
+
+<script>
+const LANGS = ["ru", "en", "kk"];
+const LANG_NAMES = { ru: "Русский", en: "English", kk: "Қазақша" };
+let lang = "ru";
+try { lang = localStorage.getItem("hlang") || "ru"; } catch(e) {}
+
+const I18N = {
+  ru: {
+    title: "🇮🇳 Фразы на хинди ↔ русский 🇷🇺",
+    subtitle: "Учимся говорить: полезные фразы для путешествий и общения",
+    all_topics: "Все темы",
+    level1n: "Уровень 1", level1d: "Знакомство и вежливость. Без таймера.",
+    level2n: "Уровень 2", level2d: "Ресторан и еда. 30 секунд на ответ.",
+    level3n: "Уровень 3", level3d: "Город и общение. 20 секунд на ответ.",
+    level4n: "Микс (все темы)", level4d: "Проверь себя по всем фразам. 25 секунд на ответ.",
+    dir_hi: "Направление: хинди → {l} (нажмите, чтобы сменить)",
+    dir_nat: "Направление: {l} → хинди (нажмите, чтобы сменить)",
+    dir_hi_short: "Хинди → {l}",
+    dir_nat_short: "{l} → Хинди",
+    ok: "✅ Верно!",
+    streak: "Серия x{n}",
+    wrong: "❌ Неверно. Правильно:",
+    timeout: "⏰ Время вышло. Правильно:",
+    stat_correct: "верных",
+    stat_accuracy: "точность",
+    stat_points: "очков",
+    mistakes_title: "Ошибки:",
+    you_picked: "Вы выбрали:",
+    play_again: "Играть ещё раз",
+    to_menu: "В меню"
+  },
+  en: {
+    title: "🇮🇳 Hindi phrases ↔ English 🇬🇧",
+    subtitle: "Learning to speak: useful phrases for travel and communication",
+    all_topics: "All topics",
+    level1n: "Level 1", level1d: "Introductions and politeness. No timer.",
+    level2n: "Level 2", level2d: "Restaurant and food. 30 seconds per answer.",
+    level3n: "Level 3", level3d: "City and communication. 20 seconds per answer.",
+    level4n: "Mix (all topics)", level4d: "Test yourself on all phrases. 25 seconds per answer.",
+    dir_hi: "Direction: Hindi → {l} (click to change)",
+    dir_nat: "Direction: {l} → Hindi (click to change)",
+    dir_hi_short: "Hindi → {l}",
+    dir_nat_short: "{l} → Hindi",
+    ok: "✅ Correct!",
+    streak: "Streak x{n}",
+    wrong: "❌ Wrong. Correct:",
+    timeout: "⏰ Time's up. Correct:",
+    stat_correct: "correct",
+    stat_accuracy: "accuracy",
+    stat_points: "points",
+    mistakes_title: "Mistakes:",
+    you_picked: "You picked:",
+    play_again: "Play again",
+    to_menu: "Menu"
+  },
+  kk: {
+    title: "🇮🇳 Хинди тіркестері ↔ Қазақша 🇰🇿",
+    subtitle: "Сөйлеуді үйренеміз: саяхат пен қарым-қатынасқа арналған пайдалы тіркестер",
+    all_topics: "Барлық тақырыптар",
+    level1n: "1-деңгей", level1d: "Танысу және сыпайылық. Таймерсіз.",
+    level2n: "2-деңгей", level2d: "Мейрамхана және тамақ. Жауапқа 30 секунд.",
+    level3n: "3-деңгей", level3d: "Қала және қарым-қатынас. Жауапқа 20 секунд.",
+    level4n: "Микс (барлық тақырыптар)", level4d: "Барлық тіркестер бойынша тексер. Жауапқа 25 секунд.",
+    dir_hi: "Бағыт: хинди → {l} (ауыстыру үшін басыңыз)",
+    dir_nat: "Бағыт: {l} → хинди (ауыстыру үшін басыңыз)",
+    dir_hi_short: "Хинди → {l}",
+    dir_nat_short: "{l} → Хинди",
+    ok: "✅ Дұрыс!",
+    streak: "Серия x{n}",
+    wrong: "❌ Қате. Дұрыс жауап:",
+    timeout: "⏰ Уақыт бітті. Дұрыс жауап:",
+    stat_correct: "дұрыс",
+    stat_accuracy: "дәлдік",
+    stat_points: "ұпай",
+    mistakes_title: "Қателер:",
+    you_picked: "Сіз таңдадыңыз:",
+    play_again: "Қайта ойнау",
+    to_menu: "Мәзірге"
+  }
+};
+
+const TOPICS = {
+  "Знакомство": { ru: "Знакомство", en: "Introductions", kk: "Танысу" },
+  "Вежливость": { ru: "Вежливость", en: "Politeness", kk: "Сыпайылық" },
+  "В ресторане": { ru: "В ресторане", en: "In the restaurant", kk: "Мейрамханада" },
+  "В городе": { ru: "В городе", en: "In the city", kk: "Қалада" },
+  "Общение": { ru: "Общение", en: "Communication", kk: "Қарым-қатынас" }
+};
+
+const DATA = {
+  "Знакомство": [
+    { ru: "Как вас зовут?", en: "What's your name?", kk: "Атыңыз кім?", hi: "आपका नाम क्या है?", tr: "āpkā nām kyā hai?" },
+    { ru: "Меня зовут…", en: "My name is…", kk: "Менің атым…", hi: "मेरा नाम … है", tr: "merā nām … hai" },
+    { ru: "Очень приятно!", en: "Nice to meet you!", kk: "Танысқаныма қуаныштымын!", hi: "आपसे मिलकर खुशी हुई!", tr: "āpse milkar khuśī huī!" },
+    { ru: "Как дела?", en: "How are you?", kk: "Қалыңыз қалай?", hi: "आप कैसे हैं?", tr: "āp kaise haiṃ?" },
+    { ru: "Всё хорошо", en: "All is well", kk: "Бәрі жақсы", hi: "सब ठीक है", tr: "sab ṭhīk hai" },
+    { ru: "Я из России", en: "I'm from Russia", kk: "Мен Ресейденмін", hi: "मैं रूस से हूँ", tr: "maim rūs se hūm" },
+    { ru: "Я учу хинди", en: "I'm learning Hindi", kk: "Мен хинди үйреніп жүрмін", hi: "मैं हिंदी सीख रहा हूँ", tr: "maim hindī sīkh rahā hūm" },
+    { ru: "До завтра!", en: "See you tomorrow!", kk: "Ертең кездескенше!", hi: "कल मिलेंगे!", tr: "kal milemge!" }
+  ],
+  "Вежливость": [
+    { ru: "Большое спасибо!", en: "Thank you very much!", kk: "Үлкен рахмет!", hi: "बहुत धन्यवाद!", tr: "bahut dhanyavād!" },
+    { ru: "Не за что", en: "You're welcome", kk: "Оқасы жоқ", hi: "कोई बात नहीं", tr: "koī bāt nahīm" },
+    { ru: "Простите!", en: "Excuse me!", kk: "Кешіріңіз!", hi: "माफ़ कीजिए!", tr: "māf kījiye!" },
+    { ru: "Добро пожаловать!", en: "Welcome!", kk: "Қош келдіңіз!", hi: "स्वागत है!", tr: "svāgat hai!" },
+    { ru: "Поздравляю!", en: "Congratulations!", kk: "Құттықтаймын!", hi: "बधाई हो!", tr: "badhāī ho!" },
+    { ru: "Удачи!", en: "Good luck!", kk: "Сәттілік!", hi: "शुभकामनाएँ!", tr: "śubhkāmnāem!" },
+    { ru: "С удовольствием!", en: "With pleasure!", kk: "Қуана-қуана!", hi: "ज़रूर!", tr: "zarūr!" },
+    { ru: "Пожалуйста", en: "Please", kk: "Өтінемін", hi: "कृपया", tr: "kripayā" }
+  ],
+  "В ресторане": [
+    { ru: "Я голоден", en: "I'm hungry", kk: "Мен ашпын", hi: "मुझे भूख लगी है", tr: "mujhe bhūkh lagī hai" },
+    { ru: "Я хочу пить", en: "I'm thirsty", kk: "Мен шөлдедім", hi: "मुझे प्यास लगी है", tr: "mujhe pyās lagī hai" },
+    { ru: "Я хочу воды", en: "I want some water", kk: "Маған су керек", hi: "मुझे पानी चाहिए", tr: "mujhe pānī chāhiye" },
+    { ru: "Очень вкусно!", en: "Very tasty!", kk: "Өте дәмді!", hi: "बहुत स्वादिष्ट!", tr: "bahut svādiṣṭ!" },
+    { ru: "Счёт, пожалуйста", en: "The bill, please", kk: "Есепшот, өтінемін", hi: "बिल दीजिए", tr: "bil dījiye" },
+    { ru: "Меню, пожалуйста", en: "The menu, please", kk: "Мәзір, өтінемін", hi: "मेन्यू दीजिए", tr: "menyū dījiye" },
+    { ru: "Я вегетарианец", en: "I'm a vegetarian", kk: "Мен вегетарианпын", hi: "मैं शाकाहारी हूँ", tr: "maim śākāhārī hūm" },
+    { ru: "Очень остро!", en: "Very spicy!", kk: "Өте ащы!", hi: "बहुत तीखा!", tr: "bahut tīkhā!" },
+    { ru: "Ещё один чай, пожалуйста", en: "One more tea, please", kk: "Тағы бір шай, өтінемін", hi: "एक और चाय दीजिए", tr: "ek aur chāy dījiye" }
+  ],
+  "В городе": [
+    { ru: "Где туалет?", en: "Where is the toilet?", kk: "Дәретхана қайда?", hi: "शौचालय कहाँ है?", tr: "śaucālay kahām hai?" },
+    { ru: "Где вокзал?", en: "Where is the station?", kk: "Вокзал қайда?", hi: "स्टेशन कहाँ है?", tr: "sṭeshan kahām hai?" },
+    { ru: "Как пройти на рынок?", en: "How do I get to the market?", kk: "Базарға қалай баруға болады?", hi: "बाज़ार कैसे जाऊँ?", tr: "bāzār kaise jāūm?" },
+    { ru: "Сколько это стоит?", en: "How much does it cost?", kk: "Бұл қанша тұрады?", hi: "यह कितने का है?", tr: "yah kitne kā hai?" },
+    { ru: "Слишком дорого", en: "Too expensive", kk: "Тым қымбат", hi: "बहुत महंगा", tr: "bahut mahamgā" },
+    { ru: "Который час?", en: "What time is it?", kk: "Сағат неше?", hi: "कितने बजे हैं?", tr: "kitne baje haiṃ?" },
+    { ru: "Помогите!", en: "Help!", kk: "Көмектесіңіз!", hi: "मदद कीजिए!", tr: "madad kījiye!" },
+    { ru: "Где гостиница?", en: "Where is the hotel?", kk: "Қонақ үй қайда?", hi: "होटल कहाँ है?", tr: "hoṭal kahām hai?" }
+  ],
+  "Общение": [
+    { ru: "Я не понимаю", en: "I don't understand", kk: "Мен түсінбеймін", hi: "मुझे समझ नहीं आया", tr: "mujhe samajh nahīm āyā" },
+    { ru: "Я не говорю по-хинди", en: "I don't speak Hindi", kk: "Мен хиндише сөйлемеймін", hi: "मैं हिंदी नहीं बोलता", tr: "maim hindī nahīm boltā" },
+    { ru: "Вы говорите по-английски?", en: "Do you speak English?", kk: "Сіз ағылшынша сөйлейсіз бе?", hi: "क्या आप अंग्रेज़ी बोलते हैं?", tr: "kyā āp amgrejī bolte haiṃ?" },
+    { ru: "Говорите, пожалуйста, медленнее", en: "Please speak more slowly", kk: "Баяулау сөйлеңізші", hi: "धीरे-धीरे बोलिए", tr: "dhīre-dhīre boliye" },
+    { ru: "Повторите, пожалуйста", en: "Please repeat", kk: "Қайталаңызшы", hi: "दोबारा कहिए", tr: "dabārā kahiye" },
+    { ru: "Я не знаю", en: "I don't know", kk: "Мен білмеймін", hi: "मुझे नहीं पता", tr: "mujhe nahīm patā" },
+    { ru: "Конечно", en: "Of course", kk: "Әрине", hi: "ज़रूर", tr: "zarūr" },
+    { ru: "Может быть", en: "Maybe", kk: "Мүмкін", hi: "शायद", tr: "śāyad" },
+    { ru: "Я спешу", en: "I'm in a hurry", kk: "Мен асығып тұрмын", hi: "मुझे जल्दी है", tr: "mujhe jaldī hai" },
+    { ru: "Позвоните мне", en: "Call me", kk: "Маған қоңырау шалыңыз", hi: "मुझे फ़ोन कीजिए", tr: "mujhe fon kījiye" },
+    { ru: "Договорились!", en: "Deal!", kk: "Келістік!", hi: "ठीक है!", tr: "ṭhīk hai!" },
+    { ru: "Я люблю хинди", en: "I like Hindi", kk: "Маған хинди ұнайды", hi: "मुझे हिंदी पसंद है", tr: "mujhe hindī pasand hai" }
+  ]
+};
+
+const LEVELS = [
+  { name: ["level1n", "level1d"], tags: ["Знакомство", "Вежливость"], questions: 10, time: 0 },
+  { name: ["level2n", "level2d"], tags: ["В ресторане"], questions: 9, time: 30 },
+  { name: ["level3n", "level3d"], tags: ["В городе", "Общение"], questions: 12, time: 20 },
+  { name: ["level4n", "level4d"], tags: ["Все темы"], questions: 16, time: 25 }
+];
+
+const app = document.getElementById("app");
+let state = null;
+let timerId = null;
+
+function t(key, vars) {
+  let s = (I18N[lang] && I18N[lang][key]) != null ? I18N[lang][key] : (I18N.ru[key] || key);
+  if (vars) for (const k in vars) s = s.split("{" + k + "}").join(vars[k]);
+  return s;
+}
+function tn(key) { return (TOPICS[key] && TOPICS[key][lang]) ? TOPICS[key][lang] : key; }
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem("hlang", l); } catch(e) {}
+  document.querySelectorAll(".lbtn").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+  renderMenu();
+}
+function syncLangBtns() {
+  document.querySelectorAll(".lbtn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function poolFor(level) {
+  if (level.tags[0] === "Все темы") return Object.values(DATA).flat();
+  const set = [];
+  level.tags.forEach(t => set.push(...DATA[t]));
+  return set;
+}
+
+function renderMenu() {
+  clearInterval(timerId);
+  let html = `<h1>${t("title")}</h1>
+    <p class="subtitle">${t("subtitle")}</p>`;
+  LEVELS.forEach((lvl, i) => {
+    const tags = lvl.tags.map(tg => `<span class="tag">${tg === "Все темы" ? t("all_topics") : tn(tg)}</span>`).join("");
+    html += `<div class="level-card" onclick="startLevel(${i})">
+      <div class="lvl-name">${t(lvl.name[0])}</div>
+      <div class="lvl-desc">${t(lvl.name[1])}</div>
+      <div class="lvl-tags">${tags}</div>
+    </div>`;
+  });
+  html += `<button class="btn secondary" onclick="toggleDir()" id="dirBtn"></button>`;
+  app.innerHTML = html;
+  updateDirBtn();
+  syncLangBtns();
+}
+
+function updateDirBtn() {
+  const b = document.getElementById("dirBtn");
+  if (!b) return;
+  b.textContent = state && state.dir === "nat"
+    ? t("dir_nat", { l: LANG_NAMES[lang] })
+    : t("dir_hi", { l: LANG_NAMES[lang] });
+}
+
+function toggleDir() {
+  if (!state) return;
+  state.dir = state.dir === "hi" ? "nat" : "hi";
+  updateDirBtn();
+}
+
+function startLevel(idx) {
+  state = {
+    level: LEVELS[idx],
+    dir: "hi",
+    qs: [],
+    qIndex: 0,
+    score: 0,
+    lives: 3,
+    streak: 0,
+    mistakes: []
+  };
+  const pool = poolFor(LEVELS[idx]);
+  const targets = shuffle(pool).slice(0, LEVELS[idx].questions);
+  const allWords = pool;
+  targets.forEach(word => {
+    const options = [word];
+    while (options.length < 4) {
+      const c = allWords[Math.floor(Math.random() * allWords.length)];
+      if (!options.some(o => o.hi === c.hi)) options.push(c);
+    }
+    state.qs.push({ word, options: shuffle(options) });
+  });
+  renderGame();
+}
+
+function renderGame() {
+  clearInterval(timerId);
+  const s = state;
+  const lvl = s.level;
+  const q = s.qs[s.qIndex];
+  const progress = (s.qIndex / lvl.questions) * 100;
+  const toHi = s.dir === "hi";
+
+  let html = `
+    <div class="topbar">
+      <div class="hearts" id="hearts">${"❤️".repeat(Math.max(0, s.lives))}${"🤍".repeat(Math.max(0, 3 - s.lives))}</div>
+      <div class="streak">🔥 ${s.streak}</div>
+      <div class="score" id="score">⭐ ${s.score}</div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog" style="width:${progress}%"></div></div>
+    <div class="word-card">
+      <div class="direction">${toHi ? t("dir_hi_short", { l: LANG_NAMES[lang] }) : t("dir_nat_short", { l: LANG_NAMES[lang] })} · ${s.qIndex + 1} / ${lvl.questions}</div>
+      <div class="word-big dev">${toHi ? q.word.hi : q.word[lang]}</div>
+      ${toHi ? `<div class="word-tran">${q.word.tr}</div>` : ""}
+      <div class="word-topic"><span class="tag">${topicOf(q.word) === "Все темы" ? t("all_topics") : tn(topicOf(q.word))}</span></div>
+      ${lvl.time ? `<div class="timer"><div class="timer-fill" id="timer"></div></div>` : ""}
+    </div>
+    <div class="answers">`;
+  q.options.forEach((opt, i) => {
+    const label = toHi ? opt[lang] : opt.hi;
+    html += `<button class="answer" id="ans${i}" onclick="answer(${i})">${label}</button>`;
+  });
+  html += `</div>
+    <div class="feedback" id="fb"></div>`;
+  app.innerHTML = html;
+
+  if (lvl.time) startTimer();
+}
+
+function topicOf(word) {
+  for (const t in DATA) if (DATA[t].some(w => w.hi === word.hi)) return t;
+  return "";
+}
+
+function startTimer() {
+  const total = state.level.time;
+  let left = total;
+  const fill = document.getElementById("timer");
+  const tick = () => {
+    left -= 0.1;
+    if (fill) fill.style.width = (left / total) * 100 + "%";
+    if (left <= 0) {
+      clearInterval(timerId);
+      resolve(false);
+    }
+  };
+  timerId = setInterval(tick, 100);
+}
+
+function answer(i) {
+  clearInterval(timerId);
+  resolve(i);
+}
+
+function resolve(pickedIndex) {
+  const s = state;
+  const q = s.qs[s.qIndex];
+  const picked = typeof pickedIndex === "number" ? q.options[pickedIndex] : null;
+  const correct = q.word;
+  const ok = picked && picked.hi === correct.hi;
+  const toHi = s.dir === "hi";
+
+  q.options.forEach((opt, idx) => {
+    const el = document.getElementById("ans" + idx);
+    if (!el) return;
+    el.disabled = true;
+    if (opt.hi === correct.hi) el.classList.add("correct");
+    else if (picked && idx === pickedIndex) el.classList.add("wrong");
+  });
+
+  const fb = document.getElementById("fb");
+  if (ok) {
+    s.streak++;
+    s.score += 10 + Math.min(10, s.streak * 2);
+    fb.className = "feedback ok";
+    fb.innerHTML = `${t("ok")} ${s.streak >= 2 ? t("streak", { n: s.streak }) : ""}`;
+  } else {
+    s.lives--;
+    s.streak = 0;
+    fb.className = "feedback no";
+    const shown = toHi ? correct[lang] : `${correct.hi} (${correct.tr})`;
+    fb.innerHTML = picked
+      ? `${t("wrong")} <b>${shown}</b>`
+      : `${t("timeout")} <b>${shown}</b>`;
+    s.mistakes.push({ q, correct, picked });
+  }
+
+  const hearts = document.getElementById("hearts");
+  if (hearts) hearts.textContent = "❤️".repeat(Math.max(0, s.lives)) + "🤍".repeat(Math.max(0, 3 - s.lives));
+  const scoreEl = document.getElementById("score");
+  if (scoreEl) scoreEl.textContent = "⭐ " + s.score;
+
+  setTimeout(() => {
+    if (s.lives <= 0) return renderResult();
+    s.qIndex++;
+    if (s.qIndex >= s.level.questions) renderResult();
+    else renderGame();
+  }, 1200);
+}
+
+function renderResult() {
+  clearInterval(timerId);
+  const s = state;
+  const total = s.level.questions;
+  const correctCount = total - s.mistakes.length;
+  const pct = Math.round((correctCount / total) * 100);
+  const emoji = pct >= 80 ? "🏆" : pct >= 50 ? "🎉" : "💪";
+
+  let html = `<div class="result-big">${emoji}</div>
+    <div class="result-stats">
+      <span class="stat"><b>${correctCount}/${total}</b>${t("stat_correct")}</span>
+      <span class="stat"><b>${pct}%</b>${t("stat_accuracy")}</span>
+      <span class="stat"><b>${s.score}</b>${t("stat_points")}</span>
+    </div>`;
+  if (s.mistakes.length) {
+    html += `<div class="mistakes"><h3>${t("mistakes_title")}</h3>`;
+    s.mistakes.forEach(({ correct, picked }) => {
+      html += `<div class="mistake-item">${correct.hi} <span class="dev">(${correct.tr})</span> = ${correct[lang]}
+        ${picked ? `<div style="font-size:.8rem;color:#ff8095">${t("you_picked")} ${picked[lang]}</div>` : ""}</div>`;
+    });
+    html += `</div>`;
+  }
+  html += `<button class="btn" onclick="startLevel(${LEVELS.indexOf(s.level)})">${t("play_again")}</button>
+    <button class="btn secondary" onclick="renderMenu()">${t("to_menu")}</button>`;
+  app.innerHTML = html;
+}
+
+syncLangBtns();
+renderMenu();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js').catch(function () {});
+  });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var b = document.getElementById('installBtn');
+  if (b) b.style.display = 'block';
+});
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt = null;
+  var b = document.getElementById('installBtn');
+  if (b) b.style.display = 'none';
+}
+window.addEventListener('appinstalled', function () {
+  var b = document.getElementById('installBtn');
+  if (b) b.style.display = 'none';
+});
+</script></body>
+</html>
