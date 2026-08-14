@@ -1,0 +1,32 @@
+{
+    "description":  "Итальянский: фразы для путешествий",
+    "short_name":  "Фразы итал.",
+    "background_color":  "#0f3460",
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-maskable-512.png"
+                  }
+              ],
+    "lang":  "ru",
+    "orientation":  "portrait",
+    "theme_color":  "#16a34a",
+    "display":  "standalone",
+    "name":  "Итальянский: фразы для путешествий",
+    "scope":  "./",
+    "start_url":  "./"
+}
