@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#d97706">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Немецкий: фразы для путешествий</title>
+<style>  :root { --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460; --accent:#d97706; --gold:#ffd166; --green:#06d6a0; --card:rgba(255,255,255,0.08); --text:#f0f0f5; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh;
+    background:linear-gradient(135deg,var(--bg1),var(--bg3)); color:var(--text);
+    display:flex; align-items:center; justify-content:center; padding:16px; }
+  .app { width:100%; max-width:560px; background:rgba(0,0,0,0.25);
+    border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:24px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+  h1 { font-size:1.35rem; text-align:center; margin-bottom:4px; }
+  .subtitle { text-align:center; color:rgba(255,255,255,0.65); font-size:.9rem; margin-bottom:18px; }
+  .level-card { background:var(--card); border:1px solid rgba(255,255,255,0.12); border-radius:14px;
+    padding:16px; margin-bottom:12px; cursor:pointer; transition:transform .15s,background .15s; }
+  .level-card:hover { transform:translateY(-2px); background:rgba(255,255,255,0.14); }
+  .level-card .lvl-name { font-weight:700; font-size:1.05rem; }
+  .level-card .lvl-desc { color:rgba(255,255,255,0.7); font-size:.85rem; margin-top:4px; }
+  .level-card .lvl-tags { margin-top:8px; }
+  .tag { display:inline-block; background:rgba(233,69,96,.25); border:1px solid rgba(233,69,96,.5);
+    color:#ffb3c1; font-size:.75rem; padding:2px 10px; border-radius:999px; margin:2px 4px 2px 0; }
+  .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:8px; }
+  .hearts { font-size:1.1rem; letter-spacing:2px; }
+  .score { font-weight:700; color:var(--gold); }
+  .streak { font-size:.8rem; color:rgba(255,255,255,0.7); }
+  .prog-bar { height:8px; background:rgba(255,255,255,0.12); border-radius:999px; overflow:hidden; margin-bottom:16px; }
+  .prog-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--gold)); border-radius:999px; transition:width .3s; }
+  .word-card { background:linear-gradient(140deg,var(--bg2),var(--bg3)); border:1px solid rgba(255,255,255,0.15);
+    border-radius:16px; padding:24px 18px; text-align:center; margin-bottom:16px; }
+  .direction { font-size:.8rem; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1px; }
+  .word-big { font-size:clamp(1.25rem,5vw,2.1rem); margin-top:8px; line-height:1.35; word-break:break-word; }
+  .word-tran { font-size:.95rem; color:var(--gold); margin-top:6px; font-style:italic; }
+  .word-topic { margin-top:10px; }
+  .timer { height:6px; background:rgba(255,255,255,0.12); border-radius:999px; margin-top:14px; overflow:hidden; }
+  .timer-fill { height:100%; width:100%; background:var(--green); transition:width .1s linear; }
+  .answers { display:grid; grid-template-columns:1fr; gap:10px; }
+  .answer { background:var(--card); border:1px solid rgba(255,255,255,0.12); border-radius:12px;
+    padding:14px 12px; font-size:.95rem; color:var(--text); cursor:pointer; min-height:58px; line-height:1.35;
+    transition:transform .1s,background .15s,border-color .15s; }
+  .answer:hover:not(:disabled) { transform:translateY(-2px); background:rgba(255,255,255,0.14); }
+  .answer.correct { background:rgba(6,214,160,0.25); border-color:var(--green); }
+  .answer.wrong { background:rgba(233,69,96,0.3); border-color:var(--accent); }
+  .answer:disabled { cursor:default; }
+  .feedback { text-align:center; min-height:40px; margin-top:12px; font-size:.95rem; }
+  .feedback.ok { color:var(--green); } .feedback.no { color:#ff8095; }
+  .result-big { font-size:3rem; text-align:center; margin:10px 0; }
+  .result-stats { text-align:center; margin-bottom:16px; }
+  .result-stats .stat { display:inline-block; margin:0 12px; font-size:.95rem; }
+  .result-stats .stat b { display:block; font-size:1.4rem; color:var(--gold); }
+  .mistakes { margin-top:16px; } .mistakes h3 { font-size:.95rem; margin-bottom:8px; color:rgba(255,255,255,0.8); }
+  .mistake-item { background:var(--card); border-radius:10px; padding:8px 12px; margin-bottom:6px; font-size:.9rem; }
+  .btn { display:block; width:100%; padding:14px; border:none; border-radius:12px; font-size:1rem; font-weight:700;
+    cursor:pointer; background:linear-gradient(90deg,var(--accent),var(--bg3)); color:#fff; margin-top:14px;
+    transition:transform .1s,opacity .15s; }
+  .btn:hover { transform:translateY(-2px); } .btn:active { transform:translateY(0); }
+  .btn.secondary { background:rgba(255,255,255,0.12); }
+  .spk { display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:9px 16px;
+    border-radius:999px; border:1px solid rgba(255,255,255,0.18); background:var(--card); color:var(--text);
+    font-family:inherit; font-size:.85rem; font-weight:600; cursor:pointer; transition:background .15s; }
+  .spk:hover { background:rgba(255,255,255,0.16); }
+  .spk.speaking { background:var(--accent); color:#fff; }
+  .install { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:999; display:none;
+    align-items:center; gap:10px; background:linear-gradient(90deg,var(--accent),var(--bg3)); color:#fff;
+    border:none; border-radius:999px; padding:13px 24px; font-weight:700; font-size:.95rem; cursor:pointer;
+    box-shadow:0 8px 24px rgba(0,0,0,.45); font-family:inherit; }
+</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+<div class="app"><div id="app"></div></div>
+<script>
+const I18N = {
+  title: "Немецкий: фразы для путешествий",
+  subtitle: "Учим немецкий: полезные фразы для путешествий и общения",
+  all_topics: "Все темы",
+  dir_for: "Направление: немецкий → Русский",
+  dir_to: "Направление: Русский → немецкий",
+  click: "нажмите, чтобы сменить",
+  ok: "✅ Верно!",
+  streak: "Серия x{n}",
+  wrong: "❌ Неверно. Правильно:",
+  timeout: "⏰ Время вышло. Правильно:",
+  stat_correct: "верных",
+  stat_accuracy: "точность",
+  stat_points: "очков",
+  mistakes_title: "Ошибки:",
+  you_picked: "Вы выбрали:",
+  play_again: "Играть ещё раз",
+  to_menu: "В меню"
+};
+const DATA = {
+    "Знакомство":  [
+                       {
+                           "ru":  "Как вас зовут?",
+                           "tg":  "Wie heißen Sie?",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Меня зовут…",
+                           "tg":  "Ich heiße…",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Очень приятно!",
+                           "tg":  "Freut mich!",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Как дела?",
+                           "tg":  "Wie geht es Ihnen?",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Всё хорошо",
+                           "tg":  "Alles gut.",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Я из России",
+                           "tg":  "Ich komme aus Russland.",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Я учу язык",
+                           "tg":  "Ich lerne Deutsch.",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "До завтра!",
+                           "tg":  "Bis morgen!",
+                           "tr":  ""
+                       }
+                   ],
+    "Вежливость":  [
+                       {
+                           "ru":  "Большое спасибо!",
+                           "tg":  "Vielen Dank!",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Не за что",
+                           "tg":  "Gern geschehen.",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Простите!",
+                           "tg":  "Entschuldigung!",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Добро пожаловать!",
+                           "tg":  "Willkommen!",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Поздравляю!",
+                           "tg":  "Herzlichen Glückwunsch!",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Удачи!",
+                           "tg":  "Viel Glück!",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "С удовольствием!",
+                           "tg":  "Gerne!",
+                           "tr":  ""
+                       },
+                       {
+                           "ru":  "Пожалуйста",
+                           "tg":  "Bitte.",
+                           "tr":  ""
+                       }
+                   ],
+    "В ресторане":  [
+                        {
+                            "ru":  "Я голоден",
+                            "tg":  "Ich habe Hunger.",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Я хочу пить",
+                            "tg":  "Ich habe Durst.",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Я хочу воды",
+                            "tg":  "Ich möchte Wasser.",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Очень вкусно!",
+                            "tg":  "Sehr lecker!",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Счёт, пожалуйста",
+                            "tg":  "Die Rechnung, bitte.",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Меню, пожалуйста",
+                            "tg":  "Die Speisekarte, bitte.",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Я вегетарианец",
+                            "tg":  "Ich bin Vegetarier.",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Очень остро!",
+                            "tg":  "Sehr scharf!",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Ещё один чай, пожалуйста",
+                            "tg":  "Noch einen Tee, bitte.",
+                            "tr":  ""
+                        }
+                    ],
+    "В городе":  [
+                     {
+                         "ru":  "Где туалет?",
+                         "tg":  "Wo ist die Toilette?",
+                         "tr":  ""
+                     },
+                     {
+                         "ru":  "Где вокзал?",
+                         "tg":  "Wo ist der Bahnhof?",
+                         "tr":  ""
+                     },
+                     {
+                         "ru":  "Как пройти на рынок?",
+                         "tg":  "Wie komme ich zum Markt?",
+                         "tr":  ""
+                     },
+                     {
+                         "ru":  "Сколько это стоит?",
+                         "tg":  "Wie viel kostet das?",
+                         "tr":  ""
+                     },
+                     {
+                         "ru":  "Слишком дорого",
+                         "tg":  "Zu teuer.",
+                         "tr":  ""
+                     },
+                     {
+                         "ru":  "Который час?",
+                         "tg":  "Wie spät ist es?",
+                         "tr":  ""
+                     },
+                     {
+                         "ru":  "Помогите!",
+                         "tg":  "Hilfe!",
+                         "tr":  ""
+                     },
+                     {
+                         "ru":  "Где гостиница?",
+                         "tg":  "Wo ist das Hotel?",
+                         "tr":  ""
+                     }
+                 ],
+    "Общение":  [
+                    {
+                        "ru":  "Я не понимаю",
+                        "tg":  "Ich verstehe nicht.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Я не говорю по-языку",
+                        "tg":  "Ich spreche kein Deutsch.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Вы говорите на языке?",
+                        "tg":  "Sprechen Sie Deutsch?",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Говорите, пожалуйста, медленнее",
+                        "tg":  "Sprechen Sie bitte langsamer.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Повторите, пожалуйста",
+                        "tg":  "Bitte wiederholen Sie.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Я не знаю",
+                        "tg":  "Ich weiß nicht.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Конечно",
+                        "tg":  "Natürlich.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Может быть",
+                        "tg":  "Vielleicht.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Я спешу",
+                        "tg":  "Ich habe es eilig.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Позвоните мне",
+                        "tg":  "Rufen Sie mich an.",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Договорились!",
+                        "tg":  "Abgemacht!",
+                        "tr":  ""
+                    },
+                    {
+                        "ru":  "Мне нравится язык",
+                        "tg":  "Ich mag Deutsch.",
+                        "tr":  ""
+                    }
+                ]
+};
+const LEVELS = [
+  { name:"Уровень 1", desc:"Знакомство и вежливость. Без таймера.", tags:["Знакомство","Вежливость"], questions:10, time:0 },
+  { name:"Уровень 2", desc:"Ресторан и еда. 30 секунд на ответ.", tags:["В ресторане"], questions:9, time:30 },
+  { name:"Уровень 3", desc:"Город и общение. 20 секунд на ответ.", tags:["В городе","Общение"], questions:12, time:20 },
+  { name:"Уровень 4", desc:"Микс (все темы). 25 секунд на ответ.", tags:["Все темы"], questions:16, time:25 }
+];
+const app = document.getElementById("app");
+let state = null;
+let timerId = null;
+const FOREIGN = "немецкий";
+const TTS_LANG = "de";
+
+let audioEl = null;
+function stopAudio() {
+  if (audioEl) { audioEl.pause(); audioEl = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => b.classList.remove('speaking'));
+}
+function tryLocal(lang, text) {
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang; u.rate = 0.9;
+  const vs = window.speechSynthesis.getVoices();
+  const v = vs.find(x => x.lang && x.lang.toLowerCase().startsWith(lang.toLowerCase()));
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+function speak(lang, text) {
+  stopAudio();
+  const btn = document.getElementById('sayBtn');
+  if (btn) btn.classList.add('speaking');
+  const q = encodeURIComponent(text);
+  audioEl = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0');
+  audioEl.crossOrigin = 'anonymous';
+  const done = () => { if (btn) btn.classList.remove('speaking'); };
+  audioEl.onended = done;
+  audioEl.onerror = () => { done(); tryLocal(lang, text); };
+  audioEl.play().catch(() => { done(); tryLocal(lang, text); });
+}
+function sayWord() {
+  if (!state) return;
+  const w = state.qs[state.qIndex].word;
+  if (state.dir === "for") speak(TTS_LANG, w.tg);
+  else speak("ru-RU", w.ru);
+}
+
+const TOPICS = ['__TOPICS__'];
+
+function t(key, vars) {
+  let s = I18N[key];
+  if (vars) for (const k in vars) s = s.split("{" + k + "}").join(vars[k]);
+  return s;
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function poolFor(level) {
+  if (level.tags[0] === "Все темы") return Object.values(DATA).flat();
+  const set = [];
+  level.tags.forEach(t => set.push(...DATA[t]));
+  return set;
+}
+function topicOf(word) {
+  for (const t in DATA) if (DATA[t].some(w => w.tg === word.tg)) return t;
+  return "";
+}
+function renderMenu() {
+  clearInterval(timerId);
+  let html = `<h1>${I18N.title}</h1>
+    <p class="subtitle">${I18N.subtitle}</p>`;
+  LEVELS.forEach((lvl, i) => {
+    const tags = lvl.tags.map(tg => `<span class="tag">${tg === "Все темы" ? t("all_topics") : tg}</span>`).join("");
+    html += `<div class="level-card" onclick="startLevel(${i})">
+      <div class="lvl-name">${lvl.name}</div>
+      <div class="lvl-desc">${lvl.desc}</div>
+      <div class="lvl-tags">${tags}</div>
+    </div>`;
+  });
+  html += `<button class="btn secondary" onclick="toggleDir()" id="dirBtn"></button>`;
+  app.innerHTML = html;
+  updateDirBtn();
+}
+function updateDirBtn() {
+  const b = document.getElementById("dirBtn");
+  if (!b) return;
+  b.textContent = state && state.dir === "to"
+    ? `${I18N.dir_to} (${I18N.click})`
+    : `${I18N.dir_for} (${I18N.click})`;
+}
+function toggleDir() {
+  if (!state) return;
+  state.dir = state.dir === "for" ? "to" : "for";
+  updateDirBtn();
+}
+function startLevel(idx) {
+  state = {
+    level: LEVELS[idx], dir: "for",
+    qs: [], qIndex: 0, score: 0, lives: 3, streak: 0, mistakes: []
+  };
+  const pool = poolFor(LEVELS[idx]);
+  const targets = shuffle(pool).slice(0, LEVELS[idx].questions);
+  targets.forEach(word => {
+    const options = [word];
+    while (options.length < 4) {
+      const c = pool[Math.floor(Math.random() * pool.length)];
+      if (!options.some(o => o.tg === c.tg)) options.push(c);
+    }
+    state.qs.push({ word, options: shuffle(options) });
+  });
+  renderGame();
+}
+function renderGame() {
+  clearInterval(timerId);
+  const s = state; const lvl = s.level; const q = s.qs[s.qIndex];
+  const progress = (s.qIndex / lvl.questions) * 100;
+  const toFor = s.dir === "for";
+  let html = `
+    <div class="topbar">
+      <div class="hearts" id="hearts">${"❤️".repeat(Math.max(0, s.lives))}${"🤍".repeat(Math.max(0, 3 - s.lives))}</div>
+      <div class="streak">🔥 ${s.streak}</div>
+      <div class="score" id="score">⭐ ${s.score}</div>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog" style="width:${progress}%"></div></div>
+    <div class="word-card">
+      <div class="direction">${toFor ? FOREIGN + " → Русский" : "Русский → " + FOREIGN} · ${s.qIndex + 1} / ${lvl.questions}</div>
+      <div class="word-big">${toFor ? q.word.tg : q.word.ru}</div>
+      ${toFor && q.word.tr ? `<div class="word-tran">${q.word.tr}</div>` : ""}
+      <div class="word-topic"><span class="tag">${topicOf(q.word) === "Все темы" ? t("all_topics") : topicOf(q.word)}</span></div>
+      <button id="sayBtn" class="spk" onclick="sayWord()">🔊 Прослушать</button>
+      ${lvl.time ? `<div class="timer"><div class="timer-fill" id="timer"></div></div>` : ""}
+    </div>
+    <div class="answers">`;
+  q.options.forEach((opt, i) => {
+    const label = toFor ? opt.ru : opt.tg;
+    html += `<button class="answer" id="ans${i}" onclick="answer(${i})">${label}</button>`;
+  });
+  html += `</div>
+    <div class="feedback" id="fb"></div>`;
+  app.innerHTML = html;
+  if (lvl.time) startTimer();
+}
+function startTimer() {
+  const total = state.level.time;
+  let left = total;
+  const fill = document.getElementById("timer");
+  const tick = () => {
+    left -= 0.1;
+    if (fill) fill.style.width = (left / total) * 100 + "%";
+    if (left <= 0) { clearInterval(timerId); resolve(false); }
+  };
+  timerId = setInterval(tick, 100);
+}
+function answer(i) { clearInterval(timerId); resolve(i); }
+function resolve(pickedIndex) {
+  const s = state; const q = s.qs[s.qIndex];
+  const picked = typeof pickedIndex === "number" ? q.options[pickedIndex] : null;
+  const correct = q.word;
+  const ok = picked && picked.tg === correct.tg;
+  const toFor = s.dir === "for";
+  q.options.forEach((opt, idx) => {
+    const el = document.getElementById("ans" + idx);
+    if (!el) return;
+    el.disabled = true;
+    if (opt.tg === correct.tg) el.classList.add("correct");
+    else if (picked && idx === pickedIndex) el.classList.add("wrong");
+  });
+  const fb = document.getElementById("fb");
+  if (ok) {
+    s.streak++; s.score += 10 + Math.min(10, s.streak * 2);
+    fb.className = "feedback ok";
+    fb.innerHTML = `${t("ok")} ${s.streak >= 2 ? t("streak", { n: s.streak }) : ""}`;
+  } else {
+    s.lives--; s.streak = 0;
+    fb.className = "feedback no";
+    const shown = toFor ? `${correct.tg}${correct.tr ? ` (${correct.tr})` : ""}` : correct.ru;
+    fb.innerHTML = picked ? `${t("wrong")} <b>${shown}</b>` : `${t("timeout")} <b>${shown}</b>`;
+    s.mistakes.push({ q, correct, picked });
+  }
+  const hearts = document.getElementById("hearts");
+  if (hearts) hearts.textContent = "❤️".repeat(Math.max(0, s.lives)) + "🤍".repeat(Math.max(0, 3 - s.lives));
+  const scoreEl = document.getElementById("score");
+  if (scoreEl) scoreEl.textContent = "⭐ " + s.score;
+  setTimeout(() => {
+    if (s.lives <= 0) return renderResult();
+    s.qIndex++;
+    if (s.qIndex >= s.level.questions) renderResult(); else renderGame();
+  }, 1200);
+}
+function renderResult() {
+  clearInterval(timerId);
+  const s = state; const total = s.level.questions;
+  const correctCount = total - s.mistakes.length;
+  const pct = Math.round((correctCount / total) * 100);
+  const emoji = pct >= 80 ? "🏆" : pct >= 50 ? "🎉" : "💪";
+  let html = `<div class="result-big">${emoji}</div>
+    <div class="result-stats">
+      <span class="stat"><b>${correctCount}/${total}</b>${t("stat_correct")}</span>
+      <span class="stat"><b>${pct}%</b>${t("stat_accuracy")}</span>
+      <span class="stat"><b>${s.score}</b>${t("stat_points")}</span>
+    </div>`;
+  if (s.mistakes.length) {
+    html += `<div class="mistakes"><h3>${t("mistakes_title")}</h3>`;
+    s.mistakes.forEach(({ correct, picked }) => {
+      const shown = correct.tr ? `${correct.tg} (${correct.tr})` : correct.tg;
+      html += `<div class="mistake-item">${shown} = ${correct.ru}
+        ${picked ? `<div style="font-size:.8rem;color:#ff8095">${t("you_picked")} ${picked.ru}</div>` : ""}</div>`;
+    });
+    html += `</div>`;
+  }
+  html += `<button class="btn" onclick="startLevel(${LEVELS.indexOf(s.level)})">${t("play_again")}</button>
+    <button class="btn secondary" onclick="renderMenu()">${t("to_menu")}</button>`;
+  app.innerHTML = html;
+}
+renderMenu();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault(); deferredPrompt = e;
+  var b = document.getElementById('installBtn'); if (b) b.style.display = 'flex';
+});
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt(); deferredPrompt = null;
+  var b = document.getElementById('installBtn'); if (b) b.style.display = 'none';
+}
+window.addEventListener('appinstalled', function () {
+  var b = document.getElementById('installBtn'); if (b) b.style.display = 'none';
+});
+</script>
+</body>
+</html>

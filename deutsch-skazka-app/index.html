@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#d97706">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Красная Шапочка — немецкий с переводом и озвучкой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#1a1207;--bg2:#21180b;--card:#221912;--card2:#2a1f14;
+  --ink:#f5efe4;--ink2:#c3ad8d;--accent:#e0a24c;--accent2:#c0791f;
+  --gold:#e0b25b;--line:rgba(224,162,76,.18);--soft:rgba(224,162,76,.10);
+  --de:#d97706;--de2:#93310a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#241505;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.big{margin-left:auto}
+.spk.speaking{background:var(--accent);color:#241505;border-color:var(--accent)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-direction:column;gap:0}
+.sent{display:flex;align-items:flex-start;gap:12px;padding:10px 4px;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sent .spk{flex:0 0 auto;margin-top:6px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.sent .words{display:flex;flex-wrap:wrap;gap:8px}
+.w{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:74px}
+.w-t{font-weight:700;font-size:15px;line-height:1.35;color:var(--ink)}
+.w-d{font-size:12px;color:var(--ink2);font-weight:400}
+.fulltext{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 24px;font-size:17px;line-height:1.9;color:var(--ink)}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{.nav,.spk{display:none}body{background:#fff;color:#000}.w{background:#fff;border:1px solid #ccc}.fulltext{background:#fff;border:1px solid #ccc;color:#000}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#241505;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Сказка с переводом</span>
+    <h1>Красная Шапочка</h1>
+    <p>Немецкая версия (🇩🇪 Deutsch): читаем сказку слово за словом с переводом на русский и озвучкой, затем весь текст целиком. Нажмите ▶, чтобы прослушать. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang de" id="de"><div class="lang-head"><span class="lang-n">DE</span><h2>🇩🇪 Deutsch (Немецкий)</h2><button class="spk big" data-lang="de" data-text="Es war einmal ein kleines Mädchen, das mit seiner Mutter in einem Dorf lebte. Seine Großmutter machte ihm eine schöne rote Kappe. Alle nannten es Rotkäppchen. Eines Tages sagte seine Mutter: „Bring diesen Kuchen und diese Flasche Wein zur Großmutter. Sie ist krank und schwach.“ Das Mädchen zog seine rote Kappe an und ging in den Wald. Im Wald traf es einen großen grauen Wolf. Der Wolf fragte: „Wohin gehst du, kleines Mädchen?“ „Zum Haus meiner Großmutter“, sagte es. Der Wolf lief voraus und kam früher an. Er sperrte die Großmutter in den Schrank und zog ihre Kleider und ihre Kappe an. Als Rotkäppchen kam, fragte es: „Großmutter, warum hast du so große Augen?“ „Damit ich dich besser sehen kann“, antwortete der Wolf. „Und deine Ohren?“ „Damit ich dich besser hören kann.“ „Und deine Hände?“ „Damit ich dich besser umarmen kann.“ „Und dein Mund?“ „Damit ich dich fressen kann!“ Und der Wolf sprang aus dem Bett und verschluckte das Mädchen. Aber ein Jäger ging am Haus vorbei. Er hörte das Schnarchen des Wolfes, ging hinein, schnitt dem Wolf den Bauch auf und rettete die Großmutter und das Mädchen. Und sie lebten alle glücklich und zufrieden.">▶ Озвучить весь текст</button></div><h3 class="sub">Слово за словом · перевод на русский</h3><div class="ww">
+<div class="sent"><button class="spk" data-lang="de" data-text="Es war einmal ein kleines Mädchen das mit seiner Mutter in einem Dorf lebte Seine Großmutter machte ihm" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Es war einmal</span><span class="w-d">жил-был однажды</span></div><div class="w"><span class="w-t">ein kleines Mädchen</span><span class="w-d">одна маленькая девочка</span></div><div class="w"><span class="w-t">das mit seiner Mutter</span><span class="w-d">которая со своей мамой</span></div><div class="w"><span class="w-t">in einem Dorf lebte</span><span class="w-d">жила в деревне</span></div><div class="w"><span class="w-t">Seine Großmutter</span><span class="w-d">её бабушка</span></div><div class="w"><span class="w-t">machte ihm</span><span class="w-d">сделала ей</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="eine schöne rote Kappe Alle nannten es Rotkäppchen Eines Tages sagte seine Mutter Bring diesen Kuchen" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">eine schöne rote Kappe</span><span class="w-d">красивую красную шапочку</span></div><div class="w"><span class="w-t">Alle nannten es</span><span class="w-d">все называли её</span></div><div class="w"><span class="w-t">Rotkäppchen</span><span class="w-d">Красная Шапочка</span></div><div class="w"><span class="w-t">Eines Tages sagte</span><span class="w-d">однажды сказала</span></div><div class="w"><span class="w-t">seine Mutter</span><span class="w-d">её мама</span></div><div class="w"><span class="w-t">Bring diesen Kuchen</span><span class="w-d">отнеси этот пирог</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="und diese Flasche Wein zur Großmutter Sie ist krank und schwach Das Mädchen zog seine rote Kappe an" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">und diese Flasche Wein</span><span class="w-d">и эту бутылку вина</span></div><div class="w"><span class="w-t">zur Großmutter</span><span class="w-d">бабушке</span></div><div class="w"><span class="w-t">Sie ist krank</span><span class="w-d">она больна</span></div><div class="w"><span class="w-t">und schwach</span><span class="w-d">и слаба</span></div><div class="w"><span class="w-t">Das Mädchen zog</span><span class="w-d">девочка надела</span></div><div class="w"><span class="w-t">seine rote Kappe an</span><span class="w-d">свою красную шапочку</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="und ging in den Wald Im Wald traf es einen großen grauen Wolf Der Wolf fragte Wohin gehst du kleines Mädchen" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">und ging in den Wald</span><span class="w-d">и пошла в лес</span></div><div class="w"><span class="w-t">Im Wald traf es</span><span class="w-d">в лесу она встретила</span></div><div class="w"><span class="w-t">einen großen grauen Wolf</span><span class="w-d">большого серого волка</span></div><div class="w"><span class="w-t">Der Wolf fragte</span><span class="w-d">волк спросил</span></div><div class="w"><span class="w-t">Wohin gehst du</span><span class="w-d">куда ты идёшь</span></div><div class="w"><span class="w-t">kleines Mädchen</span><span class="w-d">маленькая девочка</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="Zum Haus meiner Großmutter sagte es Der Wolf lief voraus und kam früher an Er sperrte die Großmutter in den Schrank" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Zum Haus meiner Großmutter</span><span class="w-d">к дому моей бабушки</span></div><div class="w"><span class="w-t">sagte es</span><span class="w-d">сказала она</span></div><div class="w"><span class="w-t">Der Wolf lief voraus</span><span class="w-d">волк побежал вперёд</span></div><div class="w"><span class="w-t">und kam früher an</span><span class="w-d">и пришёл раньше</span></div><div class="w"><span class="w-t">Er sperrte die Großmutter</span><span class="w-d">он запер бабушку</span></div><div class="w"><span class="w-t">in den Schrank</span><span class="w-d">в шкаф</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="und zog ihre Kleider an und ihre Kappe Als Rotkäppchen kam fragte es Großmutter, warum hast du so große Augen" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">und zog ihre Kleider an</span><span class="w-d">и надел её одежду</span></div><div class="w"><span class="w-t">und ihre Kappe</span><span class="w-d">и её шапочку</span></div><div class="w"><span class="w-t">Als Rotkäppchen kam</span><span class="w-d">когда пришла Красная Шапочка</span></div><div class="w"><span class="w-t">fragte es</span><span class="w-d">она спросила</span></div><div class="w"><span class="w-t">Großmutter, warum hast du</span><span class="w-d">бабушка, почему у тебя</span></div><div class="w"><span class="w-t">so große Augen</span><span class="w-d">такие большие глаза</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="Damit ich dich besser sehen kann antwortete der Wolf Und deine Ohren Damit ich dich besser hören kann Und deine Hände Damit ich dich besser umarmen kann" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Damit ich dich besser sehen kann</span><span class="w-d">чтобы лучше тебя видеть</span></div><div class="w"><span class="w-t">antwortete der Wolf</span><span class="w-d">ответил волк</span></div><div class="w"><span class="w-t">Und deine Ohren</span><span class="w-d">а твои уши</span></div><div class="w"><span class="w-t">Damit ich dich besser hören kann</span><span class="w-d">чтобы лучше тебя слышать</span></div><div class="w"><span class="w-t">Und deine Hände</span><span class="w-d">а твои руки</span></div><div class="w"><span class="w-t">Damit ich dich besser umarmen kann</span><span class="w-d">чтобы лучше тебя обнимать</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="Und dein Mund Damit ich dich fressen kann Und der Wolf sprang aus dem Bett und verschluckte das Mädchen Aber ein Jäger ging am Haus vorbei Er hörte das Schnarchen des Wolfes" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Und dein Mund</span><span class="w-d">а твой рот</span></div><div class="w"><span class="w-t">Damit ich dich fressen kann</span><span class="w-d">чтобы тебя съесть</span></div><div class="w"><span class="w-t">Und der Wolf sprang aus dem Bett</span><span class="w-d">и волк выпрыгнул из кровати</span></div><div class="w"><span class="w-t">und verschluckte das Mädchen</span><span class="w-d">и проглотил девочку</span></div><div class="w"><span class="w-t">Aber ein Jäger ging am Haus vorbei</span><span class="w-d">но охотник проходил мимо дома</span></div><div class="w"><span class="w-t">Er hörte das Schnarchen des Wolfes</span><span class="w-d">он услышал храп волка</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="de" data-text="ging hinein schnitt dem Wolf den Bauch auf und rettete die Großmutter und das Mädchen Und sie lebten alle glücklich und zufrieden" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">ging hinein</span><span class="w-d">вошёл внутрь</span></div><div class="w"><span class="w-t">schnitt dem Wolf den Bauch auf</span><span class="w-d">разрезал волку живот</span></div><div class="w"><span class="w-t">und rettete die Großmutter</span><span class="w-d">и спас бабушку</span></div><div class="w"><span class="w-t">und das Mädchen</span><span class="w-d">и девочку</span></div><div class="w"><span class="w-t">Und sie lebten alle</span><span class="w-d">и жили они все</span></div><div class="w"><span class="w-t">glücklich und zufrieden</span><span class="w-d">счастливо и благополучно</span></div></div></div></div><h3 class="sub">Весь текст</h3><div class="fulltext">Es war einmal ein kleines Mädchen, das mit seiner Mutter in einem Dorf lebte. Seine Großmutter machte ihm eine schöne rote Kappe. Alle nannten es Rotkäppchen. Eines Tages sagte seine Mutter: „Bring diesen Kuchen und diese Flasche Wein zur Großmutter. Sie ist krank und schwach.“ Das Mädchen zog seine rote Kappe an und ging in den Wald. Im Wald traf es einen großen grauen Wolf. Der Wolf fragte: „Wohin gehst du, kleines Mädchen?“ „Zum Haus meiner Großmutter“, sagte es. Der Wolf lief voraus und kam früher an. Er sperrte die Großmutter in den Schrank und zog ihre Kleider und ihre Kappe an. Als Rotkäppchen kam, fragte es: „Großmutter, warum hast du so große Augen?“ „Damit ich dich besser sehen kann“, antwortete der Wolf. „Und deine Ohren?“ „Damit ich dich besser hören kann.“ „Und deine Hände?“ „Damit ich dich besser umarmen kann.“ „Und dein Mund?“ „Damit ich dich fressen kann!“ Und der Wolf sprang aus dem Bett und verschluckte das Mädchen. Aber ein Jäger ging am Haus vorbei. Er hörte das Schnarchen des Wolfes, ging hinein, schnitt dem Wolf den Bauch auf und rettete die Großmutter und das Mädchen. Und sie lebten alle glücklich und zufrieden.</div></section>
+</div>
+
+<footer>
+  <div class="wrap">Красная Шапочка · сказка с переводом слово за словом<br><span>немецкий 🇩🇪</span></div>
+</footer>
+
+<script>
+const langToVoice = {"de": "de-DE"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.spk').forEach(btn => {
+  btn.addEventListener('click', () => { speak(btn.dataset.lang, btn.dataset.text, btn); });
+});
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>
