@@ -6,11 +6,11 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-<meta name="theme-color" content="#dc2626">
+<meta name="theme-color" content="#e11d48">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Китайский: фразы для путешествий</title>
-<style>  :root { --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460; --accent:#dc2626; --gold:#ffd166; --green:#06d6a0; --card:rgba(255,255,255,0.08); --text:#f0f0f5; }
+<title>Испанский: игра со словами</title>
+<style>  :root { --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460; --accent:#e11d48; --gold:#ffd166; --green:#06d6a0; --card:rgba(255,255,255,0.08); --text:#f0f0f5; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh;
     background:linear-gradient(135deg,var(--bg1),var(--bg3)); color:var(--text);
@@ -42,7 +42,7 @@
   .word-topic { margin-top:10px; }
   .timer { height:6px; background:rgba(255,255,255,0.12); border-radius:999px; margin-top:14px; overflow:hidden; }
   .timer-fill { height:100%; width:100%; background:var(--green); transition:width .1s linear; }
-  .answers { display:grid; grid-template-columns:1fr; gap:10px; }
+  .answers { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .answer { background:var(--card); border:1px solid rgba(255,255,255,0.12); border-radius:12px;
     padding:14px 12px; font-size:.95rem; color:var(--text); cursor:pointer; min-height:58px; line-height:1.35;
     transition:transform .1s,background .15s,border-color .15s; }
@@ -79,11 +79,11 @@
 <div class="app"><div id="app"></div></div>
 <script>
 const I18N = {
-  title: "Китайский: фразы для путешествий",
-  subtitle: "Учим китайский: полезные фразы для путешествий и общения",
+  title: "Испанский: игра со словами",
+  subtitle: "Обучающая игра: испанские слова, темы и уровни",
   all_topics: "Все темы",
-  dir_for: "Направление: китайский → Русский",
-  dir_to: "Направление: Русский → китайский",
+  dir_for: "Направление: испанский → Русский",
+  dir_to: "Направление: Русский → испанский",
   click: "нажмите, чтобы сменить",
   ok: "✅ Верно!",
   streak: "Серия x{n}",
@@ -98,253 +98,308 @@ const I18N = {
   to_menu: "В меню"
 };
 const DATA = {
-    "Знакомство":  [
-                       {
-                           "ru":  "Как вас зовут?",
-                           "tg":  "你叫什么名字？",
-                           "tr":  "nǐ jiào shén me míng zi?"
-                       },
-                       {
-                           "ru":  "Меня зовут…",
-                           "tg":  "我叫……",
-                           "tr":  "wǒ jiào…"
-                       },
-                       {
-                           "ru":  "Очень приятно!",
-                           "tg":  "很高兴认识你！",
-                           "tr":  "hěn gāo xìng rèn shi nǐ"
-                       },
-                       {
-                           "ru":  "Как дела?",
-                           "tg":  "你好吗？",
-                           "tr":  "nǐ hǎo ma"
-                       },
-                       {
-                           "ru":  "Всё хорошо",
-                           "tg":  "一切顺利。",
-                           "tr":  "yī qiè shùn lì"
-                       },
-                       {
-                           "ru":  "Я из России",
-                           "tg":  "我来自俄罗斯。",
-                           "tr":  "wǒ lái zì É luó sī"
-                       },
-                       {
-                           "ru":  "Я учу язык",
-                           "tg":  "我在学中文。",
-                           "tr":  "wǒ zài xué zhōng wén"
-                       },
-                       {
-                           "ru":  "До завтра!",
-                           "tg":  "明天见！",
-                           "tr":  "míng tiān jiàn"
-                       }
-                   ],
-    "Вежливость":  [
-                       {
-                           "ru":  "Большое спасибо!",
-                           "tg":  "非常感谢！",
-                           "tr":  "fēi cháng gǎn xiè"
-                       },
-                       {
-                           "ru":  "Не за что",
-                           "tg":  "不客气。",
-                           "tr":  "bú kè qi"
-                       },
-                       {
-                           "ru":  "Простите!",
-                           "tg":  "对不起！",
-                           "tr":  "duì bu qǐ"
-                       },
-                       {
-                           "ru":  "Добро пожаловать!",
-                           "tg":  "欢迎！",
-                           "tr":  "huān yíng"
-                       },
-                       {
-                           "ru":  "Поздравляю!",
-                           "tg":  "恭喜！",
-                           "tr":  "gōng xǐ"
-                       },
-                       {
-                           "ru":  "Удачи!",
-                           "tg":  "祝你好运！",
-                           "tr":  "zhù nǐ hǎo yùn"
-                       },
-                       {
-                           "ru":  "С удовольствием!",
-                           "tg":  "很乐意！",
-                           "tr":  "hěn lè yì"
-                       },
-                       {
-                           "ru":  "Пожалуйста",
-                           "tg":  "请。",
-                           "tr":  "qǐng"
-                       }
-                   ],
-    "В ресторане":  [
+    "Приветствия":  [
                         {
-                            "ru":  "Я голоден",
-                            "tg":  "我饿了。",
-                            "tr":  "wǒ è le"
+                            "ru":  "Здравствуйте",
+                            "tg":  "Hola",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Я хочу пить",
-                            "tg":  "我渴了。",
-                            "tr":  "wǒ kě le"
+                            "ru":  "Привет",
+                            "tg":  "¿Qué tal?",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Я хочу воды",
-                            "tg":  "我要水。",
-                            "tr":  "wǒ yào shuǐ"
+                            "ru":  "До свидания",
+                            "tg":  "Adiós",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Очень вкусно!",
-                            "tg":  "真好吃！",
-                            "tr":  "zhēn hǎo chī"
+                            "ru":  "Спасибо",
+                            "tg":  "Gracias",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Счёт, пожалуйста",
-                            "tg":  "请买单。",
-                            "tr":  "qǐng mǎi dān"
+                            "ru":  "Пожалуйста",
+                            "tg":  "Por favor",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Меню, пожалуйста",
-                            "tg":  "请给我菜单。",
-                            "tr":  "qǐng gěi wǒ cài dān"
+                            "ru":  "Извините",
+                            "tg":  "Perdón",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Я вегетарианец",
-                            "tg":  "我吃素。",
-                            "tr":  "wǒ chī sù"
+                            "ru":  "Да",
+                            "tg":  "Sí",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Очень остро!",
-                            "tg":  "太辣了！",
-                            "tr":  "tài là le"
+                            "ru":  "Нет",
+                            "tg":  "No",
+                            "tr":  ""
                         },
                         {
-                            "ru":  "Ещё один чай, пожалуйста",
-                            "tg":  "请再来一杯茶。",
-                            "tr":  "qǐng zài lái yì bēi chá"
+                            "ru":  "Как дела?",
+                            "tg":  "¿Cómo estás?",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Доброе утро",
+                            "tg":  "Buenos días",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Добрый вечер",
+                            "tg":  "Buenas tardes",
+                            "tr":  ""
+                        },
+                        {
+                            "ru":  "Доброй ночи",
+                            "tg":  "Buenas noches",
+                            "tr":  ""
                         }
                     ],
-    "В городе":  [
-                     {
-                         "ru":  "Где туалет?",
-                         "tg":  "厕所在哪里？",
-                         "tr":  "cè suǒ zài nǎ li"
-                     },
-                     {
-                         "ru":  "Где вокзал?",
-                         "tg":  "火车站在哪里？",
-                         "tr":  "huǒ chē zhàn zài nǎ li"
-                     },
-                     {
-                         "ru":  "Как пройти на рынок?",
-                         "tg":  "去市场怎么走？",
-                         "tr":  "qù shì chǎng zěn me zǒu"
-                     },
-                     {
-                         "ru":  "Сколько это стоит?",
-                         "tg":  "这个多少钱？",
-                         "tr":  "zhè ge duō shǎo qián"
-                     },
-                     {
-                         "ru":  "Слишком дорого",
-                         "tg":  "太贵了。",
-                         "tr":  "tài guì le"
-                     },
-                     {
-                         "ru":  "Который час?",
-                         "tg":  "现在几点？",
-                         "tr":  "xiàn zài jǐ diǎn"
-                     },
-                     {
-                         "ru":  "Помогите!",
-                         "tg":  "帮帮我！",
-                         "tr":  "bāng bang wǒ"
-                     },
-                     {
-                         "ru":  "Где гостиница?",
-                         "tg":  "酒店在哪里？",
-                         "tr":  "jiǔ diàn zài nǎ li"
-                     }
-                 ],
-    "Общение":  [
-                    {
-                        "ru":  "Я не понимаю",
-                        "tg":  "我不明白。",
-                        "tr":  "wǒ bù míng bai"
-                    },
-                    {
-                        "ru":  "Я не говорю по-языку",
-                        "tg":  "我不会说中文。",
-                        "tr":  "wǒ bú huì shuō zhōng wén"
-                    },
-                    {
-                        "ru":  "Вы говорите на языке?",
-                        "tg":  "你会说中文吗？",
-                        "tr":  "nǐ huì shuō zhōng wén ma"
-                    },
-                    {
-                        "ru":  "Говорите, пожалуйста, медленнее",
-                        "tg":  "请说慢一点。",
-                        "tr":  "qǐng shuō màn yì diǎn"
-                    },
-                    {
-                        "ru":  "Повторите, пожалуйста",
-                        "tg":  "请再说一遍。",
-                        "tr":  "qǐng zài shuō yí biàn"
-                    },
-                    {
-                        "ru":  "Я не знаю",
-                        "tg":  "我不知道。",
-                        "tr":  "wǒ bù zhī dào"
-                    },
-                    {
-                        "ru":  "Конечно",
-                        "tg":  "当然。",
-                        "tr":  "dāng rán"
-                    },
-                    {
-                        "ru":  "Может быть",
-                        "tg":  "也许。",
-                        "tr":  "yě xǔ"
-                    },
-                    {
-                        "ru":  "Я спешу",
-                        "tg":  "我很急。",
-                        "tr":  "wǒ hěn jí"
-                    },
-                    {
-                        "ru":  "Позвоните мне",
-                        "tg":  "给我打电话。",
-                        "tr":  "gěi wǒ dǎ diàn huà"
-                    },
-                    {
-                        "ru":  "Договорились!",
-                        "tg":  "说定了！",
-                        "tr":  "shuō dìng le"
-                    },
-                    {
-                        "ru":  "Мне нравится язык",
-                        "tg":  "我喜欢中文。",
-                        "tr":  "wǒ xǐ huān zhōng wén"
-                    }
-                ]
+    "Числа":  [
+                  {
+                      "ru":  "Один",
+                      "tg":  "uno",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Два",
+                      "tg":  "dos",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Три",
+                      "tg":  "tres",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Четыре",
+                      "tg":  "cuatro",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Пять",
+                      "tg":  "cinco",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Шесть",
+                      "tg":  "seis",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Семь",
+                      "tg":  "siete",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Восемь",
+                      "tg":  "ocho",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Девять",
+                      "tg":  "nueve",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Десять",
+                      "tg":  "diez",
+                      "tr":  ""
+                  }
+              ],
+    "Семья":  [
+                  {
+                      "ru":  "Мама",
+                      "tg":  "Mamá",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Папа",
+                      "tg":  "Papá",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Брат",
+                      "tg":  "Hermano",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Сестра",
+                      "tg":  "Hermana",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Бабушка",
+                      "tg":  "Abuela",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Дедушка",
+                      "tg":  "Abuelo",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Сын",
+                      "tg":  "Hijo",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Дочь",
+                      "tg":  "Hija",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Муж",
+                      "tg":  "Marido",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Жена",
+                      "tg":  "Esposa",
+                      "tr":  ""
+                  },
+                  {
+                      "ru":  "Друг",
+                      "tg":  "Amigo",
+                      "tr":  ""
+                  }
+              ],
+    "Еда":  [
+                {
+                    "ru":  "Хлеб",
+                    "tg":  "Pan",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Рис",
+                    "tg":  "Arroz",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Вода",
+                    "tg":  "Agua",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Чай",
+                    "tg":  "Té",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Молоко",
+                    "tg":  "Leche",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Мясо",
+                    "tg":  "Carne",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Яблоко",
+                    "tg":  "Manzana",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Фрукт",
+                    "tg":  "Fruta",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Овощ",
+                    "tg":  "Verdura",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Сахар",
+                    "tg":  "Azúcar",
+                    "tr":  ""
+                },
+                {
+                    "ru":  "Соль",
+                    "tg":  "Sal",
+                    "tr":  ""
+                }
+            ],
+    "Слова и фразы":  [
+                          {
+                              "ru":  "Я",
+                              "tg":  "Yo",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Ты",
+                              "tg":  "Tú",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Идти",
+                              "tg":  "Ir",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Приходить",
+                              "tg":  "Venir",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Есть (кушать)",
+                              "tg":  "Comer",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Пить",
+                              "tg":  "Beber",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Говорить",
+                              "tg":  "Hablar",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Любить",
+                              "tg":  "Amar",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Хорошо",
+                              "tg":  "Bien",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Плохо",
+                              "tg":  "Mal",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Большой",
+                              "tg":  "Grande",
+                              "tr":  ""
+                          },
+                          {
+                              "ru":  "Маленький",
+                              "tg":  "Pequeño",
+                              "tr":  ""
+                          }
+                      ]
 };
 const LEVELS = [
-  { name:"Уровень 1", desc:"Знакомство и вежливость. Без таймера.", tags:["Знакомство","Вежливость"], questions:10, time:0 },
-  { name:"Уровень 2", desc:"Ресторан и еда. 30 секунд на ответ.", tags:["В ресторане"], questions:9, time:30 },
-  { name:"Уровень 3", desc:"Город и общение. 20 секунд на ответ.", tags:["В городе","Общение"], questions:12, time:20 },
+  { name:"Уровень 1", desc:"Приветствия и счёт. Без таймера.", tags:["Приветствия","Числа"], questions:12, time:0 },
+  { name:"Уровень 2", desc:"Семья и еда. 30 секунд на ответ.", tags:["Семья","Еда"], questions:12, time:30 },
+  { name:"Уровень 3", desc:"Слова и фразы. 20 секунд на ответ.", tags:["Слова и фразы"], questions:12, time:20 },
   { name:"Уровень 4", desc:"Микс (все темы). 25 секунд на ответ.", tags:["Все темы"], questions:16, time:25 }
 ];
 const app = document.getElementById("app");
 let state = null;
 let timerId = null;
-const FOREIGN = "китайский";
-const TTS_LANG = "zh-CN";
+const FOREIGN = "испанский";
+const TTS_LANG = "es";
 
 let audioEl = null;
 function stopAudio() {

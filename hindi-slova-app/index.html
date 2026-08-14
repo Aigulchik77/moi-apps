@@ -153,6 +153,11 @@
   .btn:hover { transform: translateY(-2px); }
   .btn:active { transform: translateY(0); }
   .btn.secondary { background: rgba(255,255,255,0.12); }
+  .spk { display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:9px 16px;
+    border-radius:999px; border:1px solid rgba(255,255,255,0.18); background:var(--card); color:var(--text);
+    font-family:inherit; font-size:.85rem; font-weight:600; cursor:pointer; transition:background .15s; }
+  .spk:hover { background:rgba(255,255,255,0.16); }
+  .spk.speaking { background:var(--accent); color:#fff; }
   .install {
     position: fixed; left: 50%; transform: translateX(-50%); bottom: 16px; z-index: 999;
     display: none; align-items: center; gap: 10px;
@@ -452,6 +457,7 @@ function renderGame() {
       <div class="word-big dev">${toHi ? q.word.hi : q.word[lang]}</div>
       ${toHi ? `<div class="word-tran">${q.word.tr}</div>` : ""}
       <div class="word-topic"><span class="tag">${topicOf(q.word) === "Все темы" ? t("all_topics") : tn(topicOf(q.word))}</span></div>
+      <button id="sayBtn" class="spk" onclick="sayWord()">🔊 Прослушать</button>
       ${lvl.time ? `<div class="timer"><div class="timer-fill" id="timer"></div></div>` : ""}
     </div>
     <div class="answers">`;
@@ -591,5 +597,42 @@ window.addEventListener('appinstalled', function () {
   var b = document.getElementById('installBtn');
   if (b) b.style.display = 'none';
 });
+</script><script>
+let audioEl = null;
+function stopAudio() {
+  if (audioEl) { audioEl.pause(); audioEl = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  var b = document.getElementById('sayBtn'); if (b) b.classList.remove('speaking');
+}
+function tryLocal(lang, text) {
+  if (!('speechSynthesis' in window)) return;
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = lang; u.rate = 0.9;
+  var vs = window.speechSynthesis.getVoices();
+  var v = vs.find(function(x){ return x.lang && x.lang.toLowerCase().indexOf(lang.toLowerCase()) === 0; });
+  if (v) u.voice = v;
+  window.speechSynthesis.speak(u);
+}
+function speak(lang, text) {
+  stopAudio();
+  var b = document.getElementById('sayBtn'); if (b) b.classList.add('speaking');
+  var q = encodeURIComponent(text);
+  audioEl = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0');
+  audioEl.crossOrigin = 'anonymous';
+  var done = function(){ if (b) b.classList.remove('speaking'); };
+  audioEl.onended = done;
+  audioEl.onerror = function(){ done(); tryLocal(lang, text); };
+  audioEl.play().catch(function(){ done(); tryLocal(lang, text); });
+}
+function sayWord() {
+  var s = state; if (!s) return;
+  var w = s.qs[s.qIndex].word;
+  if (s.dir === "hi") speak("hi-IN", w.hi);
+  else { var map = {ru:"ru-RU", en:"en-US", kk:"kk-KZ"}; speak(map[lang] || "ru-RU", w[lang]); }
+}
+(function(){
+  var og = renderGame; renderGame = function(){ stopAudio(); return og.apply(this, arguments); };
+  var or = renderResult; renderResult = function(){ stopAudio(); return or.apply(this, arguments); };
+})();
 </script></body>
 </html>
