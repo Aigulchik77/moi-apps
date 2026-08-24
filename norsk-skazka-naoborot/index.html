@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#dc2626">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Сказка наоборот — норвежский — с озвучкой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#170808;--bg2:#200b0b;--card:#240d0d;--ink:#f5efe4;--ink2:#c3ad8d;
+  --accent:#fca5a5;--accent2:#dc2626;--fg:#fca5a5;
+  --line:rgba(255,255,255,.12);--soft:rgba(255,255,255,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:66ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#1c1005;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(22px,3.4vw,34px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--ink);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft)}
+.spk.big{margin-left:auto;color:var(--accent);border-color:rgba(255,255,255,.25)}
+.spk.alt{width:36px;height:36px;padding:0;justify-content:center;border-radius:50%;color:var(--fg);border-color:rgba(255,255,255,.2)}
+.sent .spk:not(.alt){flex:0 0 auto;margin-top:6px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.sent{display:flex;align-items:flex-start;gap:10px;padding:10px 4px;border-bottom:1px dashed rgba(255,255,255,.07)}
+.sent .spk.speaking,.sent .spk.alt.speaking{background:var(--accent);color:#1c1005;border-color:var(--accent)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-direction:column;gap:0}
+.sent .words{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.w{display:flex;flex-direction:column;gap:2px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:74px}
+.w-t{font-weight:700;font-size:15px;line-height:1.35;color:var(--ink)}
+.w-d{font-size:13px;font-weight:600;color:var(--fg)}
+.fulltext{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:22px 24px;font-size:17px;line-height:1.9;color:var(--ink);margin-bottom:14px}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{.spk{display:none}body{background:#fff;color:#000}.w,.fulltext{background:#fff;border:1px solid #ccc}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1c1005;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Сказка наоборот</span>
+    <h1>Красная Шапочка</h1>
+    <p>Теперь наоборот: читаем по-русски, а под каждым словом — перевод на норвежский. ▶ озвучивает русское предложение, 🔊 — перевод (норвежский).</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang"><div class="lang-head"><span class="lang-n">NO</span><h2>Русский → 🇳🇴 Norsk (Норвежский)</h2><button class="spk big" data-lang="ru" data-text="Однажды маленькая девочка жила в деревне со своей мамой. Бабушка сделала ей красивую красную шапочку. Все называли её Красная Шапочка. Однажды мама сказала: &#171;Отнеси этот пирог и бутылку вина бабушке. Она больна и слаба&#187;. Девочка надела красную шапочку и пошла в лес. В лесу она встретила большого серого волка. Волк спросил: &#171;Куда ты идёшь, маленькая девочка?&#187; &#171;К бабушке домой&#187;, — сказала она. Волк побежал вперёд и прибежал раньше. Он запер бабушку в шкаф и надел её одежду и шапочку. Когда Красная Шапочка пришла, она спросила: &#171;Бабушка, почему у тебя такие большие глаза?&#187; &#171;Чтобы лучше тебя видеть&#187;, — ответил волк. &#171;А уши?&#187; &#171;Чтобы лучше тебя слышать&#187;. &#171;А руки?&#187; &#171;Чтобы лучше тебя обнимать&#187;. &#171;А рот?&#187; &#171;Чтобы тебя съесть!&#187; И волк выпрыгнул из кровати и проглотил девочку. Но мимо проходил охотник. Он услышал храп волка, вошёл, разрезал волку живот и спас бабушку и девочку. И жили они все долго и счастливо.">▶ Озвучить весь текст</button></div><h3 class="sub">Слово за словом · перевод на норвежский</h3><div class="ww">
+<div class="sent"><button class="spk" data-lang="ru" data-text="Однажды маленькая девочка жила в деревне со своей мамой" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Det var en gang en liten jente som bodde i en landsby med moren sin" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Однажды</span><span class="w-d">Det var en gang</span></div><div class="w"><span class="w-t">маленькая девочка</span><span class="w-d">en liten jente</span></div><div class="w"><span class="w-t">жила в деревне со своей мамой</span><span class="w-d">som bodde i en landsby med moren sin</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="Бабушка сделала ей красивую красную шапочку" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Bestemoren hennes laget en fin r&#248;d lue til henne" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Бабушка сделала ей</span><span class="w-d">Bestemoren hennes laget</span></div><div class="w"><span class="w-t">красивую красную шапочку</span><span class="w-d">en fin r&#248;d lue til henne</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="Все называли её Красная Шапочка" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Alle kalte henne Lille R&#248;dhette" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Все называли её</span><span class="w-d">Alle kalte henne</span></div><div class="w"><span class="w-t">Красная Шапочка</span><span class="w-d">Lille R&#248;dhette</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="О E" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="д n" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">О</span><span class="w-d">д</span></div><div class="w"><span class="w-t">E</span><span class="w-d">n</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171;Отнеси этот пирог и бутылку вина бабушке&#187;" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="“Bring denne kaken og denne flasken vin til bestemoren" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;Отнеси этот пирог</span><span class="w-d">“Bring denne kaken</span></div><div class="w"><span class="w-t">и бутылку вина</span><span class="w-d">og denne flasken vin</span></div><div class="w"><span class="w-t">бабушке&#187;</span><span class="w-d">til bestemoren</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="О H" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="н u" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">О</span><span class="w-d">н</span></div><div class="w"><span class="w-t">H</span><span class="w-d">u</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="Девочка надела красную шапочку и пошла в лес" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Jenta tok p&#229; seg den r&#248;de lua og gikk inn i skogen" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Девочка надела красную шапочку</span><span class="w-d">Jenta tok p&#229; seg den r&#248;de lua</span></div><div class="w"><span class="w-t">и пошла в лес</span><span class="w-d">og gikk inn i skogen</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="В лесу она встретила большого серого волка" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="I skogen m&#248;tte hun en stor gr&#229; ulv" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">В лесу</span><span class="w-d">I skogen</span></div><div class="w"><span class="w-t">она встретила большого серого волка</span><span class="w-d">m&#248;tte hun en stor gr&#229; ulv</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="В U" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="о l" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">В</span><span class="w-d">о</span></div><div class="w"><span class="w-t">U</span><span class="w-d">l</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="К H" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">К</span></div><div class="w"><span class="w-t">“</span><span class="w-d">H</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="К T" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">К</span></div><div class="w"><span class="w-t">“</span><span class="w-d">T</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="Волк побежал вперёд и прибежал раньше" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Ulven l&#248;p foran og kom frem tidligere" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Волк побежал вперёд</span><span class="w-d">Ulven l&#248;p foran</span></div><div class="w"><span class="w-t">и прибежал раньше</span><span class="w-d">og kom frem tidligere</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="Он запер бабушку в шкаф и надел её одежду и шапочку" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Han l&#229;ste bestemoren inne i skapet og tok p&#229; seg kl&#230;rne og lua hennes" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Он запер бабушку в шкаф</span><span class="w-d">Han l&#229;ste bestemoren inne i skapet</span></div><div class="w"><span class="w-t">и надел её одежду и шапочку</span><span class="w-d">og tok p&#229; seg kl&#230;rne og lua hennes</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="К D" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="о a" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">К</span><span class="w-d">о</span></div><div class="w"><span class="w-t">D</span><span class="w-d">a</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Б B" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">Б</span></div><div class="w"><span class="w-t">“</span><span class="w-d">B</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Ч F" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">Ч</span></div><div class="w"><span class="w-t">“</span><span class="w-d">F</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="А O" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">А</span></div><div class="w"><span class="w-t">“</span><span class="w-d">O</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Ч F" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">Ч</span></div><div class="w"><span class="w-t">“</span><span class="w-d">F</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="А O" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">А</span></div><div class="w"><span class="w-t">“</span><span class="w-d">O</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Ч F" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">Ч</span></div><div class="w"><span class="w-t">“</span><span class="w-d">F</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="А O" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">А</span></div><div class="w"><span class="w-t">“</span><span class="w-d">O</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="&#171; “" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Ч F" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">&#171;</span><span class="w-d">Ч</span></div><div class="w"><span class="w-t">“</span><span class="w-d">F</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="И волк выпрыгнул из кровати и проглотил девочку" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Og ulven hoppet ut av sengen og svelget jenta" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">И волк выпрыгнул из кровати</span><span class="w-d">Og ulven hoppet ut av sengen</span></div><div class="w"><span class="w-t">и проглотил девочку</span><span class="w-d">og svelget jenta</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="Н M" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="о e" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Н</span><span class="w-d">о</span></div><div class="w"><span class="w-t">M</span><span class="w-d">e</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="Он услышал храп волка, вошёл, разрезал волку живот" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="Han h&#248;rte snorkingen til ulven, gikk inn, skar opp ulvens mage" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">Он услышал храп волка, вошёл,</span><span class="w-d">Han h&#248;rte snorkingen til ulven, gikk inn,</span></div><div class="w"><span class="w-t">разрезал волку живот</span><span class="w-d">skar opp ulvens mage</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="и o" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="  g" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">и</span><span class="w-d"> </span></div><div class="w"><span class="w-t">o</span><span class="w-d">g</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ru" data-text="И O" title="Озвучить русское предложение">▶</button><button class="spk alt" data-lang="no" data-text="  g" title="Озвучить перевод">🔊</button><div class="words"><div class="w"><span class="w-t">И</span><span class="w-d"> </span></div><div class="w"><span class="w-t">O</span><span class="w-d">g</span></div></div></div></div><h3 class="sub">Весь текст по-русски</h3><div class="fulltext">Однажды маленькая девочка жила в деревне со своей мамой. Бабушка сделала ей красивую красную шапочку. Все называли её Красная Шапочка. Однажды мама сказала: &#171;Отнеси этот пирог и бутылку вина бабушке. Она больна и слаба&#187;. Девочка надела красную шапочку и пошла в лес. В лесу она встретила большого серого волка. Волк спросил: &#171;Куда ты идёшь, маленькая девочка?&#187; &#171;К бабушке домой&#187;, — сказала она. Волк побежал вперёд и прибежал раньше. Он запер бабушку в шкаф и надел её одежду и шапочку. Когда Красная Шапочка пришла, она спросила: &#171;Бабушка, почему у тебя такие большие глаза?&#187; &#171;Чтобы лучше тебя видеть&#187;, — ответил волк. &#171;А уши?&#187; &#171;Чтобы лучше тебя слышать&#187;. &#171;А руки?&#187; &#171;Чтобы лучше тебя обнимать&#187;. &#171;А рот?&#187; &#171;Чтобы тебя съесть!&#187; И волк выпрыгнул из кровати и проглотил девочку. Но мимо проходил охотник. Он услышал храп волка, вошёл, разрезал волку живот и спас бабушку и девочку. И жили они все долго и счастливо.</div><h3 class="sub">Перевод целиком (норвежский)</h3><div class="fulltext" style="color:var(--fg)">Det var en gang en liten jente som bodde i en landsby med moren sin. Bestemoren hennes laget en fin r&#248;d lue til henne. Alle kalte henne Lille R&#248;dhette. En dag sa moren: “Bring denne kaken og denne flasken vin til bestemoren. Hun er syk og svak.” Jenta tok p&#229; seg den r&#248;de lua og gikk inn i skogen. I skogen m&#248;tte hun en stor gr&#229; ulv. Ulven spurte: “Hvor skal du hen, lille jente?” “Til bestemors hus”, sa hun. Ulven l&#248;p foran og kom frem tidligere. Han l&#229;ste bestemoren inne i skapet og tok p&#229; seg kl&#230;rne og lua hennes. Da Lille R&#248;dhette kom, spurte hun: “Bestemor, hvorfor har du s&#229; store &#248;yne?” “For at jeg skal se deg bedre”, svarte ulven. “Og &#248;rene dine?” “For at jeg skal h&#248;re deg bedre.” “Og hendene dine?” “For at jeg skal klemme deg bedre.” “Og munnen din?” “For at jeg skal spise deg!” Og ulven hoppet ut av sengen og svelget jenta. Men en jeger gikk forbi huset. Han h&#248;rte snorkingen til ulven, gikk inn, skar opp ulvens mage og reddet bestemoren og jenta. Og de levde alle lykkelig og forn&#248;yde.</div></section>
+</div>
+
+<footer>
+  <div class="wrap">Красная Шапочка · сказка наоборот<br><span>русский → норвежский</span></div>
+</footer>
+
+<script>
+const langToVoice = {"ru": "ru-RU", "no": "nb-NO"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.spk').forEach(btn => {
+  btn.addEventListener('click', () => { speak(btn.dataset.lang, btn.dataset.text, btn); });
+});
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>

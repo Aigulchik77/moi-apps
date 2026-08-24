@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#dc2626">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Красная Шапочка — норвежский с переводом и озвучкой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#170808;--bg2:#200b0b;--card:#240d0d;--card2:#2c1010;
+  --ink:#fdf0ee;--ink2:#cf9a94;--accent:#f87171;--accent2:#dc2626;
+  --gold:#f5c06b;--line:rgba(248,113,113,.18);--soft:rgba(248,113,113,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#2a0806;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.big{margin-left:auto}
+.spk.speaking{background:var(--accent);color:#2a0806;border-color:var(--accent)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-direction:column;gap:0}
+.sent{display:flex;align-items:flex-start;gap:12px;padding:10px 4px;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sent .spk{flex:0 0 auto;margin-top:6px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.sent .words{display:flex;flex-wrap:wrap;gap:8px}
+.w{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:74px}
+.w-t{font-weight:700;font-size:15px;line-height:1.35;color:var(--ink)}
+.w-d{font-size:12px;color:var(--ink2);font-weight:400}
+.fulltext{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 24px;font-size:17px;line-height:1.9;color:var(--ink)}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{.nav,.spk{display:none}body{background:#fff;color:#000}.w{background:#fff;border:1px solid #ccc}.fulltext{background:#fff;border:1px solid #ccc;color:#000}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#2a0806;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Сказка с переводом</span>
+    <h1>Красная Шапочка</h1>
+    <p>Норвежская версия (🇳🇴 Norsk): читаем сказку слово за словом с переводом на русский и озвучкой, затем весь текст целиком. Нажмите ▶, чтобы прослушать. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang no" id="no"><div class="lang-head"><span class="lang-n">NO</span><h2>🇳🇴 Norsk (Норвежский)</h2><button class="spk big" data-lang="no" data-text="Det var en gang en liten jente som bodde i en landsby med moren sin. Bestemoren hennes laget en fin rød lue til henne. Alle kalte henne Lille Rødhette. En dag sa moren: “Bring denne kaken og denne flasken vin til bestemoren. Hun er syk og svak.” Jenta tok på seg den røde lua og gikk inn i skogen. I skogen møtte hun en stor grå ulv. Ulven spurte: “Hvor skal du hen, lille jente?” “Til bestemors hus”, sa hun. Ulven løp foran og kom frem tidligere. Han låste bestemoren inne i skapet og tok på seg klærne og lua hennes. Da Lille Rødhette kom, spurte hun: “Bestemor, hvorfor har du så store øyne?” “For at jeg skal se deg bedre”, svarte ulven. “Og ørene dine?” “For at jeg skal høre deg bedre.” “Og hendene dine?” “For at jeg skal klemme deg bedre.” “Og munnen din?” “For at jeg skal spise deg!” Og ulven hoppet ut av sengen og svelget jenta. Men en jeger gikk forbi huset. Han hørte snorkingen til ulven, gikk inn, skar opp ulvens mage og reddet bestemoren og jenta. Og de levde alle lykkelig og fornøyde.">▶ Озвучить весь текст</button></div><h3 class="sub">Слово за словом · перевод на русский</h3><div class="ww">
+<div class="sent"><button class="spk" data-lang="no" data-text="Det var en gang en liten jente som bodde i en landsby med moren sin Bestemoren hennes laget en fin rød lue til henne" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Det var en gang</span><span class="w-d">жил-был когда-то</span></div><div class="w"><span class="w-t">en liten jente</span><span class="w-d">одна маленькая девочка</span></div><div class="w"><span class="w-t">som bodde i en landsby</span><span class="w-d">которая жила в деревне</span></div><div class="w"><span class="w-t">med moren sin</span><span class="w-d">со своей мамой</span></div><div class="w"><span class="w-t">Bestemoren hennes</span><span class="w-d">её бабушка</span></div><div class="w"><span class="w-t">laget en fin rød lue til henne</span><span class="w-d">сделала ей красивую красную шапочку</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="no" data-text="Alle kalte henne Lille Rødhette En dag sa moren Bring denne kaken og denne flasken vin til bestemoren" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Alle kalte henne</span><span class="w-d">все называли её</span></div><div class="w"><span class="w-t">Lille Rødhette</span><span class="w-d">Красная Шапочка</span></div><div class="w"><span class="w-t">En dag sa moren</span><span class="w-d">однажды мама сказала</span></div><div class="w"><span class="w-t">Bring denne kaken</span><span class="w-d">отнеси этот пирог</span></div><div class="w"><span class="w-t">og denne flasken vin</span><span class="w-d">и эту бутылку вина</span></div><div class="w"><span class="w-t">til bestemoren</span><span class="w-d">бабушке</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="no" data-text="Hun er syk og svak Jenta tok på seg den røde lua og gikk inn i skogen I skogen møtte hun en stor grå ulv Ulven spurte" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Hun er syk og svak</span><span class="w-d">она больна и слаба</span></div><div class="w"><span class="w-t">Jenta tok på seg den røde lua</span><span class="w-d">девочка надела красную шапочку</span></div><div class="w"><span class="w-t">og gikk inn i skogen</span><span class="w-d">и пошла в лес</span></div><div class="w"><span class="w-t">I skogen</span><span class="w-d">в лесу</span></div><div class="w"><span class="w-t">møtte hun en stor grå ulv</span><span class="w-d">она встретила большого серого волка</span></div><div class="w"><span class="w-t">Ulven spurte</span><span class="w-d">волк спросил</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="no" data-text="Hvor skal du hen lille jente Til bestemors hus sa hun Ulven løp foran og kom frem tidligere" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Hvor skal du hen</span><span class="w-d">куда ты идёшь</span></div><div class="w"><span class="w-t">lille jente</span><span class="w-d">маленькая девочка</span></div><div class="w"><span class="w-t">Til bestemors hus</span><span class="w-d">к дому моей бабушки</span></div><div class="w"><span class="w-t">sa hun</span><span class="w-d">сказала она</span></div><div class="w"><span class="w-t">Ulven løp foran</span><span class="w-d">волк побежал вперёд</span></div><div class="w"><span class="w-t">og kom frem tidligere</span><span class="w-d">и пришёл раньше</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="no" data-text="Han låste bestemoren inne i skapet og tok på seg klærne og lua hennes Da Lille Rødhette kom spurte hun Bestemor, hvorfor har du så store øyne" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Han låste bestemoren inne i skapet</span><span class="w-d">он запер бабушку в шкаф</span></div><div class="w"><span class="w-t">og tok på seg klærne og lua hennes</span><span class="w-d">и надел её одежду и шапочку</span></div><div class="w"><span class="w-t">Da Lille Rødhette kom</span><span class="w-d">когда пришла Красная Шапочка</span></div><div class="w"><span class="w-t">spurte hun</span><span class="w-d">она спросила</span></div><div class="w"><span class="w-t">Bestemor, hvorfor har du</span><span class="w-d">бабушка, почему у тебя</span></div><div class="w"><span class="w-t">så store øyne</span><span class="w-d">такие большие глаза</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="no" data-text="For at jeg skal se deg bedre svarte ulven Og ørene dine For at jeg skal høre deg bedre Og hendene dine For at jeg skal klemme deg bedre" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">For at jeg skal se deg bedre</span><span class="w-d">чтобы лучше тебя видеть</span></div><div class="w"><span class="w-t">svarte ulven</span><span class="w-d">ответил волк</span></div><div class="w"><span class="w-t">Og ørene dine</span><span class="w-d">а твои уши</span></div><div class="w"><span class="w-t">For at jeg skal høre deg bedre</span><span class="w-d">чтобы лучше тебя слышать</span></div><div class="w"><span class="w-t">Og hendene dine</span><span class="w-d">а твои руки</span></div><div class="w"><span class="w-t">For at jeg skal klemme deg bedre</span><span class="w-d">чтобы лучше тебя обнимать</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="no" data-text="Og munnen din For at jeg skal spise deg Og ulven hoppet ut av sengen og svelget jenta Men en jeger gikk forbi huset Han hørte snorkingen til ulven" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Og munnen din</span><span class="w-d">а твой рот</span></div><div class="w"><span class="w-t">For at jeg skal spise deg</span><span class="w-d">чтобы тебя съесть</span></div><div class="w"><span class="w-t">Og ulven hoppet ut av sengen</span><span class="w-d">и волк выпрыгнул из кровати</span></div><div class="w"><span class="w-t">og svelget jenta</span><span class="w-d">и проглотил девочку</span></div><div class="w"><span class="w-t">Men en jeger gikk forbi huset</span><span class="w-d">но охотник проходил мимо дома</span></div><div class="w"><span class="w-t">Han hørte snorkingen til ulven</span><span class="w-d">он услышал храп волка</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="no" data-text="gikk inn og skar opp ulvens mage og reddet bestemoren og jenta Og de levde alle lykkelig og fornøyde" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">gikk inn</span><span class="w-d">вошёл внутрь</span></div><div class="w"><span class="w-t">og skar opp ulvens mage</span><span class="w-d">и разрезал волку живот</span></div><div class="w"><span class="w-t">og reddet bestemoren og jenta</span><span class="w-d">и спас бабушку и девочку</span></div><div class="w"><span class="w-t">Og de levde alle lykkelig og fornøyde</span><span class="w-d">и жили они все счастливо и благополучно</span></div></div></div></div><h3 class="sub">Весь текст</h3><div class="fulltext">Det var en gang en liten jente som bodde i en landsby med moren sin. Bestemoren hennes laget en fin rød lue til henne. Alle kalte henne Lille Rødhette. En dag sa moren: “Bring denne kaken og denne flasken vin til bestemoren. Hun er syk og svak.” Jenta tok på seg den røde lua og gikk inn i skogen. I skogen møtte hun en stor grå ulv. Ulven spurte: “Hvor skal du hen, lille jente?” “Til bestemors hus”, sa hun. Ulven løp foran og kom frem tidligere. Han låste bestemoren inne i skapet og tok på seg klærne og lua hennes. Da Lille Rødhette kom, spurte hun: “Bestemor, hvorfor har du så store øyne?” “For at jeg skal se deg bedre”, svarte ulven. “Og ørene dine?” “For at jeg skal høre deg bedre.” “Og hendene dine?” “For at jeg skal klemme deg bedre.” “Og munnen din?” “For at jeg skal spise deg!” Og ulven hoppet ut av sengen og svelget jenta. Men en jeger gikk forbi huset. Han hørte snorkingen til ulven, gikk inn, skar opp ulvens mage og reddet bestemoren og jenta. Og de levde alle lykkelig og fornøyde.</div></section>
+</div>
+
+<footer>
+  <div class="wrap">Красная Шапочка · сказка с переводом слово за словом<br><span>норвежский 🇳🇴</span></div>
+</footer>
+
+<script>
+const langToVoice = {"no": "nb-NO"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.spk').forEach(btn => {
+  btn.addEventListener('click', () => { speak(btn.dataset.lang, btn.dataset.text, btn); });
+});
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>
