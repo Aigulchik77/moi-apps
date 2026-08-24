@@ -1,0 +1,32 @@
+﻿{
+    "description":  "Сказка наоборот — турецкий: русская сказка с переводом и озвучкой",
+    "short_name":  "Наоборот тур.",
+    "background_color":  "#170d05",
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-maskable-512.png"
+                  }
+              ],
+    "lang":  "ru",
+    "orientation":  "portrait",
+    "theme_color":  "#ea580c",
+    "display":  "standalone",
+    "name":  "Сказка наоборот — турецкий",
+    "scope":  "./",
+    "start_url":  "./"
+}

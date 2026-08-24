@@ -1,0 +1,32 @@
+﻿{
+    "description":  "Сказка наоборот — немецкий: русская сказка с переводом и озвучкой",
+    "short_name":  "Наоборот нем.",
+    "background_color":  "#1a1207",
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-maskable-512.png"
+                  }
+              ],
+    "lang":  "ru",
+    "orientation":  "portrait",
+    "theme_color":  "#d97706",
+    "display":  "standalone",
+    "name":  "Сказка наоборот — немецкий",
+    "scope":  "./",
+    "start_url":  "./"
+}
