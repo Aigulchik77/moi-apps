@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#ea580c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Красная Шапочка — турецкий с переводом и озвучкой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#170d05;--bg2:#20130a;--card:#241408;--card2:#2c190b;
+  --ink:#fdf3e7;--ink2:#cfab8b;--accent:#fb923c;--accent2:#ea580c;
+  --gold:#f5c06b;--line:rgba(251,146,60,.18);--soft:rgba(251,146,60,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#2a1204;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.big{margin-left:auto}
+.spk.speaking{background:var(--accent);color:#2a1204;border-color:var(--accent)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-direction:column;gap:0}
+.sent{display:flex;align-items:flex-start;gap:12px;padding:10px 4px;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sent .spk{flex:0 0 auto;margin-top:6px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.sent .words{display:flex;flex-wrap:wrap;gap:8px}
+.w{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:74px}
+.w-t{font-weight:700;font-size:15px;line-height:1.35;color:var(--ink)}
+.w-d{font-size:12px;color:var(--ink2);font-weight:400}
+.fulltext{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 24px;font-size:17px;line-height:1.9;color:var(--ink)}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{.nav,.spk{display:none}body{background:#fff;color:#000}.w{background:#fff;border:1px solid #ccc}.fulltext{background:#fff;border:1px solid #ccc;color:#000}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#2a1204;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Сказка с переводом</span>
+    <h1>Красная Шапочка</h1>
+    <p>Турецкая версия (🇹🇷 Türkçe): читаем сказку слово за словом с переводом на русский и озвучкой, затем весь текст целиком. Нажмите ▶, чтобы прослушать. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang tr" id="tr"><div class="lang-head"><span class="lang-n">TR</span><h2>🇹🇷 Türkçe (Турецкий)</h2><button class="spk big" data-lang="tr" data-text="Bir zamanlar bir köyde annesiyle yaşayan küçük bir kız vardı. Büyükannesi ona güzel kırmızı bir başlık yaptı. Herkes ona Kırmızı Başlıklı Kız dedi. Bir gün annesi şöyle dedi: “Bu pastayı ve şişe şarabı büyükannene götür. O hasta ve zayıf.” Kız kırmızı başlığını taktı ve ormana gitti. Ormanda büyük gri bir kurda rastladı. Kurt sordu: “Nereye gidiyorsun, küçük kız?” “Büyükannemin evine”, diye cevap verdi. Kurt öne koştu ve önce vardı. Büyükanneyi dolaba kilitledi ve onun kıyafetlerini ve başlığını giydi. Kırmızı Başlıklı Kız geldiğinde sordu: “Büyükanne, gözlerin neden böyle büyük?” “Seni daha iyi görmek için”, diye cevap verdi kurt. “Ya kulakların?” “Seni daha iyi duymak için.” “Ya ellerin?” “Seni daha iyi sarılmak için.” “Ya ağzın?” “Seni yemek için!” Ve kurt yataktan fırladı ve kızı yuttu. Ama bir avcı evin önünden geçiyordu. Kurdun horultusunu duydu, içeri girdi, kurdun karnını yardı ve büyükanneyi ve kızı kurtardı. Ve hepsi mutlu yaşadılar.">▶ Озвучить весь текст</button></div><h3 class="sub">Слово за словом · перевод на русский</h3><div class="ww">
+<div class="sent"><button class="spk" data-lang="tr" data-text="Bir zamanlar bir köyde annesiyle yaşayan küçük bir kız vardı Büyükannesi ona güzel kırmızı bir başlık yaptı" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Bir zamanlar</span><span class="w-d">жил-был когда-то</span></div><div class="w"><span class="w-t">bir köyde</span><span class="w-d">в одной деревне</span></div><div class="w"><span class="w-t">annesiyle yaşayan</span><span class="w-d">которая жила со своей мамой</span></div><div class="w"><span class="w-t">küçük bir kız vardı</span><span class="w-d">была маленькая девочка</span></div><div class="w"><span class="w-t">Büyükannesi ona</span><span class="w-d">её бабушка ей</span></div><div class="w"><span class="w-t">güzel kırmızı bir başlık yaptı</span><span class="w-d">сделала красивую красную шапочку</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="Herkes ona Kırmızı Başlıklı Kız dedi Bir gün annesi şöyle dedi Bu pastayı ve şişe şarabı" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Herkes ona</span><span class="w-d">все её</span></div><div class="w"><span class="w-t">Kırmızı Başlıklı Kız dedi</span><span class="w-d">называли Красная Шапочка</span></div><div class="w"><span class="w-t">Bir gün annesi</span><span class="w-d">однажды мама</span></div><div class="w"><span class="w-t">şöyle dedi</span><span class="w-d">сказала</span></div><div class="w"><span class="w-t">Bu pastayı</span><span class="w-d">этот пирог</span></div><div class="w"><span class="w-t">ve şişe şarabı</span><span class="w-d">и бутылку вина</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="büyükannene götür O hasta ve zayıf Kız kırmızı başlığını taktı ve ormana gitti Ormanda büyük gri bir kurda rastladı" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">büyükannene götür</span><span class="w-d">отнеси бабушке</span></div><div class="w"><span class="w-t">O hasta ve zayıf</span><span class="w-d">она больна и слаба</span></div><div class="w"><span class="w-t">Kız kırmızı başlığını taktı</span><span class="w-d">девочка надела красную шапочку</span></div><div class="w"><span class="w-t">ve ormana gitti</span><span class="w-d">и пошла в лес</span></div><div class="w"><span class="w-t">Ormanda</span><span class="w-d">в лесу</span></div><div class="w"><span class="w-t">büyük gri bir kurda rastladı</span><span class="w-d">она встретила большого серого волка</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="Kurt sordu Nereye gidiyorsun küçük kız Büyükannemin evine diye cevap verdi Kurt öne koştu" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Kurt sordu</span><span class="w-d">волк спросил</span></div><div class="w"><span class="w-t">Nereye gidiyorsun</span><span class="w-d">куда ты идёшь</span></div><div class="w"><span class="w-t">küçük kız</span><span class="w-d">маленькая девочка</span></div><div class="w"><span class="w-t">Büyükannemin evine</span><span class="w-d">к дому моей бабушки</span></div><div class="w"><span class="w-t">diye cevap verdi</span><span class="w-d">сказала она</span></div><div class="w"><span class="w-t">Kurt öne koştu</span><span class="w-d">волк побежал вперёд</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="ve önce vardı Büyükanneyi dolaba kilitledi ve onun kıyafetlerini ve başlığını giydi Kırmızı Başlıklı Kız geldiğinde sordu" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">ve önce vardı</span><span class="w-d">и пришёл раньше</span></div><div class="w"><span class="w-t">Büyükanneyi dolaba kilitledi</span><span class="w-d">он запер бабушку в шкаф</span></div><div class="w"><span class="w-t">ve onun kıyafetlerini</span><span class="w-d">и её одежду</span></div><div class="w"><span class="w-t">ve başlığını giydi</span><span class="w-d">и шапочку надел</span></div><div class="w"><span class="w-t">Kırmızı Başlıklı Kız geldiğinde</span><span class="w-d">когда пришла Красная Шапочка</span></div><div class="w"><span class="w-t">sordu</span><span class="w-d">она спросила</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="Büyükanne, gözlerin neden böyle büyük Seni daha iyi görmek için diye cevap verdi kurt Ya kulakların Seni daha iyi duymak için" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Büyükanne, gözlerin</span><span class="w-d">бабушка, твои глаза</span></div><div class="w"><span class="w-t">neden böyle büyük</span><span class="w-d">почему такие большие</span></div><div class="w"><span class="w-t">Seni daha iyi görmek için</span><span class="w-d">чтобы лучше тебя видеть</span></div><div class="w"><span class="w-t">diye cevap verdi kurt</span><span class="w-d">ответил волк</span></div><div class="w"><span class="w-t">Ya kulakların</span><span class="w-d">а твои уши</span></div><div class="w"><span class="w-t">Seni daha iyi duymak için</span><span class="w-d">чтобы лучше тебя слышать</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="Ya ellerin Seni daha iyi sarılmak için Ya ağzın Seni yemek için Ve kurt yataktan fırladı ve kızı yuttu" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Ya ellerin</span><span class="w-d">а твои руки</span></div><div class="w"><span class="w-t">Seni daha iyi sarılmak için</span><span class="w-d">чтобы лучше тебя обнимать</span></div><div class="w"><span class="w-t">Ya ağzın</span><span class="w-d">а твой рот</span></div><div class="w"><span class="w-t">Seni yemek için</span><span class="w-d">чтобы тебя съесть</span></div><div class="w"><span class="w-t">Ve kurt yataktan fırladı</span><span class="w-d">и волк выпрыгнул из кровати</span></div><div class="w"><span class="w-t">ve kızı yuttu</span><span class="w-d">и проглотил девочку</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="Ama bir avcı evin önünden geçiyordu Kurdun horultusunu duydu içeri girdi kurdun karnını yardı ve büyükanneyi ve kızı kurtardı" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Ama bir avcı</span><span class="w-d">но охотник</span></div><div class="w"><span class="w-t">evin önünden geçiyordu</span><span class="w-d">проходил мимо дома</span></div><div class="w"><span class="w-t">Kurdun horultusunu duydu</span><span class="w-d">он услышал храп волка</span></div><div class="w"><span class="w-t">içeri girdi</span><span class="w-d">вошёл внутрь</span></div><div class="w"><span class="w-t">kurdun karnını yardı</span><span class="w-d">разрезал волку живот</span></div><div class="w"><span class="w-t">ve büyükanneyi ve kızı kurtardı</span><span class="w-d">и спас бабушку и девочку</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="tr" data-text="Ve hepsi mutlu yaşadılar" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Ve hepsi mutlu yaşadılar</span><span class="w-d">и жили они все счастливо</span></div></div></div></div><h3 class="sub">Весь текст</h3><div class="fulltext">Bir zamanlar bir köyde annesiyle yaşayan küçük bir kız vardı. Büyükannesi ona güzel kırmızı bir başlık yaptı. Herkes ona Kırmızı Başlıklı Kız dedi. Bir gün annesi şöyle dedi: “Bu pastayı ve şişe şarabı büyükannene götür. O hasta ve zayıf.” Kız kırmızı başlığını taktı ve ormana gitti. Ormanda büyük gri bir kurda rastladı. Kurt sordu: “Nereye gidiyorsun, küçük kız?” “Büyükannemin evine”, diye cevap verdi. Kurt öne koştu ve önce vardı. Büyükanneyi dolaba kilitledi ve onun kıyafetlerini ve başlığını giydi. Kırmızı Başlıklı Kız geldiğinde sordu: “Büyükanne, gözlerin neden böyle büyük?” “Seni daha iyi görmek için”, diye cevap verdi kurt. “Ya kulakların?” “Seni daha iyi duymak için.” “Ya ellerin?” “Seni daha iyi sarılmak için.” “Ya ağzın?” “Seni yemek için!” Ve kurt yataktan fırladı ve kızı yuttu. Ama bir avcı evin önünden geçiyordu. Kurdun horultusunu duydu, içeri girdi, kurdun karnını yardı ve büyükanneyi ve kızı kurtardı. Ve hepsi mutlu yaşadılar.</div></section>
+</div>
+
+<footer>
+  <div class="wrap">Красная Шапочка · сказка с переводом слово за словом<br><span>турецкий 🇹🇷</span></div>
+</footer>
+
+<script>
+const langToVoice = {"tr": "tr-TR"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.spk').forEach(btn => {
+  btn.addEventListener('click', () => { speak(btn.dataset.lang, btn.dataset.text, btn); });
+});
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>
