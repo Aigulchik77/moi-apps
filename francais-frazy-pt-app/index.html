@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Фразы для общения: француз с португальцами</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#0a1220;--bg2:#0e1729;--card:#101a2e;--card2:#132036;
+  --ink:#eef2fb;--ink2:#a9b6d1;--accent:#60a5fa;--accent2:#2563eb;
+  --gold:#f5c06b;--line:rgba(96,165,250,.18);--soft:rgba(96,165,250,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#081226;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.speaking{background:var(--accent);color:#081226;border-color:var(--accent)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.sent{display:flex;align-items:flex-start;gap:12px;padding:12px 4px;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sent .spk{flex:0 0 auto;margin-top:4px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.spk.alt{background:var(--soft);border-color:var(--line)}
+.pbody{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.p-fr{font-weight:700;font-size:16px;line-height:1.4}
+.p-tr{color:var(--ink2);font-size:14px}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{body{background:#fff;color:#000}.spk{display:none}.sent{border-color:#ddd}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#081226;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Фразы для общения</span>
+    <h1>Фразы для общения: француз с португальцами</h1>
+    <p>Французская фраза и перевод, чтобы общаться с португальцами. ▶ озвучивает фразу по-французски, 🔊 — перевод. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang"><div class="lang-head"><span class="lang-n">FR</span><h2>Фразы · Français ↔ Português</h2></div><div class="rows">
+<div class="sent"><button class="spk" data-lang="fr" data-text="Bonjour !" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Bonjour !</div><div class="p-tr">Bom dia !</div></div><button class="spk alt" data-lang="pt" data-text="Bom dia !" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Bonsoir !" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Bonsoir !</div><div class="p-tr">Boa tarde !</div></div><button class="spk alt" data-lang="pt" data-text="Boa tarde !" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Salut !" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Salut !</div><div class="p-tr">Olá !</div></div><button class="spk alt" data-lang="pt" data-text="Olá !" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Comment ça va ?" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Comment ça va ?</div><div class="p-tr">Como está ?</div></div><button class="spk alt" data-lang="pt" data-text="Como está ?" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Ça va bien, merci." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Ça va bien, merci.</div><div class="p-tr">Estou bem, obrigado.</div></div><button class="spk alt" data-lang="pt" data-text="Estou bem, obrigado." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Comment tu t'appelles ?" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Comment tu t'appelles ?</div><div class="p-tr">Como te chamas ?</div></div><button class="spk alt" data-lang="pt" data-text="Como te chamas ?" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Je m'appelle..." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Je m'appelle...</div><div class="p-tr">Chamo-me...</div></div><button class="spk alt" data-lang="pt" data-text="Chamo-me..." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Enchanté." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Enchanté.</div><div class="p-tr">Muito prazer.</div></div><button class="spk alt" data-lang="pt" data-text="Muito prazer." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Merci beaucoup." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Merci beaucoup.</div><div class="p-tr">Muito obrigado.</div></div><button class="spk alt" data-lang="pt" data-text="Muito obrigado." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="S'il vous plaît." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">S'il vous plaît.</div><div class="p-tr">Por favor.</div></div><button class="spk alt" data-lang="pt" data-text="Por favor." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Excusez-moi." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Excusez-moi.</div><div class="p-tr">Desculpe.</div></div><button class="spk alt" data-lang="pt" data-text="Desculpe." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Je suis désolé." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Je suis désolé.</div><div class="p-tr">Peço desculpa.</div></div><button class="spk alt" data-lang="pt" data-text="Peço desculpa." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Parlez-vous portugais ?" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Parlez-vous portugais ?</div><div class="p-tr">Fala português ?</div></div><button class="spk alt" data-lang="pt" data-text="Fala português ?" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Je ne comprends pas." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Je ne comprends pas.</div><div class="p-tr">Não percebo.</div></div><button class="spk alt" data-lang="pt" data-text="Não percebo." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Pouvez-vous répéter, s'il vous plaît ?" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Pouvez-vous répéter, s'il vous plaît ?</div><div class="p-tr">Pode repetir, se faz favor ?</div></div><button class="spk alt" data-lang="pt" data-text="Pode repetir, se faz favor ?" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Parlez plus lentement." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Parlez plus lentement.</div><div class="p-tr">Fale mais devagar.</div></div><button class="spk alt" data-lang="pt" data-text="Fale mais devagar." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Où est la gare ?" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Où est la gare ?</div><div class="p-tr">Onde fica a estação ?</div></div><button class="spk alt" data-lang="pt" data-text="Onde fica a estação ?" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Combien ça coûte ?" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Combien ça coûte ?</div><div class="p-tr">Quanto custa ?</div></div><button class="spk alt" data-lang="pt" data-text="Quanto custa ?" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Je ne parle pas très bien portugais." title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Je ne parle pas très bien portugais.</div><div class="p-tr">Não falo muito bem português.</div></div><button class="spk alt" data-lang="pt" data-text="Não falo muito bem português." title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="À bientôt !" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">À bientôt !</div><div class="p-tr">Até já !</div></div><button class="spk alt" data-lang="pt" data-text="Até já !" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Au revoir !" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">Au revoir !</div><div class="p-tr">Adeus !</div></div><button class="spk alt" data-lang="pt" data-text="Adeus !" title="Озвучить перевод">🔊</button></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="À demain !" title="Озвучить по-французски">▶</button><div class="pbody"><div class="p-fr">À demain !</div><div class="p-tr">Até amanhã !</div></div><button class="spk alt" data-lang="pt" data-text="Até amanhã !" title="Озвучить перевод">🔊</button></div></div></section>
+</div>
+
+<footer>
+  <div class="wrap">Фразы для общения · Français ↔ 🇵🇹<br><span>французский 🇫🇷</span></div>
+</footer>
+
+<script>
+const langToVoice = {"fr": "fr-FR", "pt": "pt"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.spk').forEach(btn => {
+  btn.addEventListener('click', () => { speak(btn.dataset.lang, btn.dataset.text, btn); });
+});
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>
