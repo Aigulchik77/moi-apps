@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Красная Шапочка — французский с переводом и озвучкой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#0a1220;--bg2:#0e1729;--card:#101a2e;--card2:#132036;
+  --ink:#eef2fb;--ink2:#a9b6d1;--accent:#60a5fa;--accent2:#2563eb;
+  --gold:#f5c06b;--line:rgba(96,165,250,.18);--soft:rgba(96,165,250,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#081226;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.big{margin-left:auto}
+.spk.speaking{background:var(--accent);color:#081226;border-color:var(--accent)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-direction:column;gap:0}
+.sent{display:flex;align-items:flex-start;gap:12px;padding:10px 4px;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sent .spk{flex:0 0 auto;margin-top:6px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.sent .words{display:flex;flex-wrap:wrap;gap:8px}
+.w{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:74px}
+.w-t{font-weight:700;font-size:15px;line-height:1.35;color:var(--ink)}
+.w-d{font-size:12px;color:var(--ink2);font-weight:400}
+.fulltext{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 24px;font-size:17px;line-height:1.9;color:var(--ink)}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{.nav,.spk{display:none}body{background:#fff;color:#000}.w{background:#fff;border:1px solid #ccc}.fulltext{background:#fff;border:1px solid #ccc;color:#000}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#081226;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Сказка с переводом</span>
+    <h1>Красная Шапочка</h1>
+    <p>Французская версия (🇫🇷 Français): читаем сказку слово за словом с переводом на русский и озвучкой, затем весь текст целиком. Нажмите ▶, чтобы прослушать. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang fr" id="fr"><div class="lang-head"><span class="lang-n">FR</span><h2>🇫🇷 Français (Французский)</h2><button class="spk big" data-lang="fr" data-text="Il était une fois une petite fille qui vivait dans un village avec sa mère. Sa grand-mère lui fit un joli petit chaperon rouge. Tout le monde l'appelait le Petit Chaperon rouge. Un jour, sa mère dit: «Apporte ce gâteau et cette bouteille de vin à ta grand-mère. Elle est malade et faible.» La fille mit son chaperon rouge et alla dans la forêt. Dans la forêt, elle rencontra un grand loup gris. Le loup demanda: «Où vas-tu, petite fille?» «Chez ma grand-mère», dit-elle. Le loup courut devant et arriva plus tôt. Il enferma la grand-mère dans le placard et mit ses vêtements et son chaperon. Quand le Petit Chaperon rouge arriva, elle demanda: «Grand-mère, pourquoi as-tu de si grands yeux?» «Pour mieux te voir», répondit le loup. «Et tes oreilles?» «Pour mieux t'entendre.» «Et tes mains?» «Pour mieux t'embrasser.» «Et ta bouche?» «Pour te manger!» Et le loup sauta du lit et avala la fille. Mais un chasseur passait devant la maison. Il entendit le ronflement du loup, entra, ouvrit le ventre du loup et sauva la grand-mère et la fille. Et ils vécurent tous heureux et contents.">▶ Озвучить весь текст</button></div><h3 class="sub">Слово за словом · перевод на русский</h3><div class="ww">
+<div class="sent"><button class="spk" data-lang="fr" data-text="Il était une fois une petite fille qui vivait dans un village avec sa mère Sa grand-mère lui fit un joli petit chaperon rouge" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Il était une fois</span><span class="w-d">жил-был когда-то</span></div><div class="w"><span class="w-t">une petite fille</span><span class="w-d">одна маленькая девочка</span></div><div class="w"><span class="w-t">qui vivait dans un village</span><span class="w-d">которая жила в деревне</span></div><div class="w"><span class="w-t">avec sa mère</span><span class="w-d">со своей мамой</span></div><div class="w"><span class="w-t">Sa grand-mère lui fit</span><span class="w-d">её бабушка сделала ей</span></div><div class="w"><span class="w-t">un joli petit chaperon rouge</span><span class="w-d">красивую красную шапочку</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Tout le monde l'appelait le Petit Chaperon rouge Un jour, sa mère dit Apporte ce gâteau et cette bouteille de vin à ta grand-mère" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Tout le monde l'appelait</span><span class="w-d">все называли её</span></div><div class="w"><span class="w-t">le Petit Chaperon rouge</span><span class="w-d">Красная Шапочка</span></div><div class="w"><span class="w-t">Un jour, sa mère dit</span><span class="w-d">однажды мама сказала</span></div><div class="w"><span class="w-t">Apporte ce gâteau</span><span class="w-d">отнеси этот пирог</span></div><div class="w"><span class="w-t">et cette bouteille de vin</span><span class="w-d">и эту бутылку вина</span></div><div class="w"><span class="w-t">à ta grand-mère</span><span class="w-d">бабушке</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Elle est malade et faible La fille mit son chaperon rouge et alla dans la forêt Dans la forêt elle rencontra un grand loup gris Le loup demanda" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Elle est malade et faible</span><span class="w-d">она больна и слаба</span></div><div class="w"><span class="w-t">La fille mit son chaperon rouge</span><span class="w-d">девочка надела красную шапочку</span></div><div class="w"><span class="w-t">et alla dans la forêt</span><span class="w-d">и пошла в лес</span></div><div class="w"><span class="w-t">Dans la forêt</span><span class="w-d">в лесу</span></div><div class="w"><span class="w-t">elle rencontra un grand loup gris</span><span class="w-d">она встретила большого серого волка</span></div><div class="w"><span class="w-t">Le loup demanda</span><span class="w-d">волк спросил</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Où vas-tu petite fille Chez ma grand-mère dit-elle Le loup courut devant et arriva plus tôt" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Où vas-tu</span><span class="w-d">куда ты идёшь</span></div><div class="w"><span class="w-t">petite fille</span><span class="w-d">маленькая девочка</span></div><div class="w"><span class="w-t">Chez ma grand-mère</span><span class="w-d">к бабушке домой</span></div><div class="w"><span class="w-t">dit-elle</span><span class="w-d">сказала она</span></div><div class="w"><span class="w-t">Le loup courut devant</span><span class="w-d">волк побежал вперёд</span></div><div class="w"><span class="w-t">et arriva plus tôt</span><span class="w-d">и пришёл раньше</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Il enferma la grand-mère dans le placard et mit ses vêtements et son chaperon Quand le Petit Chaperon rouge arriva elle demanda Grand-mère, pourquoi as-tu de si grands yeux" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Il enferma la grand-mère dans le placard</span><span class="w-d">он запер бабушку в шкаф</span></div><div class="w"><span class="w-t">et mit ses vêtements et son chaperon</span><span class="w-d">и надел её одежду и шапочку</span></div><div class="w"><span class="w-t">Quand le Petit Chaperon rouge arriva</span><span class="w-d">когда пришла Красная Шапочка</span></div><div class="w"><span class="w-t">elle demanda</span><span class="w-d">она спросила</span></div><div class="w"><span class="w-t">Grand-mère, pourquoi as-tu</span><span class="w-d">бабушка, почему у тебя</span></div><div class="w"><span class="w-t">de si grands yeux</span><span class="w-d">такие большие глаза</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Pour mieux te voir répondit le loup Et tes oreilles Pour mieux t'entendre Et tes mains Pour mieux t'embrasser" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Pour mieux te voir</span><span class="w-d">чтобы лучше тебя видеть</span></div><div class="w"><span class="w-t">répondit le loup</span><span class="w-d">ответил волк</span></div><div class="w"><span class="w-t">Et tes oreilles</span><span class="w-d">а твои уши</span></div><div class="w"><span class="w-t">Pour mieux t'entendre</span><span class="w-d">чтобы лучше тебя слышать</span></div><div class="w"><span class="w-t">Et tes mains</span><span class="w-d">а твои руки</span></div><div class="w"><span class="w-t">Pour mieux t'embrasser</span><span class="w-d">чтобы лучше тебя обнимать</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="Et ta bouche Pour te manger Et le loup sauta du lit et avala la fille Mais un chasseur passait devant la maison Il entendit le ronflement du loup" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">Et ta bouche</span><span class="w-d">а твой рот</span></div><div class="w"><span class="w-t">Pour te manger</span><span class="w-d">чтобы тебя съесть</span></div><div class="w"><span class="w-t">Et le loup sauta du lit</span><span class="w-d">и волк выпрыгнул из кровати</span></div><div class="w"><span class="w-t">et avala la fille</span><span class="w-d">и проглотил девочку</span></div><div class="w"><span class="w-t">Mais un chasseur passait devant la maison</span><span class="w-d">но охотник проходил мимо дома</span></div><div class="w"><span class="w-t">Il entendit le ronflement du loup</span><span class="w-d">он услышал храп волка</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="fr" data-text="entra ouvrit le ventre du loup et sauva la grand-mère et la fille Et ils vécurent tous heureux et contents" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">entra</span><span class="w-d">вошёл внутрь</span></div><div class="w"><span class="w-t">ouvrit le ventre du loup</span><span class="w-d">разрезал волку живот</span></div><div class="w"><span class="w-t">et sauva la grand-mère et la fille</span><span class="w-d">и спас бабушку и девочку</span></div><div class="w"><span class="w-t">Et ils vécurent tous heureux et contents</span><span class="w-d">и жили они все счастливо и благополучно</span></div></div></div></div><h3 class="sub">Весь текст</h3><div class="fulltext">Il était une fois une petite fille qui vivait dans un village avec sa mère. Sa grand-mère lui fit un joli petit chaperon rouge. Tout le monde l'appelait le Petit Chaperon rouge. Un jour, sa mère dit: «Apporte ce gâteau et cette bouteille de vin à ta grand-mère. Elle est malade et faible.» La fille mit son chaperon rouge et alla dans la forêt. Dans la forêt, elle rencontra un grand loup gris. Le loup demanda: «Où vas-tu, petite fille?» «Chez ma grand-mère», dit-elle. Le loup courut devant et arriva plus tôt. Il enferma la grand-mère dans le placard et mit ses vêtements et son chaperon. Quand le Petit Chaperon rouge arriva, elle demanda: «Grand-mère, pourquoi as-tu de si grands yeux?» «Pour mieux te voir», répondit le loup. «Et tes oreilles?» «Pour mieux t'entendre.» «Et tes mains?» «Pour mieux t'embrasser.» «Et ta bouche?» «Pour te manger!» Et le loup sauta du lit et avala la fille. Mais un chasseur passait devant la maison. Il entendit le ronflement du loup, entra, ouvrit le ventre du loup et sauva la grand-mère et la fille. Et ils vécurent tous heureux et contents.</div></section>
+</div>
+
+<footer>
+  <div class="wrap">Красная Шапочка · сказка с переводом слово за словом<br><span>французский 🇫🇷</span></div>
+</footer>
+
+<script>
+const langToVoice = {"fr": "fr-FR"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.spk').forEach(btn => {
+  btn.addEventListener('click', () => { speak(btn.dataset.lang, btn.dataset.text, btn); });
+});
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>

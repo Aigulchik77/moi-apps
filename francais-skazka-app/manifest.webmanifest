@@ -1,0 +1,32 @@
+﻿{
+    "description":  "Сказка на французском с переводом на русский и озвучкой",
+    "short_name":  "Сказка фр.",
+    "background_color":  "#0a1220",
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-maskable-512.png"
+                  }
+              ],
+    "lang":  "ru",
+    "orientation":  "portrait",
+    "theme_color":  "#1d4ed8",
+    "display":  "standalone",
+    "name":  "Красная Шапочка — французский",
+    "scope":  "./",
+    "start_url":  "./"
+}
