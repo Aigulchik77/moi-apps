@@ -1,0 +1,32 @@
+﻿{
+    "description":  "Русский алфавит с французским произношением, примерами и озвучкой, числа от 1 до 10 и десятки",
+    "short_name":  "Алфавит RU",
+    "background_color":  "#0a1220",
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-maskable-512.png"
+                  }
+              ],
+    "lang":  "ru",
+    "orientation":  "portrait",
+    "theme_color":  "#1d4ed8",
+    "display":  "standalone",
+    "name":  "Русский алфавит — пояснение по-французски",
+    "scope":  "./",
+    "start_url":  "./"
+}

@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Русский алфавит с пояснением по-французски</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#0a1220;--bg2:#0e1729;--card:#101a2e;--card2:#132036;
+  --ink:#eef2fb;--ink2:#a9b6d1;--accent:#60a5fa;--accent2:#2563eb;
+  --gold:#f5c06b;--line:rgba(96,165,250,.18);--soft:rgba(96,165,250,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#081226;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-wrap:wrap;gap:10px}
+.w{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;transition:border-color .15s,background .15s}
+.w:hover{border-color:var(--accent)}
+.w.speaking{background:var(--soft);border-color:var(--accent)}
+.al{flex-direction:column;align-items:flex-start;gap:4px;min-width:150px;flex:1 1 150px}
+.w-l{font-family:'Playfair Display',serif;font-size:34px;font-weight:600;line-height:1}
+.w-p{color:var(--gold);font-size:13px;font-weight:600}
+.w-ex{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.w-ex .w-t{font-weight:700;font-size:15px;color:var(--ink)}
+.w-ex .w-d{font-size:12px;color:var(--ink2);font-style:italic}
+.num{flex-direction:row}
+.w-dgt{font-size:18px;font-weight:800;color:var(--accent);min-width:34px}
+.num .w-t{font-weight:700;font-size:16px}
+.num .w-d{font-size:13px;color:var(--ink2)}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{body{background:#fff;color:#000}.w{background:#fff;border:1px solid #ccc}.ww{gap:4px}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#081226;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Азбука · по-французски</span>
+    <h1>Русский алфавит</h1>
+    <p>33 буквы: как произносится по-французски, пример с переводом. Числа от 1 до 10 и десятки. Нажмите на карточку — слово озвучится. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang"><div class="lang-head"><span class="lang-n">RU</span><h2>🇷🇺 Русский алфавит</h2></div><h3 class="sub">Алфавит · А – Я</h3><div class="ww"><div class="w al" data-text="а"><span class="w-l">А</span><span class="w-p">[a]</span><div class="w-ex"><span class="w-t">арбуз</span><span class="w-d">pastèque</span></div></div>
+<div class="w al" data-text="бэ"><span class="w-l">Б</span><span class="w-p">[b]</span><div class="w-ex"><span class="w-t">банан</span><span class="w-d">banane</span></div></div>
+<div class="w al" data-text="вэ"><span class="w-l">В</span><span class="w-p">[v]</span><div class="w-ex"><span class="w-t">вода</span><span class="w-d">eau</span></div></div>
+<div class="w al" data-text="гэ"><span class="w-l">Г</span><span class="w-p">[g]</span><div class="w-ex"><span class="w-t">город</span><span class="w-d">ville</span></div></div>
+<div class="w al" data-text="дэ"><span class="w-l">Д</span><span class="w-p">[d]</span><div class="w-ex"><span class="w-t">дом</span><span class="w-d">maison</span></div></div>
+<div class="w al" data-text="е"><span class="w-l">Е</span><span class="w-p">[ié]</span><div class="w-ex"><span class="w-t">ель</span><span class="w-d">sapin</span></div></div>
+<div class="w al" data-text="ё"><span class="w-l">Ё</span><span class="w-p">[io]</span><div class="w-ex"><span class="w-t">ёж</span><span class="w-d">hérisson</span></div></div>
+<div class="w al" data-text="жэ"><span class="w-l">Ж</span><span class="w-p">[j] comme je</span><div class="w-ex"><span class="w-t">жук</span><span class="w-d">scarabée</span></div></div>
+<div class="w al" data-text="зэ"><span class="w-l">З</span><span class="w-p">[z]</span><div class="w-ex"><span class="w-t">зонт</span><span class="w-d">parapluie</span></div></div>
+<div class="w al" data-text="и"><span class="w-l">И</span><span class="w-p">[i]</span><div class="w-ex"><span class="w-t">игра</span><span class="w-d">jeu</span></div></div>
+<div class="w al" data-text="и краткое"><span class="w-l">Й</span><span class="w-p">[ï]</span><div class="w-ex"><span class="w-t">йогурт</span><span class="w-d">yaourt</span></div></div>
+<div class="w al" data-text="ка"><span class="w-l">К</span><span class="w-p">[k]</span><div class="w-ex"><span class="w-t">кот</span><span class="w-d">chat</span></div></div>
+<div class="w al" data-text="эль"><span class="w-l">Л</span><span class="w-p">[l]</span><div class="w-ex"><span class="w-t">лиса</span><span class="w-d">renard</span></div></div>
+<div class="w al" data-text="эм"><span class="w-l">М</span><span class="w-p">[m]</span><div class="w-ex"><span class="w-t">молоко</span><span class="w-d">lait</span></div></div>
+<div class="w al" data-text="эн"><span class="w-l">Н</span><span class="w-p">[n]</span><div class="w-ex"><span class="w-t">нос</span><span class="w-d">nez</span></div></div>
+<div class="w al" data-text="о"><span class="w-l">О</span><span class="w-p">[o]</span><div class="w-ex"><span class="w-t">окно</span><span class="w-d">fenêtre</span></div></div>
+<div class="w al" data-text="пэ"><span class="w-l">П</span><span class="w-p">[p]</span><div class="w-ex"><span class="w-t">папа</span><span class="w-d">papa</span></div></div>
+<div class="w al" data-text="эр"><span class="w-l">Р</span><span class="w-p">[r] roulé</span><div class="w-ex"><span class="w-t">рыба</span><span class="w-d">poisson</span></div></div>
+<div class="w al" data-text="эс"><span class="w-l">С</span><span class="w-p">[s]</span><div class="w-ex"><span class="w-t">солнце</span><span class="w-d">soleil</span></div></div>
+<div class="w al" data-text="тэ"><span class="w-l">Т</span><span class="w-p">[t]</span><div class="w-ex"><span class="w-t">телефон</span><span class="w-d">téléphone</span></div></div>
+<div class="w al" data-text="у"><span class="w-l">У</span><span class="w-p">[ou]</span><div class="w-ex"><span class="w-t">утро</span><span class="w-d">matin</span></div></div>
+<div class="w al" data-text="эф"><span class="w-l">Ф</span><span class="w-p">[f]</span><div class="w-ex"><span class="w-t">фрукты</span><span class="w-d">fruits</span></div></div>
+<div class="w al" data-text="ха"><span class="w-l">Х</span><span class="w-p">[kh]</span><div class="w-ex"><span class="w-t">хлеб</span><span class="w-d">pain</span></div></div>
+<div class="w al" data-text="цэ"><span class="w-l">Ц</span><span class="w-p">[ts]</span><div class="w-ex"><span class="w-t">цветок</span><span class="w-d">fleur</span></div></div>
+<div class="w al" data-text="че"><span class="w-l">Ч</span><span class="w-p">[tch]</span><div class="w-ex"><span class="w-t">чай</span><span class="w-d">thé</span></div></div>
+<div class="w al" data-text="ша"><span class="w-l">Ш</span><span class="w-p">[ch]</span><div class="w-ex"><span class="w-t">шапка</span><span class="w-d">chapeau</span></div></div>
+<div class="w al" data-text="ща"><span class="w-l">Щ</span><span class="w-p">[chtch]</span><div class="w-ex"><span class="w-t">щука</span><span class="w-d">brochet</span></div></div>
+<div class="w al" data-text="твёрдый знак"><span class="w-l">Ъ</span><span class="w-p">—</span><div class="w-ex"><span class="w-t">подъезд</span><span class="w-d">entrée</span></div></div>
+<div class="w al" data-text="ы"><span class="w-l">Ы</span><span class="w-p">[y] son dur</span><div class="w-ex"><span class="w-t">сыр</span><span class="w-d">fromage</span></div></div>
+<div class="w al" data-text="мягкий знак"><span class="w-l">Ь</span><span class="w-p">—</span><div class="w-ex"><span class="w-t">конь</span><span class="w-d">cheval</span></div></div>
+<div class="w al" data-text="э"><span class="w-l">Э</span><span class="w-p">[è]</span><div class="w-ex"><span class="w-t">этаж</span><span class="w-d">étage</span></div></div>
+<div class="w al" data-text="ю"><span class="w-l">Ю</span><span class="w-p">[iou]</span><div class="w-ex"><span class="w-t">юбка</span><span class="w-d">jupe</span></div></div>
+<div class="w al" data-text="я"><span class="w-l">Я</span><span class="w-p">[ia]</span><div class="w-ex"><span class="w-t">яблоко</span><span class="w-d">pomme</span></div></div></div><h3 class="sub">Числа 1 – 10</h3><div class="ww"><div class="w num" data-text="один"><span class="w-dgt">1</span><span class="w-t">один</span><span class="w-d">un [ɛ̃]</span></div>
+<div class="w num" data-text="два"><span class="w-dgt">2</span><span class="w-t">два</span><span class="w-d">deux [dø]</span></div>
+<div class="w num" data-text="три"><span class="w-dgt">3</span><span class="w-t">три</span><span class="w-d">trois [tʁwa]</span></div>
+<div class="w num" data-text="четыре"><span class="w-dgt">4</span><span class="w-t">четыре</span><span class="w-d">quatre [katʁ]</span></div>
+<div class="w num" data-text="пять"><span class="w-dgt">5</span><span class="w-t">пять</span><span class="w-d">cinq [sɛ̃k]</span></div>
+<div class="w num" data-text="шесть"><span class="w-dgt">6</span><span class="w-t">шесть</span><span class="w-d">six [sis]</span></div>
+<div class="w num" data-text="семь"><span class="w-dgt">7</span><span class="w-t">семь</span><span class="w-d">sept [sɛt]</span></div>
+<div class="w num" data-text="восемь"><span class="w-dgt">8</span><span class="w-t">восемь</span><span class="w-d">huit [ɥit]</span></div>
+<div class="w num" data-text="девять"><span class="w-dgt">9</span><span class="w-t">девять</span><span class="w-d">neuf [nœf]</span></div>
+<div class="w num" data-text="десять"><span class="w-dgt">10</span><span class="w-t">десять</span><span class="w-d">dix [dis]</span></div></div><h3 class="sub">Десятки</h3><div class="ww"><div class="w num" data-text="десять"><span class="w-dgt">10</span><span class="w-t">десять</span><span class="w-d">dix [dis]</span></div>
+<div class="w num" data-text="двадцать"><span class="w-dgt">20</span><span class="w-t">двадцать</span><span class="w-d">vingt [vɛ̃]</span></div>
+<div class="w num" data-text="тридцать"><span class="w-dgt">30</span><span class="w-t">тридцать</span><span class="w-d">trente [tʁɑ̃t]</span></div>
+<div class="w num" data-text="сорок"><span class="w-dgt">40</span><span class="w-t">сорок</span><span class="w-d">quarante [kaʁɑ̃t]</span></div>
+<div class="w num" data-text="пятьдесят"><span class="w-dgt">50</span><span class="w-t">пятьдесят</span><span class="w-d">cinquante [sɛ̃kɑ̃t]</span></div>
+<div class="w num" data-text="шестьдесят"><span class="w-dgt">60</span><span class="w-t">шестьдесят</span><span class="w-d">soixante [swasɑ̃t]</span></div>
+<div class="w num" data-text="семьдесят"><span class="w-dgt">70</span><span class="w-t">семьдесят</span><span class="w-d">soixante-dix [swasɑ̃t dis]</span></div>
+<div class="w num" data-text="восемьдесят"><span class="w-dgt">80</span><span class="w-t">восемьдесят</span><span class="w-d">quatre-vingts [katʁə vɛ̃]</span></div>
+<div class="w num" data-text="девяносто"><span class="w-dgt">90</span><span class="w-t">девяносто</span><span class="w-d">quatre-vingt-dix [katʁə vɛ̃ dis]</span></div>
+<div class="w num" data-text="сто"><span class="w-dgt">100</span><span class="w-t">сто</span><span class="w-d">cent [sɑ̃]</span></div></div></section>
+</div>
+
+<footer>
+  <div class="wrap">Русский алфавит и числа · с пояснением по-французски и озвучкой<br><span>русский 🇷🇺 · français 🇫🇷</span></div>
+</footer>
+
+<script>
+const langToVoice = {"ru": "ru-RU", "fr": "fr-FR"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking,.w.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.w').forEach(card => {
+  card.addEventListener('click', () => {
+    if (card.classList.contains('speaking')) { stop(); return; }
+    const t = card.dataset.text;
+    if (t) speak('ru', t, card);
+  });
+});
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>
