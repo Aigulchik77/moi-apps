@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Красная Шапочка — арабский с переводом и озвучкой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#0a1220;--bg2:#0e1729;--card:#101a2e;--card2:#132036;
+  --ink:#eef2fb;--ink2:#a9b6d1;--accent:#60a5fa;--accent2:#2563eb;
+  --gold:#f5c06b;--line:rgba(96,165,250,.18);--soft:rgba(96,165,250,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#081226;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.big{margin-left:auto}
+.spk.speaking{background:var(--accent);color:#081226;border-color:var(--accent)}
+#tgl{color:var(--gold)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-direction:column;gap:0}
+.sent{display:flex;align-items:flex-start;gap:12px;padding:10px 4px;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sent .spk{flex:0 0 auto;margin-top:6px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.sent .words{display:flex;flex-wrap:wrap;gap:8px}
+.w{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:90px;cursor:pointer;transition:border-color .15s,background .15s}
+.w:hover{border-color:var(--accent)}
+.w.speaking{background:var(--soft);border-color:var(--accent)}
+.w-t{font-weight:700;font-size:16px;line-height:1.5;color:var(--ink)}
+.w-t[dir="rtl"]{text-align:right;font-size:17px}
+.w-d{font-size:12px;color:var(--ink2);font-weight:400}
+.fulltext{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 24px;font-size:18px;line-height:2;color:var(--ink);unicode-bidi:embed}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{.nav,.spk{display:none}body{background:#fff;color:#000}.w{background:#fff;border:1px solid #ccc}.fulltext{background:#fff;border:1px solid #ccc;color:#000}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#081226;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Сказка с переводом</span>
+    <h1>Красная Шапочка</h1>
+    <p>Арабская версия (العربية): читаем сказку на арабском слово за словом с переводом на русский и озвучкой. Нажмите на слово — оно озвучится. Кнопка «Переключить язык» меняет направление. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang ar" id="ar"><div class="lang-head"><span class="lang-n">AR</span><h2>العربية → Русский</h2><button class="spk big" data-lang="ar" data-text="في يوم من الأيام عاشت فتاة صغيرة في قرية مع أمّها. صنعت لها جدّتها قبّعة حمراء جميلة. كان الجميع ينادونها ذات القبعة الحمراء. في يوم قال لها والدها: «خذي هذه الكعكة وزجاجة النبيذ إلى جدّتك. إنّها مريضة وضعيفة.» لبست الفتاة قبّعتها الحمراء وذهبت إلى الغابة. في الغابة قابلت ذئبًا كبيرًا رماديًا. سأل الذئب: «إلى أين تذهبين، أيتها الفتاة الصغيرة؟» «إلى بيت جدّتي»، قالت. ركض الذئب أمامها ووصل قبلها. حبس الجدّة في الخزانة ولبس ثيابها وقبّعتها. عندما وصلت ذات القبعة الحمراء، سألت: «جدّتي، لماذا عيناك كبيرتان؟» «لكي أراك أفضل»، أجاب الذئب. «وأذناك؟» «لكي أسمعك أفضل.» «ويداك؟» «لكي أعانقك.» «وفمك؟» «لكي آكلك!» وقفز الذئب من السرير وابتلع الفتاة. لكن كان صيّاد يمرّ بجانب البيت. سمع شخير الذئب، ودخل، وفتح بطن الذئب، وأنقذ الجدّة والفتاة. وعاشوا جميعًا سعداء." data-ru="Однажды жила маленькая девочка в деревне со своей мамой. Бабушка сделала ей красивую красную шапочку. Все называли её Красная Шапочка. Однажды мама сказала ей: «Отнеси этот пирог и бутылку вина бабушке. Она больна и слаба». Девочка надела красную шапочку и пошла в лес. В лесу она встретила большого серого волка. Волк спросил: «Куда ты идёшь, маленькая девочка?» «К бабушке домой», — сказала она. Волк побежал вперёд и пришёл раньше. Он запер бабушку в шкаф и надел её одежду и шапочку. Когда пришла Красная Шапочка, она спросила: «Бабушка, почему у тебя такие большие глаза?» «Чтобы лучше тебя видеть», — ответил волк. «А уши?» «Чтобы лучше тебя слышать». «А руки?» «Чтобы лучше тебя обнимать». «А рот?» «Чтобы тебя съесть!» И волк выпрыгнул из кровати и проглотил девочку. Но мимо проходил охотник. Он услышал храп волка, вошёл, разрезал волку живот и спас бабушку и девочку. И жили они все счастливо.">▶ Озвучить весь текст</button><button class="spk" id="tgl" onclick="toggleLang()">Направление: Арабский → Русский</button></div><h3 class="sub">Слово за словом · перевод на русский</h3><div class="ww">
+<div class="sent"><button class="spk" data-lang="ar" data-text="في يوم من الأيام عاشت فتاة صغيرة في قرية مع أمّها صنعت لها جدّتها قبّعة حمراء جميلة كان الجميع ينادونها" data-ar="في يوم من الأيام عاشت فتاة صغيرة في قرية مع أمّها صنعت لها جدّتها قبّعة حمراء جميلة كان الجميع ينادونها" data-ru="в один из дней (жила-была) жила маленькая девочка в деревне со своей мамой сделала ей бабушка красивую красную шапочку все называли её" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">في يوم من الأيام</span><span class="w-d">в один из дней (жила-была)</span></div><div class="w"><span class="w-t" dir="rtl">عاشت فتاة صغيرة</span><span class="w-d">жила маленькая девочка</span></div><div class="w"><span class="w-t" dir="rtl">في قرية مع أمّها</span><span class="w-d">в деревне со своей мамой</span></div><div class="w"><span class="w-t" dir="rtl">صنعت لها جدّتها</span><span class="w-d">сделала ей бабушка</span></div><div class="w"><span class="w-t" dir="rtl">قبّعة حمراء جميلة</span><span class="w-d">красивую красную шапочку</span></div><div class="w"><span class="w-t" dir="rtl">كان الجميع ينادونها</span><span class="w-d">все называли её</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ar" data-text="ذات القبعة الحمراء في يوم قال لها والدها خذي هذه الكعكة وزجاجة النبيذ إلى جدّتك إنّها مريضة وضعيفة" data-ar="ذات القبعة الحمراء في يوم قال لها والدها خذي هذه الكعكة وزجاجة النبيذ إلى جدّتك إنّها مريضة وضعيفة" data-ru="Красная Шапочка однажды мама сказала ей отнеси этот пирог и бутылку вина бабушке она больна и слаба" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">ذات القبعة الحمراء</span><span class="w-d">Красная Шапочка</span></div><div class="w"><span class="w-t" dir="rtl">في يوم قال لها والدها</span><span class="w-d">однажды мама сказала ей</span></div><div class="w"><span class="w-t" dir="rtl">خذي هذه الكعكة</span><span class="w-d">отнеси этот пирог</span></div><div class="w"><span class="w-t" dir="rtl">وزجاجة النبيذ</span><span class="w-d">и бутылку вина</span></div><div class="w"><span class="w-t" dir="rtl">إلى جدّتك</span><span class="w-d">бабушке</span></div><div class="w"><span class="w-t" dir="rtl">إنّها مريضة وضعيفة</span><span class="w-d">она больна и слаба</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ar" data-text="لبست الفتاة قبّعتها الحمراء وذهبت إلى الغابة في الغابة قابلت ذئبًا كبيرًا رماديًا سأل الذئب إلى أين تذهبين" data-ar="لبست الفتاة قبّعتها الحمراء وذهبت إلى الغابة في الغابة قابلت ذئبًا كبيرًا رماديًا سأل الذئب إلى أين تذهبين" data-ru="девочка надела красную шапочку и пошла в лес в лесу она встретила большого серого волка волк спросил куда ты идёшь" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">لبست الفتاة قبّعتها الحمراء</span><span class="w-d">девочка надела красную шапочку</span></div><div class="w"><span class="w-t" dir="rtl">وذهبت إلى الغابة</span><span class="w-d">и пошла в лес</span></div><div class="w"><span class="w-t" dir="rtl">في الغابة</span><span class="w-d">в лесу</span></div><div class="w"><span class="w-t" dir="rtl">قابلت ذئبًا كبيرًا رماديًا</span><span class="w-d">она встретила большого серого волка</span></div><div class="w"><span class="w-t" dir="rtl">سأل الذئب</span><span class="w-d">волк спросил</span></div><div class="w"><span class="w-t" dir="rtl">إلى أين تذهبين</span><span class="w-d">куда ты идёшь</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ar" data-text="أيتها الفتاة الصغيرة إلى بيت جدّتي قالت ركض الذئب أمامها ووصل قبلها حبس الجدّة في الخزانة" data-ar="أيتها الفتاة الصغيرة إلى بيت جدّتي قالت ركض الذئب أمامها ووصل قبلها حبس الجدّة في الخزانة" data-ru="маленькая девочка к бабушке домой сказала она волк побежал вперёд и пришёл раньше он запер бабушку в шкаф" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">أيتها الفتاة الصغيرة</span><span class="w-d">маленькая девочка</span></div><div class="w"><span class="w-t" dir="rtl">إلى بيت جدّتي</span><span class="w-d">к бабушке домой</span></div><div class="w"><span class="w-t" dir="rtl">قالت</span><span class="w-d">сказала она</span></div><div class="w"><span class="w-t" dir="rtl">ركض الذئب أمامها</span><span class="w-d">волк побежал вперёд</span></div><div class="w"><span class="w-t" dir="rtl">ووصل قبلها</span><span class="w-d">и пришёл раньше</span></div><div class="w"><span class="w-t" dir="rtl">حبس الجدّة في الخزانة</span><span class="w-d">он запер бабушку в шкаф</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ar" data-text="ولبس ثيابها وقبّعتها عندما وصلت ذات القبعة الحمراء سألت جدّتي، لماذا عيناك كبيرتان لكي أراك أفضل أجاب الذئب" data-ar="ولبس ثيابها وقبّعتها عندما وصلت ذات القبعة الحمراء سألت جدّتي، لماذا عيناك كبيرتان لكي أراك أفضل أجاب الذئب" data-ru="и надел её одежду и шапочку когда пришла Красная Шапочка она спросила бабушка, почему у тебя такие большие глаза чтобы лучше тебя видеть ответил волк" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">ولبس ثيابها وقبّعتها</span><span class="w-d">и надел её одежду и шапочку</span></div><div class="w"><span class="w-t" dir="rtl">عندما وصلت ذات القبعة الحمراء</span><span class="w-d">когда пришла Красная Шапочка</span></div><div class="w"><span class="w-t" dir="rtl">سألت</span><span class="w-d">она спросила</span></div><div class="w"><span class="w-t" dir="rtl">جدّتي، لماذا عيناك كبيرتان</span><span class="w-d">бабушка, почему у тебя такие большие глаза</span></div><div class="w"><span class="w-t" dir="rtl">لكي أراك أفضل</span><span class="w-d">чтобы лучше тебя видеть</span></div><div class="w"><span class="w-t" dir="rtl">أجاب الذئب</span><span class="w-d">ответил волк</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ar" data-text="وأذناك لكي أسمعك أفضل ويداك لكي أعانقك وفمك لكي آكلك" data-ar="وأذناك لكي أسمعك أفضل ويداك لكي أعانقك وفمك لكي آكلك" data-ru="а твои уши чтобы лучше тебя слышать а твои руки чтобы лучше тебя обнимать а твой рот чтобы тебя съесть" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">وأذناك</span><span class="w-d">а твои уши</span></div><div class="w"><span class="w-t" dir="rtl">لكي أسمعك أفضل</span><span class="w-d">чтобы лучше тебя слышать</span></div><div class="w"><span class="w-t" dir="rtl">ويداك</span><span class="w-d">а твои руки</span></div><div class="w"><span class="w-t" dir="rtl">لكي أعانقك</span><span class="w-d">чтобы лучше тебя обнимать</span></div><div class="w"><span class="w-t" dir="rtl">وفمك</span><span class="w-d">а твой рот</span></div><div class="w"><span class="w-t" dir="rtl">لكي آكلك</span><span class="w-d">чтобы тебя съесть</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ar" data-text="وقفز الذئب من السرير وابتلع الفتاة لكن كان صيّاد يمرّ بجانب البيت سمع شخير الذئب ودخل وفتح بطن الذئب" data-ar="وقفز الذئب من السرير وابتلع الفتاة لكن كان صيّاد يمرّ بجانب البيت سمع شخير الذئب ودخل وفتح بطن الذئب" data-ru="и волк выпрыгнул из кровати и проглотил девочку но охотник проходил мимо дома он услышал храп волка вошёл внутрь разрезал волку живот" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">وقفز الذئب من السرير</span><span class="w-d">и волк выпрыгнул из кровати</span></div><div class="w"><span class="w-t" dir="rtl">وابتلع الفتاة</span><span class="w-d">и проглотил девочку</span></div><div class="w"><span class="w-t" dir="rtl">لكن كان صيّاد يمرّ بجانب البيت</span><span class="w-d">но охотник проходил мимо дома</span></div><div class="w"><span class="w-t" dir="rtl">سمع شخير الذئب</span><span class="w-d">он услышал храп волка</span></div><div class="w"><span class="w-t" dir="rtl">ودخل</span><span class="w-d">вошёл внутрь</span></div><div class="w"><span class="w-t" dir="rtl">وفتح بطن الذئب</span><span class="w-d">разрезал волку живот</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="ar" data-text="وأنقذ الجدّة والفتاة وعاشوا جميعًا سعداء" data-ar="وأنقذ الجدّة والفتاة وعاشوا جميعًا سعداء" data-ru="и спас бабушку и девочку и жили они все счастливо" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t" dir="rtl">وأنقذ الجدّة والفتاة</span><span class="w-d">и спас бабушку и девочку</span></div><div class="w"><span class="w-t" dir="rtl">وعاشوا جميعًا سعداء</span><span class="w-d">и жили они все счастливо</span></div></div></div></div><h3 class="sub">Весь текст</h3><div class="fulltext" dir="rtl">في يوم من الأيام عاشت فتاة صغيرة في قرية مع أمّها. صنعت لها جدّتها قبّعة حمراء جميلة. كان الجميع ينادونها ذات القبعة الحمراء. في يوم قال لها والدها: «خذي هذه الكعكة وزجاجة النبيذ إلى جدّتك. إنّها مريضة وضعيفة.» لبست الفتاة قبّعتها الحمراء وذهبت إلى الغابة. في الغابة قابلت ذئبًا كبيرًا رماديًا. سأل الذئب: «إلى أين تذهبين، أيتها الفتاة الصغيرة؟» «إلى بيت جدّتي»، قالت. ركض الذئب أمامها ووصل قبلها. حبس الجدّة في الخزانة ولبس ثيابها وقبّعتها. عندما وصلت ذات القبعة الحمراء، سألت: «جدّتي، لماذا عيناك كبيرتان؟» «لكي أراك أفضل»، أجاب الذئب. «وأذناك؟» «لكي أسمعك أفضل.» «ويداك؟» «لكي أعانقك.» «وفمك؟» «لكي آكلك!» وقفز الذئب من السرير وابتلع الفتاة. لكن كان صيّاد يمرّ بجانب البيت. سمع شخير الذئب، ودخل، وفتح بطن الذئب، وأنقذ الجدّة والفتاة. وعاشوا جميعًا سعداء.</div></section>
+</div>
+
+<footer>
+  <div class="wrap">Красная Шапочка · сказка с переводом слово за словом<br><span>арабский العربية</span></div>
+</footer>
+
+<script>
+const langToVoice = {"ar": "ar-SA", "ru": "ru-RU"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking,.w.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+const BIG = document.querySelector('.spk.big');
+const FULL_AR = BIG ? BIG.dataset.text : '';
+const FULL_RU = BIG ? BIG.dataset.ru : '';
+let flipped = false;
+document.querySelectorAll('.sent').forEach(s => {
+  const b = s.querySelector('.spk');
+  if (!b) return;
+  b.dataset.ar = Array.from(s.querySelectorAll('.w-t')).map(x => x.textContent).join(' ');
+  b.dataset.ru = Array.from(s.querySelectorAll('.w-d')).map(x => x.textContent).join(' ');
+});
+document.querySelectorAll('.w').forEach(card => {
+  card.addEventListener('click', () => {
+    const t = card.querySelector('.w-t');
+    if (!t) return;
+    if (card.classList.contains('speaking')) { stop(); return; }
+    speak(flipped ? 'ru' : 'ar', t.textContent.trim(), card);
+  });
+});
+function toggleLang(){
+  if (audio) stop();
+  flipped = !flipped;
+  document.querySelectorAll('.w').forEach(c => {
+    const a = c.querySelector('.w-t'), b = c.querySelector('.w-d');
+    const tmp = a.textContent; a.textContent = b.textContent; b.textContent = tmp;
+  });
+  document.querySelectorAll('.sent .spk').forEach(b => {
+    b.dataset.lang = flipped ? 'ru' : 'ar';
+    b.dataset.text = flipped ? b.dataset.ru : b.dataset.ar;
+    b.title = flipped ? 'Озвучить предложение на русском' : 'Озвучить предложение на арабском';
+  });
+  const big = document.querySelector('.spk.big');
+  if (big) { big.dataset.lang = flipped ? 'ru' : 'ar'; big.dataset.text = flipped ? FULL_RU : FULL_AR; }
+  const ft = document.querySelector('.fulltext');
+  if (ft) { ft.textContent = flipped ? FULL_RU : FULL_AR; ft.dir = flipped ? 'ltr' : 'rtl'; }
+  const h2 = document.querySelector('.lang-head h2');
+  if (h2) h2.textContent = flipped ? 'Русский → العربية' : 'العربية → Русский';
+  const tgl = document.getElementById('tgl');
+  if (tgl) tgl.textContent = flipped ? 'Направление: Русский → Арабский' : 'Направление: Арабский → Русский';
+}
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>
