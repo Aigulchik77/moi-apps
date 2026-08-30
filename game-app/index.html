@@ -2921,7 +2921,7 @@ function picker(){
   let html = '<div class="pick-grid">';
   codes.forEach(c => {
     const m = META[c] || {flag:"🌐",name:c,sub:c};
-    html += '<button class="lchip" onclick="pick(\\\''+c+'\\\')"><span class="fl">'+m.flag+'</span><span class="ln">'+m.name+'</span><span class="lsub">'+c.toUpperCase()+'</span></button>';
+    html += '<button class="lchip" onclick="pick(\''+c+'\')"><span class="fl">'+m.flag+'</span><span class="ln">'+m.name+'</span><span class="lsub">'+c.toUpperCase()+'</span></button>';
   });
   html += '</div>';
   gameEl.innerHTML = html;
