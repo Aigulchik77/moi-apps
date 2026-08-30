@@ -1,0 +1,3050 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Выучи любой язык — игра</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#0a0f1e;--bg2:#0e1628;--card:#121c33;--card2:#16223d;
+  --ink:#eef2fb;--ink2:#a9b6d1;--accent:#a78bfa;--accent2:#7c3aed;
+  --gold:#f5c06b;--green:#06d6a0;--red:#f43f5e;--line:rgba(167,139,250,.2);--soft:rgba(167,139,250,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.6;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header{padding:54px 0 30px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:16px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,46px);font-weight:600;line-height:1.12}
+header p{color:var(--ink2);max-width:60ch;margin:14px auto 0;font-weight:300}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding-bottom:40px}
+.lchip{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 10px;cursor:pointer;transition:transform .12s,border-color .15s,background .15s}
+.lchip:hover{transform:translateY(-3px);border-color:var(--accent);background:var(--soft)}
+.lchip .fl{font-size:30px}
+.lchip .ln{font-weight:800;font-size:15px}
+.lchip .lsub{font-size:11px;color:var(--ink2);text-transform:uppercase;letter-spacing:.08em}
+#game{margin-top:6px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+.hearts{font-size:1.15rem;letter-spacing:2px}
+.score{font-weight:800;color:var(--gold)}
+.streak{font-size:.82rem;color:var(--ink2)}
+.prog-bar{height:8px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden;margin-bottom:16px}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:999px;transition:width .25s}
+.word-card{background:linear-gradient(140deg,var(--bg2),var(--card2));border:1px solid var(--line);border-radius:18px;padding:26px 20px;text-align:center;margin-bottom:16px}
+.direction{font-size:.78rem;color:var(--ink2);text-transform:uppercase;letter-spacing:1px}
+.word-big{font-size:clamp(1.5rem,6vw,2.1rem);margin-top:8px;font-weight:800;word-break:break-word}
+.word-tran{font-size:.95rem;color:var(--accent);margin-top:6px;font-style:italic}
+.word-topic{margin-top:10px}
+.tag{display:inline-block;background:rgba(167,139,250,.18);border:1px solid rgba(167,139,250,.4);color:#d6c8fa;font-size:.72rem;padding:3px 11px;border-radius:999px}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:inherit;font-weight:700;font-size:13px;padding:9px 18px;border-radius:999px;cursor:pointer;margin-top:14px;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.speaking{background:var(--accent);color:#081226;border-color:var(--accent)}
+.answers{display:grid;grid-template-columns:1fr;gap:10px}
+.answer{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-family:inherit;font-size:1rem;color:var(--ink);cursor:pointer;transition:transform .08s,background .15s,border-color .15s}
+.answer:hover:not(:disabled){transform:translateY(-2px);background:var(--soft)}
+.answer:disabled{cursor:default}
+.answer.good{background:rgba(6,214,160,.18);border-color:var(--green)}
+.answer.bad{background:rgba(244,63,94,.18);border-color:var(--red)}
+.answer .atr{display:block;font-size:.78rem;color:var(--ink2);font-style:italic}
+.feedback{text-align:center;margin-top:14px;min-height:24px;font-weight:700}
+.feedback.good{color:var(--green)}
+.feedback.bad{color:var(--red)}
+.results{text-align:center;padding:40px 0}
+.big-num{font-size:clamp(2.4rem,9vw,4rem);font-weight:800;font-family:'Playfair Display',serif}
+.results .rsub{color:var(--ink2);margin-top:6px}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 20px;min-width:110px}
+.stat b{display:block;font-size:1.3rem;color:var(--gold)}
+.stat span{font-size:.72rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.08em}
+.mistakes{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:18px auto;max-width:520px}
+.mistakes h3{font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.mistake{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.mistake:last-child{border-bottom:none}
+.mistake .q{font-weight:700}
+.mistake .a{color:var(--green);font-weight:700}
+.btnrow{display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.gbtn{font-family:inherit;font-weight:800;font-size:.95rem;padding:13px 26px;border-radius:999px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink);transition:background .15s,border-color .15s}
+.gbtn:hover{border-color:var(--accent);background:var(--soft)}
+.gbtn.prime{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0d1020;border:none}
+.gbtn.prime:hover{opacity:.92;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0d1020;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}
+@media print{body{background:#fff;color:#000}.answer{border-color:#ccc}}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить игру</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Игра-тренажёр</span>
+    <h1>Выучи любой язык</h1>
+    <p>Выбери язык — и учи слова в игре: вопросы, варианты ответа, жизни и счёт. Направление и звук можно менять.</p>
+  </div>
+</header>
+
+<div class="wrap" id="wrap">
+  <div id="game"></div>
+</div>
+
+<footer>
+  <div class="wrap">Игра-тренажёр · 10 языков<br><span>выбирай язык и играй</span></div>
+</footer>
+
+<script>
+const LANGS = {
+    "zh":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "你好",
+                                       "tr":  "nǐ hǎo"
+                                   },
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "嗨",
+                                       "tr":  "hāi"
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "再见",
+                                       "tr":  "zài jiàn"
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "谢谢",
+                                       "tr":  "xiè xie"
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "请",
+                                       "tr":  "qǐng"
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "对不起",
+                                       "tr":  "duì bu qǐ"
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "是",
+                                       "tr":  "shì"
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "不",
+                                       "tr":  "bù"
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "你好吗？",
+                                       "tr":  "nǐ hǎo ma"
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "早上好",
+                                       "tr":  "zǎo shang hǎo"
+                                   },
+                                   {
+                                       "ru":  "Добрый вечер",
+                                       "tg":  "晚上好",
+                                       "tr":  "wǎn shang hǎo"
+                                   },
+                                   {
+                                       "ru":  "Доброй ночи",
+                                       "tg":  "晚安",
+                                       "tr":  "wǎn ān"
+                                   }
+                               ],
+               "Числа":  [
+                             {
+                                 "ru":  "Один",
+                                 "tg":  "一",
+                                 "tr":  "yī"
+                             },
+                             {
+                                 "ru":  "Два",
+                                 "tg":  "二",
+                                 "tr":  "èr"
+                             },
+                             {
+                                 "ru":  "Три",
+                                 "tg":  "三",
+                                 "tr":  "sān"
+                             },
+                             {
+                                 "ru":  "Четыре",
+                                 "tg":  "四",
+                                 "tr":  "sì"
+                             },
+                             {
+                                 "ru":  "Пять",
+                                 "tg":  "五",
+                                 "tr":  "wǔ"
+                             },
+                             {
+                                 "ru":  "Шесть",
+                                 "tg":  "六",
+                                 "tr":  "liù"
+                             },
+                             {
+                                 "ru":  "Семь",
+                                 "tg":  "七",
+                                 "tr":  "qī"
+                             },
+                             {
+                                 "ru":  "Восемь",
+                                 "tg":  "八",
+                                 "tr":  "bā"
+                             },
+                             {
+                                 "ru":  "Девять",
+                                 "tg":  "九",
+                                 "tr":  "jiǔ"
+                             },
+                             {
+                                 "ru":  "Десять",
+                                 "tg":  "十",
+                                 "tr":  "shí"
+                             }
+                         ],
+               "Семья":  [
+                             {
+                                 "ru":  "Мама",
+                                 "tg":  "妈妈",
+                                 "tr":  "mā ma"
+                             },
+                             {
+                                 "ru":  "Папа",
+                                 "tg":  "爸爸",
+                                 "tr":  "bà ba"
+                             },
+                             {
+                                 "ru":  "Брат",
+                                 "tg":  "兄弟",
+                                 "tr":  "xiōng dì"
+                             },
+                             {
+                                 "ru":  "Сестра",
+                                 "tg":  "姐妹",
+                                 "tr":  "jiě mèi"
+                             },
+                             {
+                                 "ru":  "Бабушка",
+                                 "tg":  "奶奶",
+                                 "tr":  "nǎi nai"
+                             },
+                             {
+                                 "ru":  "Дедушка",
+                                 "tg":  "爷爷",
+                                 "tr":  "yé ye"
+                             },
+                             {
+                                 "ru":  "Сын",
+                                 "tg":  "儿子",
+                                 "tr":  "ér zi"
+                             },
+                             {
+                                 "ru":  "Дочь",
+                                 "tg":  "女儿",
+                                 "tr":  "nǚ ér"
+                             },
+                             {
+                                 "ru":  "Муж",
+                                 "tg":  "丈夫",
+                                 "tr":  "zhàng fu"
+                             },
+                             {
+                                 "ru":  "Жена",
+                                 "tg":  "妻子",
+                                 "tr":  "qī zi"
+                             },
+                             {
+                                 "ru":  "Друг",
+                                 "tg":  "朋友",
+                                 "tr":  "péng you"
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "Хлеб",
+                               "tg":  "面包",
+                               "tr":  "miàn bāo"
+                           },
+                           {
+                               "ru":  "Рис",
+                               "tg":  "米饭",
+                               "tr":  "mǐ fàn"
+                           },
+                           {
+                               "ru":  "Вода",
+                               "tg":  "水",
+                               "tr":  "shuǐ"
+                           },
+                           {
+                               "ru":  "Чай",
+                               "tg":  "茶",
+                               "tr":  "chá"
+                           },
+                           {
+                               "ru":  "Молоко",
+                               "tg":  "牛奶",
+                               "tr":  "niú nǎi"
+                           },
+                           {
+                               "ru":  "Мясо",
+                               "tg":  "肉",
+                               "tr":  "ròu"
+                           },
+                           {
+                               "ru":  "Яблоко",
+                               "tg":  "苹果",
+                               "tr":  "píng guǒ"
+                           },
+                           {
+                               "ru":  "Фрукт",
+                               "tg":  "水果",
+                               "tr":  "shuǐ guǒ"
+                           },
+                           {
+                               "ru":  "Овощ",
+                               "tg":  "蔬菜",
+                               "tr":  "shū cài"
+                           },
+                           {
+                               "ru":  "Сахар",
+                               "tg":  "糖",
+                               "tr":  "táng"
+                           },
+                           {
+                               "ru":  "Соль",
+                               "tg":  "盐",
+                               "tr":  "yán"
+                           }
+                       ],
+               "Слова и фразы":  [
+                                     {
+                                         "ru":  "Я",
+                                         "tg":  "我",
+                                         "tr":  "wǒ"
+                                     },
+                                     {
+                                         "ru":  "Ты",
+                                         "tg":  "你",
+                                         "tr":  "nǐ"
+                                     },
+                                     {
+                                         "ru":  "Идти",
+                                         "tg":  "去",
+                                         "tr":  "qù"
+                                     },
+                                     {
+                                         "ru":  "Приходить",
+                                         "tg":  "来",
+                                         "tr":  "lái"
+                                     },
+                                     {
+                                         "ru":  "Есть (кушать)",
+                                         "tg":  "吃",
+                                         "tr":  "chī"
+                                     },
+                                     {
+                                         "ru":  "Пить",
+                                         "tg":  "喝",
+                                         "tr":  "hē"
+                                     },
+                                     {
+                                         "ru":  "Говорить",
+                                         "tg":  "说",
+                                         "tr":  "shuō"
+                                     },
+                                     {
+                                         "ru":  "Любить",
+                                         "tg":  "爱",
+                                         "tr":  "ài"
+                                     },
+                                     {
+                                         "ru":  "Хорошо",
+                                         "tg":  "好",
+                                         "tr":  "hǎo"
+                                     },
+                                     {
+                                         "ru":  "Плохо",
+                                         "tg":  "坏",
+                                         "tr":  "huài"
+                                     },
+                                     {
+                                         "ru":  "Большой",
+                                         "tg":  "大",
+                                         "tr":  "dà"
+                                     },
+                                     {
+                                         "ru":  "Маленький",
+                                         "tg":  "小",
+                                         "tr":  "xiǎo"
+                                     }
+                                 ]
+           },
+    "hi":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "नमस्ते",
+                                       "tr":  "namaste"
+                                   },
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "नमस्कार",
+                                       "tr":  "namaskār"
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "अलविदा",
+                                       "tr":  "alvidā"
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "धन्यवाद",
+                                       "tr":  "dhanyavād"
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "कृपया",
+                                       "tr":  "kripayā"
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "माफ़ कीजिए",
+                                       "tr":  "māf kījiye"
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "हाँ",
+                                       "tr":  "hā̃"
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "नहीं",
+                                       "tr":  "nahī̃"
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "आप कैसे हैं?",
+                                       "tr":  "āp kaise haim?"
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "शुभ प्रभात",
+                                       "tr":  "śubh prabhāt"
+                                   },
+                                   {
+                                       "ru":  "Добрый вечер",
+                                       "tg":  "शुभ संध्या",
+                                       "tr":  "śubh sandhyā"
+                                   },
+                                   {
+                                       "ru":  "Доброй ночи",
+                                       "tg":  "शुभ रात्रि",
+                                       "tr":  "śubh rātri"
+                                   }
+                               ],
+               "Числа":  [
+                             {
+                                 "ru":  "Один",
+                                 "tg":  "एक",
+                                 "tr":  "ek"
+                             },
+                             {
+                                 "ru":  "Два",
+                                 "tg":  "दो",
+                                 "tr":  "do"
+                             },
+                             {
+                                 "ru":  "Три",
+                                 "tg":  "तीन",
+                                 "tr":  "tīn"
+                             },
+                             {
+                                 "ru":  "Четыре",
+                                 "tg":  "चार",
+                                 "tr":  "chār"
+                             },
+                             {
+                                 "ru":  "Пять",
+                                 "tg":  "पाँच",
+                                 "tr":  "pā̃ch"
+                             },
+                             {
+                                 "ru":  "Шесть",
+                                 "tg":  "छह",
+                                 "tr":  "chhah"
+                             },
+                             {
+                                 "ru":  "Семь",
+                                 "tg":  "सात",
+                                 "tr":  "sāt"
+                             },
+                             {
+                                 "ru":  "Восемь",
+                                 "tg":  "आठ",
+                                 "tr":  "āṭh"
+                             },
+                             {
+                                 "ru":  "Девять",
+                                 "tg":  "नौ",
+                                 "tr":  "nau"
+                             },
+                             {
+                                 "ru":  "Десять",
+                                 "tg":  "दस",
+                                 "tr":  "das"
+                             }
+                         ],
+               "Семья":  [
+                             {
+                                 "ru":  "Мама",
+                                 "tg":  "माँ",
+                                 "tr":  "mā̃"
+                             },
+                             {
+                                 "ru":  "Папа",
+                                 "tg":  "पापा",
+                                 "tr":  "pāpā"
+                             },
+                             {
+                                 "ru":  "Брат",
+                                 "tg":  "भाई",
+                                 "tr":  "bhāī"
+                             },
+                             {
+                                 "ru":  "Сестра",
+                                 "tg":  "बहन",
+                                 "tr":  "behen"
+                             },
+                             {
+                                 "ru":  "Бабушка",
+                                 "tg":  "दादी",
+                                 "tr":  "dādī"
+                             },
+                             {
+                                 "ru":  "Дедушка",
+                                 "tg":  "दादा",
+                                 "tr":  "dādā"
+                             },
+                             {
+                                 "ru":  "Сын",
+                                 "tg":  "बेटा",
+                                 "tr":  "beṭā"
+                             },
+                             {
+                                 "ru":  "Дочь",
+                                 "tg":  "बेटी",
+                                 "tr":  "beṭī"
+                             },
+                             {
+                                 "ru":  "Муж",
+                                 "tg":  "पति",
+                                 "tr":  "pati"
+                             },
+                             {
+                                 "ru":  "Жена",
+                                 "tg":  "पत्नी",
+                                 "tr":  "patnī"
+                             },
+                             {
+                                 "ru":  "Друг",
+                                 "tg":  "दोस्त",
+                                 "tr":  "dost"
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "Хлеб",
+                               "tg":  "रोटी",
+                               "tr":  "roṭī"
+                           },
+                           {
+                               "ru":  "Рис",
+                               "tg":  "चावल",
+                               "tr":  "chāval"
+                           },
+                           {
+                               "ru":  "Вода",
+                               "tg":  "पानी",
+                               "tr":  "pānī"
+                           },
+                           {
+                               "ru":  "Чай",
+                               "tg":  "चाय",
+                               "tr":  "chāy"
+                           },
+                           {
+                               "ru":  "Молоко",
+                               "tg":  "दूध",
+                               "tr":  "dūdh"
+                           },
+                           {
+                               "ru":  "Мясо",
+                               "tg":  "मांस",
+                               "tr":  "mā̃s"
+                           },
+                           {
+                               "ru":  "Яблоко",
+                               "tg":  "सेब",
+                               "tr":  "seb"
+                           },
+                           {
+                               "ru":  "Фрукт",
+                               "tg":  "फल",
+                               "tr":  "phal"
+                           },
+                           {
+                               "ru":  "Овощ",
+                               "tg":  "सब्ज़ी",
+                               "tr":  "sabzī"
+                           },
+                           {
+                               "ru":  "Сахар",
+                               "tg":  "चीनी",
+                               "tr":  "chīnī"
+                           },
+                           {
+                               "ru":  "Соль",
+                               "tg":  "नमक",
+                               "tr":  "namak"
+                           }
+                       ],
+               "Слова и фразы":  [
+                                     {
+                                         "ru":  "Я",
+                                         "tg":  "मैं",
+                                         "tr":  "maim"
+                                     },
+                                     {
+                                         "ru":  "Ты",
+                                         "tg":  "तुम",
+                                         "tr":  "tum"
+                                     },
+                                     {
+                                         "ru":  "Идти",
+                                         "tg":  "जाना",
+                                         "tr":  "jānā"
+                                     },
+                                     {
+                                         "ru":  "Приходить",
+                                         "tg":  "आना",
+                                         "tr":  "ānā"
+                                     },
+                                     {
+                                         "ru":  "Есть (кушать)",
+                                         "tg":  "खाना",
+                                         "tr":  "khānā"
+                                     },
+                                     {
+                                         "ru":  "Пить",
+                                         "tg":  "पीना",
+                                         "tr":  "pīnā"
+                                     },
+                                     {
+                                         "ru":  "Говорить",
+                                         "tg":  "बोलना",
+                                         "tr":  "bolnā"
+                                     },
+                                     {
+                                         "ru":  "Любить",
+                                         "tg":  "प्यार करना",
+                                         "tr":  "pyār karnā"
+                                     },
+                                     {
+                                         "ru":  "Хорошо",
+                                         "tg":  "अच्छा",
+                                         "tr":  "achhā"
+                                     },
+                                     {
+                                         "ru":  "Плохо",
+                                         "tg":  "बुरा",
+                                         "tr":  "burā"
+                                     },
+                                     {
+                                         "ru":  "Большой",
+                                         "tg":  "बड़ा",
+                                         "tr":  "baṛā"
+                                     },
+                                     {
+                                         "ru":  "Маленький",
+                                         "tg":  "छोटा",
+                                         "tr":  "chhoṭā"
+                                     }
+                                 ]
+           },
+    "es":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "Hola",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "¿Qué tal?",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "Adiós",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "Gracias",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "Por favor",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "Perdón",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "Sí",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "No",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "¿Cómo estás?",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "Buenos días",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Добрый вечер",
+                                       "tg":  "Buenas tardes",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброй ночи",
+                                       "tg":  "Buenas noches",
+                                       "tr":  ""
+                                   }
+                               ],
+               "Числа":  [
+                             {
+                                 "ru":  "Один",
+                                 "tg":  "uno",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Два",
+                                 "tg":  "dos",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Три",
+                                 "tg":  "tres",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Четыре",
+                                 "tg":  "cuatro",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Пять",
+                                 "tg":  "cinco",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Шесть",
+                                 "tg":  "seis",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Семь",
+                                 "tg":  "siete",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Восемь",
+                                 "tg":  "ocho",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Девять",
+                                 "tg":  "nueve",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Десять",
+                                 "tg":  "diez",
+                                 "tr":  ""
+                             }
+                         ],
+               "Семья":  [
+                             {
+                                 "ru":  "Мама",
+                                 "tg":  "Mamá",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Папа",
+                                 "tg":  "Papá",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Брат",
+                                 "tg":  "Hermano",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сестра",
+                                 "tg":  "Hermana",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Бабушка",
+                                 "tg":  "Abuela",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дедушка",
+                                 "tg":  "Abuelo",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сын",
+                                 "tg":  "Hijo",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дочь",
+                                 "tg":  "Hija",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Муж",
+                                 "tg":  "Marido",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Жена",
+                                 "tg":  "Esposa",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Друг",
+                                 "tg":  "Amigo",
+                                 "tr":  ""
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "Хлеб",
+                               "tg":  "Pan",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Рис",
+                               "tg":  "Arroz",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Вода",
+                               "tg":  "Agua",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Чай",
+                               "tg":  "Té",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Молоко",
+                               "tg":  "Leche",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Мясо",
+                               "tg":  "Carne",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Яблоко",
+                               "tg":  "Manzana",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Фрукт",
+                               "tg":  "Fruta",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Овощ",
+                               "tg":  "Verdura",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Сахар",
+                               "tg":  "Azúcar",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Соль",
+                               "tg":  "Sal",
+                               "tr":  ""
+                           }
+                       ],
+               "Слова и фразы":  [
+                                     {
+                                         "ru":  "Я",
+                                         "tg":  "Yo",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Ты",
+                                         "tg":  "Tú",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Идти",
+                                         "tg":  "Ir",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Приходить",
+                                         "tg":  "Venir",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Есть (кушать)",
+                                         "tg":  "Comer",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Пить",
+                                         "tg":  "Beber",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Говорить",
+                                         "tg":  "Hablar",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Любить",
+                                         "tg":  "Amar",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Хорошо",
+                                         "tg":  "Bien",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Плохо",
+                                         "tg":  "Mal",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Большой",
+                                         "tg":  "Grande",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Маленький",
+                                         "tg":  "Pequeño",
+                                         "tr":  ""
+                                     }
+                                 ]
+           },
+    "tr":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "Merhaba",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "Selam",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "Hoşça kalın",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "Teşekkürler",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "Lütfen",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "Pardon",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "Evet",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "Hayır",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "Nasılsın?",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "Günaydın",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Добрый вечер",
+                                       "tg":  "İyi akşamlar",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброй ночи",
+                                       "tg":  "İyi geceler",
+                                       "tr":  ""
+                                   }
+                               ],
+               "Числа":  [
+                             {
+                                 "ru":  "Один",
+                                 "tg":  "bir",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Два",
+                                 "tg":  "iki",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Три",
+                                 "tg":  "üç",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Четыре",
+                                 "tg":  "dört",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Пять",
+                                 "tg":  "beş",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Шесть",
+                                 "tg":  "altı",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Семь",
+                                 "tg":  "yedi",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Восемь",
+                                 "tg":  "sekiz",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Девять",
+                                 "tg":  "dokuz",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Десять",
+                                 "tg":  "on",
+                                 "tr":  ""
+                             }
+                         ],
+               "Семья":  [
+                             {
+                                 "ru":  "Мама",
+                                 "tg":  "Anne",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Папа",
+                                 "tg":  "Baba",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Брат",
+                                 "tg":  "Erkek kardeş",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сестра",
+                                 "tg":  "Kız kardeş",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Бабушка",
+                                 "tg":  "Büyükanne",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дедушка",
+                                 "tg":  "Büyükbaba",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сын",
+                                 "tg":  "Oğul",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дочь",
+                                 "tg":  "Kız",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Муж",
+                                 "tg":  "Koca",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Жена",
+                                 "tg":  "Karı",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Друг",
+                                 "tg":  "Arkadaş",
+                                 "tr":  ""
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "Хлеб",
+                               "tg":  "Ekmek",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Рис",
+                               "tg":  "Pirinç",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Вода",
+                               "tg":  "Su",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Чай",
+                               "tg":  "Çay",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Молоко",
+                               "tg":  "Süt",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Мясо",
+                               "tg":  "Et",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Яблоко",
+                               "tg":  "Elma",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Фрукт",
+                               "tg":  "Meyve",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Овощ",
+                               "tg":  "Sebze",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Сахар",
+                               "tg":  "Şeker",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Соль",
+                               "tg":  "Tuz",
+                               "tr":  ""
+                           }
+                       ],
+               "Слова и фразы":  [
+                                     {
+                                         "ru":  "Я",
+                                         "tg":  "Ben",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Ты",
+                                         "tg":  "Sen",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Идти",
+                                         "tg":  "Gitmek",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Приходить",
+                                         "tg":  "Gelmek",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Есть (кушать)",
+                                         "tg":  "Yemek",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Пить",
+                                         "tg":  "İçmek",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Говорить",
+                                         "tg":  "Konuşmak",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Любить",
+                                         "tg":  "Sevmek",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Хорошо",
+                                         "tg":  "İyi",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Плохо",
+                                         "tg":  "Kötü",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Большой",
+                                         "tg":  "Büyük",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Маленький",
+                                         "tg":  "Küçük",
+                                         "tr":  ""
+                                     }
+                                 ]
+           },
+    "en":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "Hello",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "Hi",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "Goodbye",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "Thank you",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "Please",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "Sorry",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "Yes",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "No",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "How are you?",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "Good morning",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Добрый вечер",
+                                       "tg":  "Good evening",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброй ночи",
+                                       "tg":  "Good night",
+                                       "tr":  ""
+                                   }
+                               ],
+               "Числа":  [
+                             {
+                                 "ru":  "Один",
+                                 "tg":  "One",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Два",
+                                 "tg":  "Two",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Три",
+                                 "tg":  "Three",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Четыре",
+                                 "tg":  "Four",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Пять",
+                                 "tg":  "Five",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Шесть",
+                                 "tg":  "Six",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Семь",
+                                 "tg":  "Seven",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Восемь",
+                                 "tg":  "Eight",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Девять",
+                                 "tg":  "Nine",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Десять",
+                                 "tg":  "Ten",
+                                 "tr":  ""
+                             }
+                         ],
+               "Семья":  [
+                             {
+                                 "ru":  "Мама",
+                                 "tg":  "Mom",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Папа",
+                                 "tg":  "Dad",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Брат",
+                                 "tg":  "Brother",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сестра",
+                                 "tg":  "Sister",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Бабушка",
+                                 "tg":  "Grandmother",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дедушка",
+                                 "tg":  "Grandfather",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сын",
+                                 "tg":  "Son",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дочь",
+                                 "tg":  "Daughter",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Муж",
+                                 "tg":  "Husband",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Жена",
+                                 "tg":  "Wife",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Друг",
+                                 "tg":  "Friend",
+                                 "tr":  ""
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "Хлеб",
+                               "tg":  "Bread",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Рис",
+                               "tg":  "Rice",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Вода",
+                               "tg":  "Water",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Чай",
+                               "tg":  "Tea",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Молоко",
+                               "tg":  "Milk",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Мясо",
+                               "tg":  "Meat",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Яблоко",
+                               "tg":  "Apple",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Фрукт",
+                               "tg":  "Fruit",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Овощ",
+                               "tg":  "Vegetable",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Сахар",
+                               "tg":  "Sugar",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Соль",
+                               "tg":  "Salt",
+                               "tr":  ""
+                           }
+                       ],
+               "Слова и фразы":  [
+                                     {
+                                         "ru":  "Я",
+                                         "tg":  "I",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Ты",
+                                         "tg":  "You",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Идти",
+                                         "tg":  "To go",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Приходить",
+                                         "tg":  "To come",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Есть (кушать)",
+                                         "tg":  "To eat",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Пить",
+                                         "tg":  "To drink",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Говорить",
+                                         "tg":  "To speak",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Любить",
+                                         "tg":  "To love",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Хорошо",
+                                         "tg":  "Good",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Плохо",
+                                         "tg":  "Bad",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Большой",
+                                         "tg":  "Big",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Маленький",
+                                         "tg":  "Small",
+                                         "tr":  ""
+                                     }
+                                 ]
+           },
+    "it":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "Salve",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "Ciao",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "Arrivederci",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "Grazie",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "Prego",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "Scusa",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "Sì",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "No",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "Come stai?",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "Buongiorno",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Добрый вечер",
+                                       "tg":  "Buonasera",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброй ночи",
+                                       "tg":  "Buonanotte",
+                                       "tr":  ""
+                                   }
+                               ],
+               "Числа":  [
+                             {
+                                 "ru":  "Один",
+                                 "tg":  "uno",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Два",
+                                 "tg":  "due",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Три",
+                                 "tg":  "tre",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Четыре",
+                                 "tg":  "quattro",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Пять",
+                                 "tg":  "cinque",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Шесть",
+                                 "tg":  "sei",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Семь",
+                                 "tg":  "sette",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Восемь",
+                                 "tg":  "otto",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Девять",
+                                 "tg":  "nove",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Десять",
+                                 "tg":  "dieci",
+                                 "tr":  ""
+                             }
+                         ],
+               "Семья":  [
+                             {
+                                 "ru":  "Мама",
+                                 "tg":  "Mamma",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Папа",
+                                 "tg":  "Papà",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Брат",
+                                 "tg":  "Fratello",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сестра",
+                                 "tg":  "Sorella",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Бабушка",
+                                 "tg":  "Nonna",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дедушка",
+                                 "tg":  "Nonno",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Сын",
+                                 "tg":  "Figlio",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Дочь",
+                                 "tg":  "Figlia",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Муж",
+                                 "tg":  "Marito",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Жена",
+                                 "tg":  "Moglie",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "Друг",
+                                 "tg":  "Amico",
+                                 "tr":  ""
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "Хлеб",
+                               "tg":  "Pane",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Рис",
+                               "tg":  "Riso",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Вода",
+                               "tg":  "Acqua",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Чай",
+                               "tg":  "Tè",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Молоко",
+                               "tg":  "Latte",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Мясо",
+                               "tg":  "Carne",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Яблоко",
+                               "tg":  "Mela",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Фрукт",
+                               "tg":  "Frutta",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Овощ",
+                               "tg":  "Verdura",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Сахар",
+                               "tg":  "Zucchero",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "Соль",
+                               "tg":  "Sale",
+                               "tr":  ""
+                           }
+                       ],
+               "Слова и фразы":  [
+                                     {
+                                         "ru":  "Я",
+                                         "tg":  "Io",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Ты",
+                                         "tg":  "Tu",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Идти",
+                                         "tg":  "Andare",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Приходить",
+                                         "tg":  "Venire",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Есть (кушать)",
+                                         "tg":  "Mangiare",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Пить",
+                                         "tg":  "Bere",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Говорить",
+                                         "tg":  "Parlare",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Любить",
+                                         "tg":  "Amare",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Хорошо",
+                                         "tg":  "Bene",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Плохо",
+                                         "tg":  "Male",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Большой",
+                                         "tg":  "Grande",
+                                         "tr":  ""
+                                     },
+                                     {
+                                         "ru":  "Маленький",
+                                         "tg":  "Piccolo",
+                                         "tr":  ""
+                                     }
+                                 ]
+           },
+    "fr":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "Bonjour",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "Salut",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "Au revoir",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "Merci",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "S\u0027il vous plaît",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "Pardon",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "Oui",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "Non",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "Ça va ?",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спокойной ночи",
+                                       "tg":  "Bonne nuit",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До завтра",
+                                       "tg":  "À demain",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До скорого",
+                                       "tg":  "À bientôt",
+                                       "tr":  ""
+                                   }
+                               ],
+               "Семья":  [
+                             {
+                                 "ru":  "мама",
+                                 "tg":  "la mère",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "папа",
+                                 "tg":  "le père",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "сестра",
+                                 "tg":  "la sœur",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "брат",
+                                 "tg":  "le frère",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "бабушка",
+                                 "tg":  "la grand-mère",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дедушка",
+                                 "tg":  "le grand-père",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "семья",
+                                 "tg":  "la famille",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "друг",
+                                 "tg":  "l\u0027ami",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "подруга",
+                                 "tg":  "l\u0027amie",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дочь",
+                                 "tg":  "la fille",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "сын",
+                                 "tg":  "le fils",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "ребёнок",
+                                 "tg":  "l\u0027enfant",
+                                 "tr":  ""
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "вода",
+                               "tg":  "l\u0027eau",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "хлеб",
+                               "tg":  "le pain",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "чай",
+                               "tg":  "le thé",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "кофе",
+                               "tg":  "le café",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "молоко",
+                               "tg":  "le lait",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "сыр",
+                               "tg":  "le fromage",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "курица",
+                               "tg":  "le poulet",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "яблоко",
+                               "tg":  "la pomme",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "суп",
+                               "tg":  "la soupe",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "сахар",
+                               "tg":  "le sucre",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "соль",
+                               "tg":  "le sel",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "пирог",
+                               "tg":  "le gâteau",
+                               "tr":  ""
+                           }
+                       ],
+               "Слова":  [
+                             {
+                                 "ru":  "дом",
+                                 "tg":  "la maison",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "город",
+                                 "tg":  "la ville",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "улица",
+                                 "tg":  "la rue",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "солнце",
+                                 "tg":  "le soleil",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дождь",
+                                 "tg":  "la pluie",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "день",
+                                 "tg":  "le jour",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "ночь",
+                                 "tg":  "la nuit",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "любовь",
+                                 "tg":  "l\u0027amour",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "деньги",
+                                 "tg":  "l\u0027argent",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "время",
+                                 "tg":  "le temps",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "работа",
+                                 "tg":  "le travail",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "школа",
+                                 "tg":  "l\u0027école",
+                                 "tr":  ""
+                             }
+                         ]
+           },
+    "de":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "Hallo",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "Guten Tag",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "Auf Wiedersehen",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "Danke",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "Bitte",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "Entschuldigung",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "Ja",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "Nein",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "Guten Morgen",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спокойной ночи",
+                                       "tg":  "Gute Nacht",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До завтра",
+                                       "tg":  "Bis morgen",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пока",
+                                       "tg":  "Tschüss",
+                                       "tr":  ""
+                                   }
+                               ],
+               "Семья":  [
+                             {
+                                 "ru":  "мама",
+                                 "tg":  "die Mutter",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "папа",
+                                 "tg":  "der Vater",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "сестра",
+                                 "tg":  "die Schwester",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "брат",
+                                 "tg":  "der Bruder",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "бабушка",
+                                 "tg":  "die Oma",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дедушка",
+                                 "tg":  "der Opa",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "семья",
+                                 "tg":  "die Familie",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "друг",
+                                 "tg":  "der Freund",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "подруга",
+                                 "tg":  "die Freundin",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дочь",
+                                 "tg":  "die Tochter",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "сын",
+                                 "tg":  "der Sohn",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "ребёнок",
+                                 "tg":  "das Kind",
+                                 "tr":  ""
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "вода",
+                               "tg":  "das Wasser",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "хлеб",
+                               "tg":  "das Brot",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "чай",
+                               "tg":  "der Tee",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "кофе",
+                               "tg":  "der Kaffee",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "молоко",
+                               "tg":  "die Milch",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "сыр",
+                               "tg":  "der Käse",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "курица",
+                               "tg":  "das Huhn",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "яблоко",
+                               "tg":  "der Apfel",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "суп",
+                               "tg":  "die Suppe",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "сахар",
+                               "tg":  "der Zucker",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "соль",
+                               "tg":  "das Salz",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "пирог",
+                               "tg":  "der Kuchen",
+                               "tr":  ""
+                           }
+                       ],
+               "Слова":  [
+                             {
+                                 "ru":  "дом",
+                                 "tg":  "das Haus",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "город",
+                                 "tg":  "die Stadt",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "улица",
+                                 "tg":  "die Straße",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "солнце",
+                                 "tg":  "die Sonne",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дождь",
+                                 "tg":  "der Regen",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "день",
+                                 "tg":  "der Tag",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "ночь",
+                                 "tg":  "die Nacht",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "любовь",
+                                 "tg":  "die Liebe",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "деньги",
+                                 "tg":  "das Geld",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "время",
+                                 "tg":  "die Zeit",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "работа",
+                                 "tg":  "die Arbeit",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "школа",
+                                 "tg":  "die Schule",
+                                 "tr":  ""
+                             }
+                         ]
+           },
+    "no":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "Hei",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Здравствуйте",
+                                       "tg":  "God dag",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "På gjensyn",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "Takk",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "Vær så snill",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "Unnskyld",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "Ja",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "Nei",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "God morgen",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Спокойной ночи",
+                                       "tg":  "God natt",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "До завтра",
+                                       "tg":  "Vi ses i morgen",
+                                       "tr":  ""
+                                   },
+                                   {
+                                       "ru":  "Пока",
+                                       "tg":  "Ha det",
+                                       "tr":  ""
+                                   }
+                               ],
+               "Семья":  [
+                             {
+                                 "ru":  "мама",
+                                 "tg":  "mor",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "папа",
+                                 "tg":  "far",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "сестра",
+                                 "tg":  "søster",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "брат",
+                                 "tg":  "bror",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "бабушка",
+                                 "tg":  "bestemor",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дедушка",
+                                 "tg":  "bestefar",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "семья",
+                                 "tg":  "familie",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "друг",
+                                 "tg":  "venn",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "подруга",
+                                 "tg":  "venninne",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дочь",
+                                 "tg":  "datter",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "сын",
+                                 "tg":  "sønn",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "ребёнок",
+                                 "tg":  "barn",
+                                 "tr":  ""
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "вода",
+                               "tg":  "vann",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "хлеб",
+                               "tg":  "brød",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "чай",
+                               "tg":  "te",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "кофе",
+                               "tg":  "kaffe",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "молоко",
+                               "tg":  "melk",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "сыр",
+                               "tg":  "ost",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "курица",
+                               "tg":  "kylling",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "яблоко",
+                               "tg":  "eple",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "суп",
+                               "tg":  "suppe",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "сахар",
+                               "tg":  "sukker",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "соль",
+                               "tg":  "salt",
+                               "tr":  ""
+                           },
+                           {
+                               "ru":  "пирог",
+                               "tg":  "kake",
+                               "tr":  ""
+                           }
+                       ],
+               "Слова":  [
+                             {
+                                 "ru":  "дом",
+                                 "tg":  "hus",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "город",
+                                 "tg":  "by",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "улица",
+                                 "tg":  "gate",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "солнце",
+                                 "tg":  "sol",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "дождь",
+                                 "tg":  "regn",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "день",
+                                 "tg":  "dag",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "ночь",
+                                 "tg":  "natt",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "любовь",
+                                 "tg":  "kjærlighet",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "деньги",
+                                 "tg":  "penger",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "время",
+                                 "tg":  "tid",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "работа",
+                                 "tg":  "arbeid",
+                                 "tr":  ""
+                             },
+                             {
+                                 "ru":  "школа",
+                                 "tg":  "skole",
+                                 "tr":  ""
+                             }
+                         ]
+           },
+    "ar":  {
+               "Приветствия":  [
+                                   {
+                                       "ru":  "Привет",
+                                       "tg":  "مرحبا",
+                                       "tr":  "marhaba"
+                                   },
+                                   {
+                                       "ru":  "Доброе утро",
+                                       "tg":  "صباح الخير",
+                                       "tr":  "sabah al-khair"
+                                   },
+                                   {
+                                       "ru":  "Добрый вечер",
+                                       "tg":  "مساء الخير",
+                                       "tr":  "masaa al-khair"
+                                   },
+                                   {
+                                       "ru":  "Спасибо",
+                                       "tg":  "شكرا",
+                                       "tr":  "shukran"
+                                   },
+                                   {
+                                       "ru":  "Пожалуйста",
+                                       "tg":  "من فضلك",
+                                       "tr":  "min fadlik"
+                                   },
+                                   {
+                                       "ru":  "Извините",
+                                       "tg":  "آسف",
+                                       "tr":  "aasif"
+                                   },
+                                   {
+                                       "ru":  "Да",
+                                       "tg":  "نعم",
+                                       "tr":  "naam"
+                                   },
+                                   {
+                                       "ru":  "Нет",
+                                       "tg":  "لا",
+                                       "tr":  "la"
+                                   },
+                                   {
+                                       "ru":  "Как дела?",
+                                       "tg":  "كيف حالك؟",
+                                       "tr":  "kayfa haluk?"
+                                   },
+                                   {
+                                       "ru":  "Спокойной ночи",
+                                       "tg":  "تصبح على خير",
+                                       "tr":  "tusbih ala khair"
+                                   },
+                                   {
+                                       "ru":  "До свидания",
+                                       "tg":  "إلى اللقاء",
+                                       "tr":  "ila al-liqa"
+                                   },
+                                   {
+                                       "ru":  "Пока",
+                                       "tg":  "وداعا",
+                                       "tr":  "wadaan"
+                                   }
+                               ],
+               "Семья":  [
+                             {
+                                 "ru":  "мама",
+                                 "tg":  "أم",
+                                 "tr":  "umm"
+                             },
+                             {
+                                 "ru":  "папа",
+                                 "tg":  "أب",
+                                 "tr":  "ab"
+                             },
+                             {
+                                 "ru":  "сестра",
+                                 "tg":  "أخت",
+                                 "tr":  "ukht"
+                             },
+                             {
+                                 "ru":  "брат",
+                                 "tg":  "أخ",
+                                 "tr":  "akh"
+                             },
+                             {
+                                 "ru":  "бабушка",
+                                 "tg":  "جدة",
+                                 "tr":  "jadda"
+                             },
+                             {
+                                 "ru":  "дедушка",
+                                 "tg":  "جد",
+                                 "tr":  "jadd"
+                             },
+                             {
+                                 "ru":  "семья",
+                                 "tg":  "عائلة",
+                                 "tr":  "aa\u0027ila"
+                             },
+                             {
+                                 "ru":  "друг",
+                                 "tg":  "صديق",
+                                 "tr":  "sadiq"
+                             },
+                             {
+                                 "ru":  "подруга",
+                                 "tg":  "صديقة",
+                                 "tr":  "sadiqa"
+                             },
+                             {
+                                 "ru":  "дочь",
+                                 "tg":  "ابنة",
+                                 "tr":  "ibna"
+                             },
+                             {
+                                 "ru":  "сын",
+                                 "tg":  "ابن",
+                                 "tr":  "ibn"
+                             },
+                             {
+                                 "ru":  "ребёнок",
+                                 "tg":  "طفل",
+                                 "tr":  "tifl"
+                             }
+                         ],
+               "Еда":  [
+                           {
+                               "ru":  "вода",
+                               "tg":  "ماء",
+                               "tr":  "maa"
+                           },
+                           {
+                               "ru":  "хлеб",
+                               "tg":  "خبز",
+                               "tr":  "khubz"
+                           },
+                           {
+                               "ru":  "чай",
+                               "tg":  "شاي",
+                               "tr":  "shay"
+                           },
+                           {
+                               "ru":  "кофе",
+                               "tg":  "قهوة",
+                               "tr":  "qahwa"
+                           },
+                           {
+                               "ru":  "молоко",
+                               "tg":  "حليب",
+                               "tr":  "halib"
+                           },
+                           {
+                               "ru":  "сыр",
+                               "tg":  "جبنة",
+                               "tr":  "jubna"
+                           },
+                           {
+                               "ru":  "курица",
+                               "tg":  "دجاج",
+                               "tr":  "dajaj"
+                           },
+                           {
+                               "ru":  "яблоко",
+                               "tg":  "تفاحة",
+                               "tr":  "tuffaha"
+                           },
+                           {
+                               "ru":  "суп",
+                               "tg":  "حساء",
+                               "tr":  "hasaa"
+                           },
+                           {
+                               "ru":  "сахар",
+                               "tg":  "سكر",
+                               "tr":  "sukkar"
+                           },
+                           {
+                               "ru":  "соль",
+                               "tg":  "ملح",
+                               "tr":  "milh"
+                           },
+                           {
+                               "ru":  "пирог",
+                               "tg":  "كعكة",
+                               "tr":  "ka\u0027ka"
+                           }
+                       ],
+               "Слова":  [
+                             {
+                                 "ru":  "дом",
+                                 "tg":  "بيت",
+                                 "tr":  "bayt"
+                             },
+                             {
+                                 "ru":  "город",
+                                 "tg":  "مدينة",
+                                 "tr":  "madina"
+                             },
+                             {
+                                 "ru":  "улица",
+                                 "tg":  "شارع",
+                                 "tr":  "shari\u0027"
+                             },
+                             {
+                                 "ru":  "солнце",
+                                 "tg":  "شمس",
+                                 "tr":  "shams"
+                             },
+                             {
+                                 "ru":  "дождь",
+                                 "tg":  "مطر",
+                                 "tr":  "matar"
+                             },
+                             {
+                                 "ru":  "день",
+                                 "tg":  "يوم",
+                                 "tr":  "yawm"
+                             },
+                             {
+                                 "ru":  "ночь",
+                                 "tg":  "ليل",
+                                 "tr":  "layl"
+                             },
+                             {
+                                 "ru":  "любовь",
+                                 "tg":  "حب",
+                                 "tr":  "hubb"
+                             },
+                             {
+                                 "ru":  "деньги",
+                                 "tg":  "نقود",
+                                 "tr":  "nuqud"
+                             },
+                             {
+                                 "ru":  "время",
+                                 "tg":  "وقت",
+                                 "tr":  "waqt"
+                             },
+                             {
+                                 "ru":  "работа",
+                                 "tg":  "عمل",
+                                 "tr":  "amal"
+                             },
+                             {
+                                 "ru":  "школа",
+                                 "tg":  "مدرسة",
+                                 "tr":  "madrasa"
+                             }
+                         ]
+           }
+};
+const META = {
+  ru:{flag:"🇷🇺",name:"Русский",voice:"ru-RU",native:"Русский"},
+  en:{flag:"🇬🇧",name:"Английский",voice:"en-GB",native:"English"},
+  de:{flag:"🇩🇪",name:"Немецкий",voice:"de-DE",native:"Deutsch"},
+  es:{flag:"🇪🇸",name:"Испанский",voice:"es-ES",native:"Español"},
+  it:{flag:"🇮🇹",name:"Итальянский",voice:"it-IT",native:"Italiano"},
+  fr:{flag:"🇫🇷",name:"Французский",voice:"fr-FR",native:"Français"},
+  tr:{flag:"🇹🇷",name:"Турецкий",voice:"tr-TR",native:"Türkçe"},
+  no:{flag:"🇳🇴",name:"Норвежский",voice:"nb-NO",native:"Norsk"},
+  hi:{flag:"🇮🇳",name:"Хинди",voice:"hi-IN",native:"हिन्दी"},
+  zh:{flag:"🇨🇳",name:"Китайский",voice:"zh-CN",native:"中文"},
+  ar:{flag:"🇸🇦",name:"Арабский",voice:"ar-SA",native:"العربية"}
+};
+let audio = null;
+let state = null;
+const TOTAL = 12;
+const gameEl = document.getElementById('game');
+
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  document.querySelectorAll('.spk.speaking').forEach(b => { b.dataset.on=''; b.classList.remove('speaking'); });
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = META[lang] ? META[lang].voice : lang;
+  const voices = window.speechSynthesis.getVoices();
+  const v = voices.find(x => x.lang && x.lang.toLowerCase().startsWith((META[lang]?META[lang].voice:lang).toLowerCase().slice(0,2))) || null;
+  if (v) u.voice = v;
+  u.rate = 0.85;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+function shuffle(a){
+  const arr = a.slice();
+  for (let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function picker(){
+  const codes = Object.keys(LANGS);
+  let html = '<div class="pick-grid">';
+  codes.forEach(c => {
+    const m = META[c] || {flag:"🌐",name:c,sub:c};
+    html += '<button class="lchip" onclick="pick(\\\''+c+'\\\')"><span class="fl">'+m.flag+'</span><span class="ln">'+m.name+'</span><span class="lsub">'+c.toUpperCase()+'</span></button>';
+  });
+  html += '</div>';
+  gameEl.innerHTML = html;
+}
+function flatten(lang){
+  const out = [];
+  for (const t in LANGS[lang]){
+    LANGS[lang][t].forEach(w => out.push({ru:w.ru, tg:w.tg, tr:w.tr||'', topic:t}));
+  }
+  return out;
+}
+function pick(c){
+  const wlist = flatten(c);
+  state = {
+    lang: c, dir: 0, wlist: wlist,
+    qs: [], qi: 0, score: 0, lives: 3, streak: 0,
+    mistakes: [], started: false
+  };
+  const targets = shuffle(wlist).slice(0, TOTAL);
+  targets.forEach(word => {
+    const options = [word];
+    while (options.length < 4){
+      const cand = wlist[Math.floor(Math.random() * wlist.length)];
+      if (!options.some(o => o.tg === cand.tg)) options.push(cand);
+    }
+    state.qs.push({ word: word, options: shuffle(options) });
+  });
+  render();
+}
+function render(){
+  const s = state;
+  const q = s.qs[s.qi];
+  const toTg = s.dir === 0;
+  const m = META[s.lang];
+  let html = '<div class="topbar"><div class="hearts" id="hearts" style="color:var(--accent)">'+('❤️'.repeat(Math.max(0,s.lives)))+('🤍'.repeat(Math.max(0,3-s.lives)))+'</div><div class="score">⭐ '+s.score+'</div></div>';
+  html += '<div class="streak" style="text-align:center;margin-bottom:6px">🔥 серия: '+s.streak+' · '+(toTg?'<b>'+m.flag+' → 🇷🇺</b>':'🇷🇺 → <b>'+m.flag+'</b>')+' <button class="gbtn" style="padding:5px 14px;font-size:.75rem" onclick="toggleDir()">↕</button></div>';
+  html += '<div class="prog-bar"><div class="prog-fill" style="width:'+(s.qi/TOTAL*100)+'%"></div></div>';
+  html += '<div class="word-card">';
+  html += '<div class="direction">'+(toTg ? m.native+' → русский' : 'русский → '+m.native)+' · '+(s.qi+1)+' / '+TOTAL+'</div>';
+  html += '<div class="word-big">'+esc(toTg ? q.word.tg : q.word.ru)+'</div>';
+  if (toTg && q.word.tr) html += '<div class="word-tran">'+esc(q.word.tr)+'</div>';
+  html += '<div class="word-topic"><span class="tag">'+esc(q.word.topic)+'</span></div>';
+  html += '<button class="spk" onclick="sayWord()">🔊 Прослушать</button>';
+  html += '</div>';
+  html += '<div class="answers">';
+  q.options.forEach((opt, i) => {
+    const label = toTg ? opt.ru : opt.tg;
+    const sub = (!toTg && opt.tr) ? opt.tr : '';
+    html += '<button class="answer" id="ans'+i+'" onclick="answer('+i+')"><span>'+(toTg||i>=0?esc(label):esc(label))+'</span>'+((!toTg && sub)?'<span class="atr">'+esc(sub)+'</span>':'')+'</button>';
+  });
+  html += '</div><div class="feedback" id="fb"></div>';
+  gameEl.innerHTML = html;
+}
+function sayWord(){
+  const s = state; if (!s) return;
+  const q = s.qs[s.qi];
+  const toTg = s.dir === 0;
+  speak(s.lang, toTg ? q.word.tg : q.word.ru, event.target);
+}
+function toggleDir(){
+  if (!state) return;
+  state.dir = 1 - state.dir;
+  render();
+}
+function answer(i){
+  const s = state;
+  const q = s.qs[s.qi];
+  const qEl = document.querySelectorAll('.answer');
+  const fb = document.getElementById('fb');
+  const correct = s.dir === 0 ? q.word.ru : q.word.tg;
+  const picked = s.dir === 0 ? q.options[i].ru : q.options[i].tg;
+  qEl.forEach(b => b.disabled = true);
+  const correctIdx = q.options.findIndex(o => (s.dir===0?o.ru:o.tg) === correct);
+  qEl[correctIdx].classList.add('good');
+  if (i === correctIdx){
+    s.score += 10 + s.streak * 2;
+    s.streak++;
+    fb.className = 'feedback good';
+    fb.textContent = '✅ Верно!';
+  } else {
+    qEl[i].classList.add('bad');
+    s.lives--;
+    s.streak = 0;
+    fb.className = 'feedback bad';
+    fb.textContent = '❌ Верно: ' + correct;
+    s.mistakes.push({ q: s.dir===0?q.word.tg:(q.word.ru+(q.word.tr?' ('+q.word.tr+')':'')), a: correct, pg: (s.dir===0?q.word.ru:q.word.tg+(q.word.tr?' ('+q.word.tr+')':'')) });
+  }
+  setTimeout(() => {
+    s.qi++;
+    if (s.lives <= 0 || s.qi >= s.qs.length) { results(); return; }
+    render();
+  }, 1100);
+}
+function results(){
+  const s = state;
+  const m = META[s.lang];
+  const total = s.qs.length;
+  const accuracy = Math.round((s.score / (total * 22)) * 100);
+  let html = '<div class="results">';
+  html += '<div class="big-num">'+s.score+' ⭐</div>';
+  html += '<div class="rsub">'+m.flag+' '+m.name+' · '+s.wlist.length+' слов в словаре</div>';
+  html += '<div class="stats"><div class="stat"><b>'+s.score+'</b><span>очков</span></div><div class="stat"><b>'+total+'</b><span>вопросов</span></div><div class="stat"><b style="color:var(--accent)">'+s.mistakes.length+'</b><span>ошибок</span></div></div>';
+  if (s.mistakes.length){
+    html += '<div class="mistakes"><h3>Повтори</h3>';
+    s.mistakes.forEach(mm => {
+      html += '<div class="mistake"><span class="q">'+esc(mm.q)+'</span><span class="a">'+esc(mm.a)+'</span></div>';
+    });
+    html += '</div>';
+  }
+  html += '<div class="btnrow"><button class="gbtn prime" onclick="pick(\''+s.lang+'\')">🔁 Играть ещё</button><button class="gbtn" onclick="picker()">🌐 Выбрать язык</button></div>';
+  html += '</div>';
+  gameEl.innerHTML = html;
+}
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+picker();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>

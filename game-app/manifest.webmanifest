@@ -1,0 +1,32 @@
+﻿{
+    "description":  "Тренажёр слов на 10 языках: выбирай язык и учи слова в игре с озвучкой",
+    "short_name":  "Языки: игра",
+    "background_color":  "#0a1220",
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-maskable-512.png"
+                  }
+              ],
+    "lang":  "ru",
+    "orientation":  "portrait",
+    "theme_color":  "#1d4ed8",
+    "display":  "standalone",
+    "name":  "Выучи любой язык — игра",
+    "scope":  "./",
+    "start_url":  "./"
+}
