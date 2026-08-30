@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#b45309">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Три поросёнка — хинди — с переводом и озвучкой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --bg:#0a1220;--bg2:#0e1729;--card:#101a2e;--card2:#132036;
+  --ink:#eef2fb;--ink2:#a9b6d1;--accent:#fbbf24;--accent2:#b45309;
+  --gold:#f5c06b;--line:rgba(251,191,36,.18);--soft:rgba(251,191,36,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Manrope',sans-serif;line-height:1.65}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+header{padding:70px 0 46px;text-align:center}
+.kicker{display:inline-block;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:700;margin-bottom:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,54px);font-weight:600;line-height:1.1}
+header p{color:var(--ink2);max-width:64ch;margin:16px auto 0;font-weight:300}
+section.lang{padding:30px 0 40px}
+.lang-head{display:flex;align-items:center;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.lang-n{font-size:12px;font-weight:800;letter-spacing:.2em;color:#081226;background:linear-gradient(135deg,var(--accent),var(--accent2));padding:6px 14px;border-radius:999px}
+.lang-head h2{font-family:'Playfair Display',serif;font-size:clamp(24px,3.6vw,36px);font-weight:600}
+.spk{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--accent);font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;padding:8px 16px;border-radius:999px;cursor:pointer;transition:background .2s,border-color .2s}
+.spk:hover{background:var(--soft);border-color:var(--accent)}
+.spk.big{margin-left:auto}
+.spk.speaking{background:var(--accent);color:#081226;border-color:var(--accent)}
+#tgl{color:var(--gold)}
+.sub{font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:26px 0 14px}
+.sub:first-of-type{margin-top:20px}
+.ww{display:flex;flex-direction:column;gap:0}
+.sent{display:flex;align-items:flex-start;gap:12px;padding:10px 4px;border-bottom:1px dashed rgba(255,255,255,.05)}
+.sent .spk{flex:0 0 auto;margin-top:6px;width:36px;height:36px;padding:0;justify-content:center;border-radius:50%}
+.sent .words{display:flex;flex-wrap:wrap;gap:8px}
+.w{display:flex;flex-direction:column;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:90px;cursor:pointer;transition:border-color .15s,background .15s}
+.w:hover{border-color:var(--accent)}
+.w.speaking{background:var(--soft);border-color:var(--accent)}
+.w-t{font-weight:700;font-size:16px;line-height:1.5;color:var(--ink)}
+.w-t[dir="rtl"]{text-align:right;font-size:17px}
+.w-d{font-size:12px;color:var(--ink2);font-weight:400}
+.fulltext{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 24px;font-size:18px;line-height:2;color:var(--ink);unicode-bidi:embed}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px}
+footer span{color:var(--accent)}
+@media print{.nav,.spk{display:none}body{background:#fff;color:#000}.w{background:#fff;border:1px solid #ccc}.fulltext{background:#fff;border:1px solid #ccc;color:#000}}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#081226;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Manrope',sans-serif}</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить приложение</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Сказка с переводом</span>
+    <h1>Три поросёнка</h1>
+    <p>Версия на хинди (हिन्दी): читаем сказку слово за словом с переводом на русский и озвучкой. Нажмите на слово — оно озвучится. ▶ озвучивает предложение. Кнопка «Переключить язык» меняет направление. Ctrl+P — сохранить в PDF.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<section class="lang hindi" id="hindi"><div class="lang-head"><span class="lang-n">HI</span><h2>🇮🇳 Версия на хинди (हिन्दी) → Русский</h2><button class="spk big" data-lang="hi-IN" data-text="एक बार की बात है, तीन छोटे सूअर थे। उनके नाम थे निफ़-निफ़, नफ़-नफ़ और नुफ़-नुफ़। पूरी गर्मी उन्होंने खेल-खेल में बिताई। लेकिन पतझड़ में ठंड हो गई। घर बनाने का समय आ गया, नफ़-नफ़ ने कहा। लेकिन भाइयों ने उसकी नहीं सुनी। निफ़-निफ़ ने भूसे का घर बनाया। यह जल्दी और आसान था। नुफ़-नुफ़ ने टहनियों का घर बनाया। बहुत जल्दी भी। और नफ़-नफ़ ने पूरे दिन काम किया और ईंटों का घर बनाया। कैसा घर है! भाई हँसे। जंगल में एक गुस्सैल भूखा भेड़िया रहता था। उसे सूअरों के बारे में पता चला और वह भूसे के घर आया। खोलो! भेड़िये ने चिल्लाया। नहीं तो मैं फूँकूँगा और तुम्हारा घर गिरा दूँगा। सूअर ने नहीं खोला। भेड़िये ने फूँका और भूसे का घर उड़ गया। निफ़-निफ़ नुफ़-नुफ़ के पास भागा। भेड़िया टहनियों के घर भी आया। फूँका — और टहनियाँ उड़ गईं। दोनों सूअर नफ़-नफ़ के पास भागे। भेड़िये ने फूँका और फूँका, लेकिन ईंटों का घर नहीं गिरा। तब भेड़िया छत पर चढ़ गया और चिमनी से नीचे उतरा। नफ़-नफ़ ने तुरंत बर्तन का ढक्कन बंद किया। भेड़िया सीधे उबलते पानी में गिरा। वह बाहर कूदा और जंगल में भाग गया। और किसी ने उसे फिर कभी नहीं देखा। और तीनों सूअर एक साथ रहने लगे मजबूत ईंटों के घर में।" data-ru="Жили-были три поросёнка. Их звали Ниф-Ниф, Наф-Наф и Нуф-Нуф. Всё лето они играли и веселились. А осенью стало холодно. Пора строить дом, сказал Наф-Наф. Но братья не слушали его. Ниф-Ниф построил дом из соломы. Это было быстро и легко. Нуф-Нуф построил дом из веток. Тоже очень быстро. А Наф-Наф работал весь день и построил дом из кирпича. Какой это дом! смеялись братья. В лесу жил злой голодный волк. Он узнал про поросят и пришёл к соломенному дому. Открой! крикнул волк. Или я подую и сломаю твой дом. Поросёнок не открыл. Волк подул, и соломенный дом разлетелся. Ниф-Ниф побежал к Нуф-Нуфу. Волк пришёл и к дому из веток. Подул — и ветки разлетелись. Оба поросёнка побежали к Наф-Нафу. Волк дул и дул, но кирпичный дом не сломался. Тогда волк залез на крышу и полез в трубу. Наф-Наф быстро закрыл крышку котла. Волк упал прямо в кипяток. Он выскочил и убежал в лес. И больше его никто не видел. А три поросёнка стали жить вместе в крепком кирпичном доме.">▶ Озвучить весь текст</button><button class="spk" id="tgl" onclick="toggleLang()">Направление: Версия на хинди (हिन्दी) → Русский</button></div><h3 class="sub">Слово за словом · перевод на русский</h3><div class="ww">
+<div class="sent"><button class="spk" data-lang="hi-IN" data-text="एक बार की बात है, तीन छोटे सूअर थे उनके नाम थे निफ़-निफ़, नफ़-नफ़ और नुफ़-नुफ़ पूरी गर्मी उन्होंने खेल-खेल में बिताई लेकिन पतझड़ में ठंड हो गई घर बनाने का समय आ गया, नफ़-नफ़ ने कहा" data-tl="एक बार की बात है, तीन छोटे सूअर थे उनके नाम थे निफ़-निफ़, नफ़-नफ़ और नुफ़-नुफ़ पूरी गर्मी उन्होंने खेल-खेल में बिताई लेकिन पतझड़ में ठंड हो गई घर बनाने का समय आ गया, नफ़-नफ़ ने कहा" data-ru="Жили-были три поросёнка Их звали Ниф-Ниф, Наф-Наф и Нуф-Нуф Всё лето они играли и веселились А осенью стало холодно Пора строить дом, сказал Наф-Наф" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">एक बार की बात है, तीन छोटे सूअर थे</span><span class="w-d">Жили-были три поросёнка</span></div><div class="w"><span class="w-t">उनके नाम थे निफ़-निफ़, नफ़-नफ़ और नुफ़-नुफ़</span><span class="w-d">Их звали Ниф-Ниф, Наф-Наф и Нуф-Нуф</span></div><div class="w"><span class="w-t">पूरी गर्मी उन्होंने खेल-खेल में बिताई</span><span class="w-d">Всё лето они играли и веселились</span></div><div class="w"><span class="w-t">लेकिन पतझड़ में ठंड हो गई</span><span class="w-d">А осенью стало холодно</span></div><div class="w"><span class="w-t">घर बनाने का समय आ गया,</span><span class="w-d">Пора строить дом,</span></div><div class="w"><span class="w-t">नफ़-नफ़ ने कहा</span><span class="w-d">сказал Наф-Наф</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="hi-IN" data-text="लेकिन भाइयों ने उसकी नहीं सुनी निफ़-निफ़ ने भूसे का घर बनाया यह जल्दी और आसान था नुफ़-नुफ़ ने टहनियों का घर बनाया बहुत जल्दी भी और नफ़-नफ़ ने पूरे दिन काम किया" data-tl="लेकिन भाइयों ने उसकी नहीं सुनी निफ़-निफ़ ने भूसे का घर बनाया यह जल्दी और आसान था नुफ़-नुफ़ ने टहनियों का घर बनाया बहुत जल्दी भी और नफ़-नफ़ ने पूरे दिन काम किया" data-ru="Но братья не слушали его Ниф-Ниф построил дом из соломы Это было быстро и легко Нуф-Нуф построил дом из веток Тоже очень быстро А Наф-Наф работал весь день" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">लेकिन भाइयों ने उसकी नहीं सुनी</span><span class="w-d">Но братья не слушали его</span></div><div class="w"><span class="w-t">निफ़-निफ़ ने भूसे का घर बनाया</span><span class="w-d">Ниф-Ниф построил дом из соломы</span></div><div class="w"><span class="w-t">यह जल्दी और आसान था</span><span class="w-d">Это было быстро и легко</span></div><div class="w"><span class="w-t">नुफ़-नुफ़ ने टहनियों का घर बनाया</span><span class="w-d">Нуф-Нуф построил дом из веток</span></div><div class="w"><span class="w-t">बहुत जल्दी भी</span><span class="w-d">Тоже очень быстро</span></div><div class="w"><span class="w-t">और नफ़-नफ़ ने पूरे दिन काम किया</span><span class="w-d">А Наф-Наф работал весь день</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="hi-IN" data-text="और ईंटों का घर बनाया कैसा घर है! भाई हँसे जंगल में एक गुस्सैल भूखा भेड़िया रहता था उसे सूअरों के बारे में पता चला और वह भूसे के घर आया" data-tl="और ईंटों का घर बनाया कैसा घर है! भाई हँसे जंगल में एक गुस्सैल भूखा भेड़िया रहता था उसे सूअरों के बारे में पता चला और वह भूसे के घर आया" data-ru="И построил дом из кирпича Какой это дом! смеялись братья В лесу жил злой голодный волк Он узнал про поросят и пришёл к соломенному дому" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">और ईंटों का घर बनाया</span><span class="w-d">И построил дом из кирпича</span></div><div class="w"><span class="w-t">कैसा घर है!</span><span class="w-d">Какой это дом!</span></div><div class="w"><span class="w-t">भाई हँसे</span><span class="w-d">смеялись братья</span></div><div class="w"><span class="w-t">जंगल में एक गुस्सैल भूखा भेड़िया रहता था</span><span class="w-d">В лесу жил злой голодный волк</span></div><div class="w"><span class="w-t">उसे सूअरों के बारे में पता चला</span><span class="w-d">Он узнал про поросят</span></div><div class="w"><span class="w-t">और वह भूसे के घर आया</span><span class="w-d">и пришёл к соломенному дому</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="hi-IN" data-text="खोलो! भेड़िये ने चिल्लाया नहीं तो मैं फूँकूँगा और तुम्हारा घर गिरा दूँगा सूअर ने नहीं खोला भेड़िये ने फूँका और भूसे का घर उड़ गया" data-tl="खोलो! भेड़िये ने चिल्लाया नहीं तो मैं फूँकूँगा और तुम्हारा घर गिरा दूँगा सूअर ने नहीं खोला भेड़िये ने फूँका और भूसे का घर उड़ गया" data-ru="Открой! крикнул волк Или я подую и сломаю твой дом Поросёнок не открыл Волк подул и соломенный дом разлетелся" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">खोलो!</span><span class="w-d">Открой!</span></div><div class="w"><span class="w-t">भेड़िये ने चिल्लाया</span><span class="w-d">крикнул волк</span></div><div class="w"><span class="w-t">नहीं तो मैं फूँकूँगा और तुम्हारा घर गिरा दूँगा</span><span class="w-d">Или я подую и сломаю твой дом</span></div><div class="w"><span class="w-t">सूअर ने नहीं खोला</span><span class="w-d">Поросёнок не открыл</span></div><div class="w"><span class="w-t">भेड़िये ने फूँका</span><span class="w-d">Волк подул</span></div><div class="w"><span class="w-t">और भूसे का घर उड़ गया</span><span class="w-d">и соломенный дом разлетелся</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="hi-IN" data-text="निफ़-निफ़ नुफ़-नुफ़ के पास भागा भेड़िया टहनियों के घर भी आया फूँका — और टहनियाँ उड़ गईं दोनों सूअर नफ़-नफ़ के पास भागे भेड़िये ने फूँका और फूँका लेकिन ईंटों का घर नहीं गिरा" data-tl="निफ़-निफ़ नुफ़-नुफ़ के पास भागा भेड़िया टहनियों के घर भी आया फूँका — और टहनियाँ उड़ गईं दोनों सूअर नफ़-नफ़ के पास भागे भेड़िये ने फूँका और फूँका लेकिन ईंटों का घर नहीं गिरा" data-ru="Ниф-Ниф побежал к Нуф-Нуфу Волк пришёл и к дому из веток Подул — и ветки разлетелись Оба поросёнка побежали к Наф-Нафу Волк дул и дул но кирпичный дом не сломался" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">निफ़-निफ़ नुफ़-नुफ़ के पास भागा</span><span class="w-d">Ниф-Ниф побежал к Нуф-Нуфу</span></div><div class="w"><span class="w-t">भेड़िया टहनियों के घर भी आया</span><span class="w-d">Волк пришёл и к дому из веток</span></div><div class="w"><span class="w-t">फूँका — और टहनियाँ उड़ गईं</span><span class="w-d">Подул — и ветки разлетелись</span></div><div class="w"><span class="w-t">दोनों सूअर नफ़-नफ़ के पास भागे</span><span class="w-d">Оба поросёнка побежали к Наф-Нафу</span></div><div class="w"><span class="w-t">भेड़िये ने फूँका और फूँका</span><span class="w-d">Волк дул и дул</span></div><div class="w"><span class="w-t">लेकिन ईंटों का घर नहीं गिरा</span><span class="w-d">но кирпичный дом не сломался</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="hi-IN" data-text="तब भेड़िया छत पर चढ़ गया और चिमनी से नीचे उतरा नफ़-नफ़ ने तुरंत बर्तन का ढक्कन बंद किया भेड़िया सीधे उबलते पानी में गिरा वह बाहर कूदा और जंगल में भाग गया और किसी ने उसे फिर कभी नहीं देखा" data-tl="तब भेड़िया छत पर चढ़ गया और चिमनी से नीचे उतरा नफ़-नफ़ ने तुरंत बर्तन का ढक्कन बंद किया भेड़िया सीधे उबलते पानी में गिरा वह बाहर कूदा और जंगल में भाग गया और किसी ने उसे फिर कभी नहीं देखा" data-ru="Тогда волк залез на крышу и полез в трубу Наф-Наф быстро закрыл крышку котла Волк упал прямо в кипяток Он выскочил и убежал в лес И больше его никто не видел" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">तब भेड़िया छत पर चढ़ गया</span><span class="w-d">Тогда волк залез на крышу</span></div><div class="w"><span class="w-t">और चिमनी से नीचे उतरा</span><span class="w-d">и полез в трубу</span></div><div class="w"><span class="w-t">नफ़-नफ़ ने तुरंत बर्तन का ढक्कन बंद किया</span><span class="w-d">Наф-Наф быстро закрыл крышку котла</span></div><div class="w"><span class="w-t">भेड़िया सीधे उबलते पानी में गिरा</span><span class="w-d">Волк упал прямо в кипяток</span></div><div class="w"><span class="w-t">वह बाहर कूदा और जंगल में भाग गया</span><span class="w-d">Он выскочил и убежал в лес</span></div><div class="w"><span class="w-t">और किसी ने उसे फिर कभी नहीं देखा</span><span class="w-d">И больше его никто не видел</span></div></div></div>
+<div class="sent"><button class="spk" data-lang="hi-IN" data-text="और तीनों सूअर एक साथ रहने लगे मजबूत ईंटों के घर में" data-tl="और तीनों सूअर एक साथ रहने लगे मजबूत ईंटों के घर में" data-ru="А три поросёнка стали жить вместе в крепком кирпичном доме" title="Озвучить предложение">▶</button><div class="words"><div class="w"><span class="w-t">और तीनों सूअर एक साथ रहने लगे</span><span class="w-d">А три поросёнка стали жить вместе</span></div><div class="w"><span class="w-t">मजबूत ईंटों के घर में</span><span class="w-d">в крепком кирпичном доме</span></div></div></div></div><h3 class="sub">Весь текст</h3><div class="fulltext" dir="ltr">एक बार की बात है, तीन छोटे सूअर थे। उनके नाम थे निफ़-निफ़, नफ़-नफ़ और नुफ़-नुफ़। पूरी गर्मी उन्होंने खेल-खेल में बिताई। लेकिन पतझड़ में ठंड हो गई। घर बनाने का समय आ गया, नफ़-नफ़ ने कहा। लेकिन भाइयों ने उसकी नहीं सुनी। निफ़-निफ़ ने भूसे का घर बनाया। यह जल्दी और आसान था। नुफ़-नुफ़ ने टहनियों का घर बनाया। बहुत जल्दी भी। और नफ़-नफ़ ने पूरे दिन काम किया और ईंटों का घर बनाया। कैसा घर है! भाई हँसे। जंगल में एक गुस्सैल भूखा भेड़िया रहता था। उसे सूअरों के बारे में पता चला और वह भूसे के घर आया। खोलो! भेड़िये ने चिल्लाया। नहीं तो मैं फूँकूँगा और तुम्हारा घर गिरा दूँगा। सूअर ने नहीं खोला। भेड़िये ने फूँका और भूसे का घर उड़ गया। निफ़-निफ़ नुफ़-नुफ़ के पास भागा। भेड़िया टहनियों के घर भी आया। फूँका — और टहनियाँ उड़ गईं। दोनों सूअर नफ़-नफ़ के पास भागे। भेड़िये ने फूँका और फूँका, लेकिन ईंटों का घर नहीं गिरा। तब भेड़िया छत पर चढ़ गया और चिमनी से नीचे उतरा। नफ़-नफ़ ने तुरंत बर्तन का ढक्कन बंद किया। भेड़िया सीधे उबलते पानी में गिरा। वह बाहर कूदा और जंगल में भाग गया। और किसी ने उसे फिर कभी नहीं देखा। और तीनों सूअर एक साथ रहने लगे मजबूत ईंटों के घर में।</div></section>
+</div>
+
+<footer>
+  <div class="wrap">Три поросёнка · сказка с переводом слово за словом<br><span>Версия на хинди (हिन्दी) 🇮🇳</span></div>
+</footer>
+
+<script>
+const langToVoice = {"hi-IN": "hi-IN", "ru": "ru-RU"};
+let audio = null;
+function stop(){
+  if (audio){ audio.pause(); audio = null; }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+}
+function gtUrl(lang, text){
+  const q = encodeURIComponent(text);
+  return 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=' + lang + '&client=tw-ob&total=1&idx=0';
+}
+function playFromGoogle(lang, text, btn){
+  audio = new Audio(gtUrl(lang, text));
+  audio.crossOrigin = 'anonymous';
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  audio.onended = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } audio = null; };
+  audio.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); };
+  audio.play().catch(() => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } tryLocal(lang, text, btn); });
+}
+function tryLocal(lang, text, btn){
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = langToVoice[lang] || lang;
+  const v = pickVoice(lang);
+  if (v) u.voice = v;
+  u.rate = 0.9;
+  if (btn){ btn.dataset.on='1'; btn.classList.add('speaking'); }
+  u.onend = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  u.onerror = () => { if (btn){ btn.dataset.on=''; btn.classList.remove('speaking'); } };
+  window.speechSynthesis.speak(u);
+}
+function pickVoice(lang){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase())) || null;
+}
+function speak(lang, text, btn){
+  stop();
+  if (btn && btn.dataset.on) { btn.dataset.on=''; btn.classList.remove('speaking'); return; }
+  playFromGoogle(lang, text, btn);
+}
+document.querySelectorAll('.spk').forEach(btn => {
+  btn.addEventListener('click', () => { speak(btn.dataset.lang, btn.dataset.text, btn); });
+});
+const BIG = document.querySelector('.spk.big');
+const FULL_TL = BIG ? BIG.dataset.text : '';
+const FULL_RU = BIG ? BIG.dataset.ru : '';
+let flipped = false;
+document.querySelectorAll('.sent').forEach(s => {
+  const b = s.querySelector('.spk');
+  if (!b) return;
+  b.dataset.tl = Array.from(s.querySelectorAll('.w-t')).map(x => x.textContent).join(' ');
+  b.dataset.ru = Array.from(s.querySelectorAll('.w-d')).map(x => x.textContent).join(' ');
+});
+document.querySelectorAll('.w').forEach(card => {
+  card.addEventListener('click', () => {
+    const t = card.querySelector('.w-t');
+    if (!t) return;
+    if (card.classList.contains('speaking')) { stop(); return; }
+    const label = t.textContent.trim();
+    if (label) speak(flipped ? 'ru' : 'hi-IN', label, card);
+  });
+});
+function toggleLang(){
+  if (audio) stop();
+  flipped = !flipped;
+  document.querySelectorAll('.w').forEach(c => {
+    const a = c.querySelector('.w-t'), b = c.querySelector('.w-d');
+    const tmp = a.textContent; a.textContent = b.textContent; b.textContent = tmp;
+  });
+  document.querySelectorAll('.sent .spk').forEach(b => {
+    b.dataset.lang = flipped ? 'ru' : 'hi-IN';
+    b.dataset.text = flipped ? b.dataset.ru : b.dataset.tl;
+    b.title = flipped ? 'Озвучить предложение на русском' : 'Озвучить предложение';
+  });
+  const big = document.querySelector('.spk.big');
+  if (big) { big.dataset.lang = flipped ? 'ru' : 'hi-IN'; big.dataset.text = flipped ? FULL_RU : FULL_TL; }
+  const ft = document.querySelector('.fulltext');
+  if (ft) { ft.textContent = flipped ? FULL_RU : FULL_TL; ft.dir = flipped ? 'ltr' : 'ltr'; }
+  const h2 = document.querySelector('.lang-head h2');
+  if (h2) h2.textContent = flipped ? 'Русский → Версия на хинди (हिन्दी)' : '🇮🇳 Версия на хинди (हिन्दी) → Русский';
+  const tgl = document.getElementById('tgl');
+  if (tgl) tgl.textContent = flipped ? 'Направление: Русский → Версия на хинди (हिन्दी)' : 'Направление: Версия на хинди (हिन्दी) → Русский';
+}
+if ('speechSynthesis' in window) { window.speechSynthesis.onvoiceschanged = () => {}; }
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>
