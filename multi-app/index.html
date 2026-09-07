@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#ffb703">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Таблица умножения — игра-тренажёр</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1231; --bg2:#151a42; --card:#1c2354; --card2:#242c68;
+  --ink:#f5f7ff; --ink2:#a9b3db;
+  --amber:#ffb703; --coral:#ff5d73; --mint:#06d6a0; --sky:#59c1ff; --violet:#a78bfa;
+  --line:rgba(255,183,3,.18); --soft:rgba(255,183,3,.10);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;line-height:1.6;color:var(--ink);min-height:100vh;
+  background:
+    radial-gradient(1100px 520px at 15% -10%, rgba(89,193,255,.12), transparent 60%),
+    radial-gradient(900px 480px at 105% 8%, rgba(255,183,3,.10), transparent 55%),
+    radial-gradient(1000px 600px at 50% 115%, rgba(255,93,115,.08), transparent 60%),
+    var(--bg);
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px, transparent 1.5px);
+  background-size:26px 26px;}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+header{padding:54px 0 34px;text-align:center;animation:rise .6s ease both}
+.kicker{display:inline-block;color:var(--amber);letter-spacing:.3em;text-transform:uppercase;font-size:12px;font-weight:800;margin-bottom:16px}
+h1{font-family:'Rubik',sans-serif;font-weight:800;font-size:clamp(30px,6vw,52px);line-height:1.1}
+h1 .x{color:var(--amber)}
+header p{color:var(--ink2);max-width:62ch;margin:14px auto 0;font-weight:600}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px;padding-bottom:14px;animation:rise .6s .12s ease both}
+.chip{
+  display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;
+  background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid var(--line);border-radius:18px;padding:20px 10px;cursor:pointer;
+  font-family:'Nunito',sans-serif;color:var(--ink);transition:transform .12s,box-shadow .15s,border-color .15s;
+}
+.chip:hover{transform:translateY(-3px);border-color:var(--cc);box-shadow:0 14px 34px rgba(0,0,0,.35)}
+.chip .mn{font-family:'Rubik',sans-serif;font-weight:800;font-size:34px;line-height:1.05}
+.chip .mn b{color:var(--cc)}
+.chip .sub{font-size:12px;color:var(--ink2);font-weight:700}
+.hint{text-align:center;font-size:.82rem;color:var(--ink2);padding:6px 0 30px;animation:rise .6s .2s ease both}
+#game{margin-top:2px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.hearts{font-size:1.2rem;letter-spacing:2px}
+.score{font-weight:800;color:var(--amber);font-size:1.05rem}
+.sfx{background:transparent;border:1px solid var(--line);border-radius:999px;color:var(--ink);font-size:1.05rem;width:42px;height:42px;cursor:pointer;transition:background .15s}
+.sfx:hover{background:var(--soft)}
+.streak{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;font-size:.85rem;color:var(--ink2);margin-bottom:8px}
+.gbtn{font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;padding:8px 16px;border-radius:999px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink);transition:background .15s,border-color .15s}
+.gbtn:hover{border-color:var(--amber);background:var(--soft)}
+.gbtn.mini{padding:6px 13px;font-size:.78rem}
+.prog-bar{height:8px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin-bottom:16px}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--amber),var(--coral));border-radius:999px;transition:width .25s}
+.q-card{
+  background:linear-gradient(150deg,var(--bg2),var(--card2));
+  border:1px solid var(--line);border-radius:22px;padding:30px 18px;text-align:center;
+  margin-bottom:16px;box-shadow:0 22px 60px rgba(0,0,0,.35);animation:cardIn .3s ease both;
+  position:relative;overflow:hidden;
+}
+.q-card::after{content:"×";position:absolute;right:12px;top:-16px;font-family:'Rubik',sans-serif;font-weight:800;font-size:130px;color:rgba(255,255,255,.035);pointer-events:none}
+.direction{font-size:.8rem;color:var(--ink2);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.q-big{font-family:'Rubik',sans-serif;font-weight:800;font-size:clamp(2.6rem,10vw,4.4rem);margin-top:10px}
+.q-big .op{color:var(--amber)}
+.q-big .eq{color:var(--ink2);font-weight:600}
+.q-big .qm{color:var(--sky)}
+.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.answer{
+  background:linear-gradient(155deg,var(--card),var(--card2));
+  border:1px solid var(--line);border-radius:18px;padding:18px 12px;font-family:'Rubik',sans-serif;
+  font-weight:700;font-size:clamp(1.3rem,5vw,1.7rem);color:var(--ink);cursor:pointer;
+  transition:transform .08s,background .15s,border-color .15s;
+}
+.answer:hover:not(:disabled){transform:translateY(-2px);background:var(--soft);border-color:var(--amber)}
+.answer:disabled{cursor:default;opacity:.9}
+.answer.good{background:rgba(6,214,160,.22);border-color:var(--mint);animation:bounce .4s ease}
+.answer.bad{background:rgba(255,93,115,.22);border-color:var(--coral);animation:shake .35s ease}
+.feedback{text-align:center;margin-top:14px;min-height:26px;font-weight:800;font-size:1.05rem;animation:rise .2s ease}
+.feedback.good{color:var(--mint)}
+.feedback.bad{color:var(--coral)}
+.results{text-align:center;padding:42px 0;animation:rise .4s ease both}
+.big-num{font-family:'Rubik',sans-serif;font-weight:800;font-size:clamp(2.6rem,11vw,4.2rem)}
+.rsub{color:var(--ink2);margin-top:6px;font-weight:700}
+.rsub2{font-family:'Rubik',sans-serif;font-weight:700;font-size:1.35rem;margin-top:16px;color:var(--amber)}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:24px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 20px;min-width:108px}
+.stat b{display:block;font-size:1.3rem;color:var(--amber);font-family:'Rubik',sans-serif}
+.stat span{font-size:.7rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.mistakes{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:18px auto;max-width:520px}
+.mistakes h3{font-size:.85rem;letter-spacing:.15em;text-transform:uppercase;color:var(--coral);font-weight:800;margin-bottom:10px}
+.mistake{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.mistake:last-child{border-bottom:none}
+.mistake .mq{font-family:'Rubik',sans-serif;font-weight:700}
+.mistake .ma{color:var(--mint);font-weight:800}
+.btnrow{display:flex;gap:12px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.gbtn.prime{background:linear-gradient(135deg,var(--amber),var(--coral));color:#1a1030;border:none;font-size:.95rem;padding:13px 28px}
+.gbtn.prime:hover{opacity:.92;background:linear-gradient(135deg,var(--amber),var(--coral))}
+footer{padding:44px 0 60px;text-align:center;color:var(--ink2);font-size:13px;font-weight:600}
+footer span{color:var(--amber)}
+.install{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:999;display:none;align-items:center;gap:10px;background:linear-gradient(135deg,var(--amber),var(--coral));color:#1a1030;border:none;border-radius:999px;padding:13px 24px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:'Nunito',sans-serif}
+.confetti{position:fixed;top:-14px;z-index:60;width:9px;height:14px;border-radius:2px;animation:fall linear forwards;pointer-events:none}
+.score.pop{animation:pop .3s ease}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes fall{to{transform:translate(var(--dx),108vh) rotate(560deg)}}
+@media print{body{background:#fff;color:#000}.answer{border-color:#ccc}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<button id="installBtn" class="install" onclick="installApp()">&#128241; Установить игру</button>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Игра-тренажёр</span>
+    <h1>Таблица <span class="x">×</span> умножения</h1>
+    <p>Выбери таблицу — и решай примеры. Три жизни, очки, серия 🔥 и озвучка примеров. Тренируйся каждый день!</p>
+  </div>
+</header>
+
+<div class="wrap" id="wrap">
+  <div id="game"></div>
+</div>
+
+<footer>
+  <div class="wrap">Таблица умножения · игра-тренажёр<br><span>учимся считать быстро</span></div>
+</footer>
+
+<script>
+var gameEl = document.getElementById('game');
+var G = null;
+var sfx = localStorage.getItem('multi_sfx') !== '0';
+var PAL = ['#06d6a0','#59c1ff','#a78bfa','#ffb703','#ff5d73','#7ed957','#ff8fab','#64dfdf'];
+var MUL_W = {2:'дважды',3:'трижды',4:'четырежды',5:'пятью',6:'шестью',7:'семью',8:'восемью',9:'девятью'};
+var ONES = ['','один','два','три','четыре','пять','шесть','семь','восемь','девять','десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'];
+var TENS = ['','','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'];
+
+function shuffle(a){
+  var arr = a.slice();
+  for (var i = arr.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
+function numRu(n){
+  if (n < 20) return ONES[n];
+  return TENS[Math.floor(n / 10)] + (n % 10 ? ' ' + ONES[n % 10] : '');
+}
+function speak(text){
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ru-RU'; u.rate = 0.95; u.pitch = 1.05;
+  window.speechSynthesis.speak(u);
+}
+function readQuestion(a, b){
+  speak('Сколько будет ' + a + ' умножить на ' + b + '?');
+}
+function readAnswer(a, b){
+  speak(MUL_W[a] + ' ' + ONES[b] + ' — ' + numRu(a * b));
+}
+function beep(ok){
+  if (!sfx) return;
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  var ac = new AC();
+  var t = ac.currentTime;
+  var osc = ac.createOscillator();
+  var g = ac.createGain();
+  osc.connect(g); g.connect(ac.destination);
+  if (ok){
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(523.25, t);
+    osc.frequency.setValueAtTime(783.99, t + 0.12);
+    g.gain.setValueAtTime(0.1, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.35);
+    osc.start(t); osc.stop(t + 0.38);
+  } else {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(196, t);
+    g.gain.setValueAtTime(0.08, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+    osc.start(t); osc.stop(t + 0.3);
+  }
+}
+function toggleSfx(){
+  sfx = !sfx;
+  localStorage.setItem('multi_sfx', sfx ? '1' : '0');
+  var b = document.getElementById('sfx');
+  if (b) b.textContent = sfx ? '🔊' : '🔇';
+  if (sfx) beep(true);
+}
+function makeQ(a, b){
+  var c = a * b;
+  var pool = [];
+  function add(v){ if (v >= 1 && v <= 100 && v !== c && pool.indexOf(v) < 0) pool.push(v); }
+  [1,2].forEach(function(d){ add((a + d) * b); add((a - d) * b); add(a * (b + d)); add(a * (b - d)); });
+  add(c + a); add(c - a); add(c + b); add(c - b);
+  while (pool.length < 8){ add(Math.floor(Math.random() * 101)); }
+  return { a: a, b: b, c: c, options: shuffle([c].concat(shuffle(pool).slice(0, 3))) };
+}
+function picker(){
+  var modes = [2,3,4,5,6,7,8,9,'all'];
+  var html = '<div class="pick-grid">';
+  modes.forEach(function(m, i){
+    var cc = PAL[i % PAL.length];
+    if (m === 'all'){
+      html += '<button class="chip" data-m="all" style="--cc:' + cc + '"><span class="mn">🧮<br>Всё</span><span class="sub">все таблицы · 18 примеров</span></button>';
+    } else {
+      html += '<button class="chip" data-m="' + m + '" style="--cc:' + cc + '"><span class="mn"><b>×</b>' + m + '</span><span class="sub">таблица · 9 примеров</span></button>';
+    }
+  });
+  html += '</div><div class="hint">3 жизни · серия 🔥 · очки ⭐ · озвучка 🔊</div>';
+  gameEl.innerHTML = html;
+  Array.prototype.forEach.call(document.querySelectorAll('.chip'), function(b){
+    b.addEventListener('click', function(){ pick(b.dataset.m); });
+  });
+}
+function pick(m){
+  var pairs = [];
+  if (m === 'all'){
+    for (var a = 2; a <= 9; a++){ for (var b = 2; b <= 9; b++){ pairs.push([a, b]); } }
+    pairs = shuffle(pairs).slice(0, 18);
+  } else {
+    for (var k = 1; k <= 9; k++){ pairs.push([+m, k]); }
+    pairs = shuffle(pairs);
+  }
+  G = { mode: m, qs: pairs.map(function(p){ return makeQ(p[0], p[1]); }), qi: 0, score: 0, lives: 3, streak: 0, solved: 0, mistakes: [] };
+  render();
+}
+function render(){
+  var q = G.qs[G.qi];
+  var total = G.qs.length;
+  var html = '<div class="topbar">';
+  html += '<div class="hearts">' + new Array(Math.max(1, G.lives) + 1).join('❤️') + new Array(Math.max(1, 3 - G.lives) + 1).join('🤍') + '</div>';
+  html += '<div class="score" id="score">⭐ ' + G.score + '</div>';
+  html += '<button class="sfx" id="sfx" title="Звук">' + (sfx ? '🔊' : '🔇') + '</button>';
+  html += '</div>';
+  html += '<div class="streak">🔥 серия: ' + G.streak + ' · таблица ' + (G.mode === 'all' ? 'всё' : '×' + G.mode) + ' <button class="gbtn mini" id="speakQ">🔊 прочитать пример</button></div>';
+  html += '<div class="prog-bar"><div class="prog-fill" style="width:' + (G.qi / total * 100) + '%"></div></div>';
+  html += '<div class="q-card">';
+  html += '<div class="direction">вопрос ' + (G.qi + 1) + ' / ' + total + '</div>';
+  html += '<div class="q-big" id="qbig">' + q.a + ' <span class="op">×</span> ' + q.b + ' <span class="eq">=</span> <span class="qm">?</span></div>';
+  html += '</div>';
+  html += '<div class="answers">';
+  q.options.forEach(function(opt, i){
+    html += '<button class="answer" data-i="' + i + '">' + opt + '</button>';
+  });
+  html += '</div>';
+  html += '<div class="feedback" id="fb"></div>';
+  gameEl.innerHTML = html;
+  Array.prototype.forEach.call(document.querySelectorAll('.answer'), function(b){
+    b.addEventListener('click', function(){ answer(parseInt(b.dataset.i, 10)); });
+  });
+  document.getElementById('speakQ').addEventListener('click', function(){ readQuestion(q.a, q.b); });
+  document.getElementById('sfx').addEventListener('click', toggleSfx);
+}
+function answer(i){
+  var q = G.qs[G.qi];
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.answer'));
+  var fb = document.getElementById('fb');
+  btns.forEach(function(b){ b.disabled = true; });
+  var ci = q.options.indexOf(q.c);
+  btns[ci].classList.add('good');
+  var sc = document.getElementById('score');
+  if (i === ci){
+    G.score += 10 + G.streak * 2;
+    G.streak++;
+    G.solved++;
+    beep(true);
+    fb.className = 'feedback good';
+    fb.textContent = '✅ Верно!';
+  } else {
+    btns[i].classList.add('bad');
+    G.lives--;
+    G.streak = 0;
+    beep(false);
+    fb.className = 'feedback bad';
+    fb.textContent = '❌ Верно: ' + q.c;
+    G.mistakes.push({ q: q.a + ' × ' + q.b, a: q.c });
+    if (sfx) readAnswer(q.a, q.b);
+  }
+  if (sc){
+    sc.textContent = '⭐ ' + G.score;
+    sc.classList.remove('pop'); void sc.offsetWidth; sc.classList.add('pop');
+  }
+  setTimeout(function(){
+    G.qi++;
+    if (G.lives <= 0 || G.qi >= G.qs.length){ results(); return; }
+    render();
+  }, 1100);
+}
+function results(){
+  var total = G.qs.length;
+  var acc = Math.round(G.solved / total * 100);
+  var verdict = acc >= 90 ? '🎉 Отлично!' : acc >= 70 ? '🏆 Хорошо!' : '💪 Тренируйся ещё!';
+  var html = '<div class="results">';
+  html += '<div class="big-num">' + G.score + ' ⭐</div>';
+  html += '<div class="rsub">таблица ' + (G.mode === 'all' ? 'все' : '×' + G.mode) + ' · точность ' + acc + '%</div>';
+  html += '<div class="stats">';
+  html += '<div class="stat"><b>' + G.score + '</b><span>очков</span></div>';
+  html += '<div class="stat"><b>' + G.solved + ' / ' + total + '</b><span>решено</span></div>';
+  html += '<div class="stat"><b style="color:var(--coral)">' + G.mistakes.length + '</b><span>ошибок</span></div>';
+  html += '<div class="stat"><b style="color:var(--mint)">' + acc + '%</b><span>точность</span></div>';
+  html += '</div>';
+  if (G.mistakes.length){
+    html += '<div class="mistakes"><h3>Повтори</h3>';
+    G.mistakes.forEach(function(mm){
+      html += '<div class="mistake"><span class="mq">' + mm.q + '</span><span class="ma">= ' + mm.a + '</span></div>';
+    });
+    html += '</div>';
+  }
+  html += '<div class="rsub2">' + verdict + '</div>';
+  html += '<div class="btnrow"><button class="gbtn prime" id="again">🔁 Ещё раз</button><button class="gbtn" id="toPick">📋 Таблица</button></div>';
+  html += '</div>';
+  gameEl.innerHTML = html;
+  document.getElementById('again').addEventListener('click', function(){ pick(G.mode); });
+  document.getElementById('toPick').addEventListener('click', picker);
+  if (acc >= 80){
+    confetti();
+    if (sfx) window.setTimeout(function(){ beep(true); }, 300);
+  }
+}
+function confetti(){
+  var colors = ['#ffb703','#ff5d73','#06d6a0','#59c1ff','#a78bfa'];
+  for (var i = 0; i < 44; i++){
+    var d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random() * 100 + 'vw';
+    d.style.background = colors[i % colors.length];
+    d.style.setProperty('--dx', (Math.random() * 220 - 110) + 'px');
+    d.style.animationDuration = (2.4 + Math.random() * 1.6) + 's';
+    d.style.animationDelay = (Math.random() * 0.6) + 's';
+    document.body.appendChild(d);
+    (function(el){ window.setTimeout(function(){ el.remove(); }, 9000); })(d);
+  }
+}
+picker();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('./sw.js').catch(function () {}); });
+}
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferredPrompt = e; var b = document.getElementById('installBtn'); if (b) b.style.display = 'block'; });
+function installApp() { if (!deferredPrompt) return; deferredPrompt.prompt(); deferredPrompt = null; var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; }
+window.addEventListener('appinstalled', function () { var b = document.getElementById('installBtn'); if (b) b.style.display = 'none'; });
+</script></body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "description": "Игра-тренажёр для изучения таблицы умножения: выбери таблицу и решай примеры с жизнями, очками, серией и озвучкой",
+  "short_name": "Умножалка",
+  "background_color": "#0e1231",
+  "icons": [
+    { "purpose": "any", "type": "image/png", "sizes": "192x192", "src": "icons/icon-192.png" },
+    { "purpose": "any", "type": "image/png", "sizes": "512x512", "src": "icons/icon-512.png" },
+    { "purpose": "maskable", "type": "image/png", "sizes": "512x512", "src": "icons/icon-maskable-512.png" }
+  ],
+  "lang": "ru",
+  "orientation": "portrait",
+  "theme_color": "#ffb703",
+  "display": "standalone",
+  "name": "Таблица умножения — игра",
+  "scope": "./",
+  "start_url": "./"
+}
