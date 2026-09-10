@@ -117,6 +117,52 @@ footer span{color:var(--amber)}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
 @keyframes fall{to{transform:translate(var(--dx),108vh) rotate(560deg)}}
+.lesson-hero{display:flex;gap:14px;align-items:center;background:linear-gradient(150deg,#1b2257,#242c68);border:1px solid var(--line);border-radius:22px;padding:18px;margin-bottom:22px;animation:rise .6s ease both}
+.lesson-hero .mascot{font-size:54px;flex:0 0 auto;animation:float 3s ease-in-out infinite}
+.lhi{flex:1}
+.lht{font-family:'Rubik',sans-serif;font-weight:800;font-size:1.15rem}
+.lhs{color:var(--ink2);font-weight:600;font-size:.88rem;margin:4px 0 12px}
+.sect{display:flex;align-items:center;gap:10px;margin:26px 4px 12px}
+.sect h2{font-family:'Rubik',sans-serif;font-weight:700;font-size:1rem}
+.sect span.line{flex:1;height:1px;background:rgba(255,255,255,.12)}
+.lesson{max-width:720px;margin:0 auto;animation:rise .4s ease both}
+.ltop{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ltop .dots{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+.ltop .dot{width:9px;height:9px;border-radius:999px;background:rgba(255,255,255,.18);transition:background .2s,transform .2s}
+.ltop .dot.on{background:var(--amber);transform:scale(1.35)}
+.cls{background:transparent;border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:6px 12px;font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:800;cursor:pointer}
+.slide{background:linear-gradient(155deg,var(--bg2),var(--card2));border:1px solid var(--line);border-radius:24px;padding:26px 20px;animation:cardIn .3s ease both}
+.mascot-b{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.mascot-b .face{font-size:42px;flex:0 0 auto}
+.bubble{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;border-top-left-radius:4px;padding:10px 14px;font-weight:700;font-size:.92rem;color:var(--ink)}
+.bubble b{color:var(--amber)}
+.l-title{font-family:'Rubik',sans-serif;font-weight:800;font-size:clamp(1.2rem,4.6vw,1.65rem);margin:10px 0 8px}
+.l-text{color:var(--ink2);font-weight:600;font-size:.95rem}
+.l-text b{color:var(--amber)}
+.l-vis{margin:18px 0 6px}
+.blox{display:flex;flex-direction:column;gap:8px;background:rgba(0,0,0,.22);border-radius:16px;padding:14px;margin-top:8px}
+.blox .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.blox .b{min-width:34px;height:34px;padding:0 6px;border-radius:9px;background:linear-gradient(145deg,#ffb703,#ff5d73);box-shadow:0 4px 12px rgba(0,0,0,.3);font-family:'Rubik',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;color:#1a1030;font-size:.9rem;text-align:center}
+.blox .plus{color:var(--sky);font-weight:800;font-size:1.1rem}
+.blox .res{color:var(--mint);font-weight:800;font-size:1.2rem;font-family:'Rubik',sans-serif}
+.blox.c2 .b{background:linear-gradient(145deg,#59c1ff,#a78bfa);color:#0e1231}
+.lbl{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--ink2);margin:14px 0 6px}
+.lrow{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.lrow .grow{flex:1}
+.lbtn{display:inline-flex;align-items:center;gap:8px;font-family:'Nunito',sans-serif;font-weight:800;border-radius:999px;cursor:pointer;padding:12px 22px;font-size:.95rem;border:1px solid var(--line);background:transparent;color:var(--ink);transition:background .15s,border-color .15s}
+.lbtn:hover{border-color:var(--amber);background:var(--soft)}
+.lbtn.prime{background:linear-gradient(135deg,var(--amber),var(--coral));color:#1a1030;border:none}
+.lbtn.prime:hover{opacity:.92;background:linear-gradient(135deg,var(--amber),var(--coral))}
+.peek{display:inline-flex;align-items:center;gap:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;border:1px solid var(--line);background:var(--soft);color:var(--amber);border-radius:999px;padding:9px 16px;cursor:pointer}
+.fingers{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.finger{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(89,193,255,.25);border:2px solid rgba(89,193,255,.5);font-family:'Rubik',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;color:var(--sky);transition:transform .12s,background .12s,border-color .12s}
+.finger:hover{transform:scale(1.12)}
+.finger.cur{background:var(--coral);border-color:var(--coral);color:#fff;transform:scale(1.28)}
+.finger.gone{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:var(--ink2)}
+.fans{text-align:center;font-family:'Rubik',sans-serif;font-weight:800;font-size:clamp(1.1rem,4.6vw,1.5rem);margin-top:6px}
+.fans b{color:var(--mint)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media (min-width:480px){.finger{width:42px;height:42px}}
 @media print{body{background:#fff;color:#000}.answer{border-color:#ccc}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -128,7 +174,7 @@ footer span{color:var(--amber)}
   <div class="wrap">
     <span class="kicker">Игра-тренажёр</span>
     <h1>Таблица <span class="x">×</span> умножения</h1>
-    <p>Выбери таблицу — и решай примеры. Три жизни, очки, серия 🔥 и озвучка примеров. Тренируйся каждый день!</p>
+    <p>Сначала урок с лайфхаками в игровом стиле — потом проверка. Или сразу выбери таблицу и решай примеры. Три жизни, очки, серия 🔥 и озвучка!</p>
   </div>
 </header>
 
@@ -215,8 +261,14 @@ function makeQ(a, b){
   return { a: a, b: b, c: c, options: shuffle([c].concat(shuffle(pool).slice(0, 3))) };
 }
 function picker(){
+  var html = '<div class="lesson-hero"><div class="mascot">🤖</div><div class="lhi">';
+  html += '<div class="lht">Урок и лайфхаки</div>';
+  html += '<div class="lhs">Сначала объяснение в игровом стиле, потом проверка. Быстрые приёмы, чтобы выучить таблицу в разы быстрее.</div>';
+  html += '<button class="gbtn prime" id="lessonBtn">🎓 Начать урок</button>';
+  html += '</div></div>';
+  html += '<div class="sect"><h2>🚀 Быстрая тренировка без урока</h2><span class="line"></span></div>';
+  html += '<div class="pick-grid">';
   var modes = [2,3,4,5,6,7,8,9,'all'];
-  var html = '<div class="pick-grid">';
   modes.forEach(function(m, i){
     var cc = PAL[i % PAL.length];
     if (m === 'all'){
@@ -227,6 +279,7 @@ function picker(){
   });
   html += '</div><div class="hint">3 жизни · серия 🔥 · очки ⭐ · озвучка 🔊</div>';
   gameEl.innerHTML = html;
+  document.getElementById('lessonBtn').addEventListener('click', lesson);
   Array.prototype.forEach.call(document.querySelectorAll('.chip'), function(b){
     b.addEventListener('click', function(){ pick(b.dataset.m); });
   });
@@ -349,6 +402,93 @@ function confetti(){
     document.body.appendChild(d);
     (function(el){ window.setTimeout(function(){ el.remove(); }, 9000); })(d);
   }
+}
+var LESSON = [
+  { face:'🤖', bubble:'Привет, я <b>Умножуля</b>! Покажу, что такое умножение 🚀',
+    t:'Дважды два — это два раза по два!',
+    text:'Умножение — это складывание одинаковых чисел. <b>3 × 2</b> — это <b>3 взять 2 раза</b>: 3 + 3. А <b>2 × 3</b> — это 2 взять 3 раза: 2 + 2 + 2. Ответ одинаковый!',
+    vis:function(){ return '<button class="peek" id="peek">👀 Показать наглядно</button><div id="pv"></div>'; },
+    setup:function(){ var pk = document.getElementById('peek'); if (pk) pk.addEventListener('click', function(){ revealBlocks(); pk.style.display = 'none'; }); } },
+  { face:'💡', bubble:'Запомни это за 5 секунд!',
+    t:'× 0 и × 1 — самые лёгкие',
+    text:'Умножить на 0 — всегда <b>0</b>. Умножить на 1 — число <b>остаётся собой</b>. 100 × 0 = 0, а 7 × 1 = 7!',
+    vis:'<div class="blox c2"><div class="row"><span class="b">0</span><span class="plus">×7</span><span class="plus">=</span><span class="res">0</span></div><div class="row"><span class="b">7</span><span class="plus">×1</span><span class="plus">=</span><span class="res">7</span></div></div>' },
+  { face:'✌️', bubble:'Проще некуда!',
+    t:'× 2 — просто удвой',
+    text:'Удвоить — значит сложить число <b>с самим собой</b>. 6 × 2 = 6 + 6 = <b>12</b>. А 4 × 2 = 4 + 4 = <b>8</b>.',
+    vis:'<div class="blox"><div class="row"><span class="b">6</span><span class="plus">+</span><span class="b">6</span><span class="plus">=</span><span class="res">12</span></div><div class="row"><span class="b">4</span><span class="plus">+</span><span class="b">4</span><span class="plus">=</span><span class="res">8</span></div></div>' },
+  { face:'✋', bubble:'Смотри на конец числа!',
+    t:'× 5 — пятёрка простая',
+    text:'Чётное × 5 даёт <b>0</b> на конце: 6 × 5 = 30. Нечётное — <b>5</b>: 7 × 5 = 35. Шагай по пятёркам: 5, 10, 15, 20…',
+    vis:'<div class="blox c2"><div class="row"><span class="b">6</span><span class="plus">×5</span><span class="plus">=</span><span class="res">30</span></div><div class="row"><span class="b">7</span><span class="plus">×5</span><span class="plus">=</span><span class="res">35</span></div><div class="row"><span class="b">9</span><span class="plus">×5</span><span class="plus">=</span><span class="res">45</span></div></div>' },
+  { face:'🖐️', bubble:'Самый крутой лайфхак!',
+    t:'× 9 — считай на пальцах',
+    text:'Вытяни обе ладони. Загни <b>n-й</b> палец: слева от него — <b>десятки</b>, справа — <b>единицы</b>. А ещё сумма цифр ответа всегда 9!',
+    vis:'<div class="lbl">Жми на пальчик:</div><div class="fingers" id="fingers"></div><div class="fans" id="fans">нажми на палец</div>',
+    setup:function(){ var f = document.getElementById('fingers'); if (!f) return; var t = ''; for (var i = 1; i <= 10; i++){ t += '<button class="finger" data-n="' + i + '">' + i + '</button>'; } f.innerHTML = t; Array.prototype.forEach.call(f.querySelectorAll('.finger'), function(b){ b.addEventListener('click', function(){ setFingers(parseInt(b.dataset.n, 10)); }); }); setFingers(6); } },
+  { face:'🧠', bubble:'Хитрость! Учи в два раза меньше!',
+    t:'Переставляй числа',
+    text:'Ответ не меняется: <b>3 × 7 = 7 × 3</b>. Значит из 36 примеров учим только 18. А 6 × 8 — это ведь 8 × 6!',
+    vis:'<div class="blox"><div class="row"><span class="b">3</span><span class="plus">×</span><span class="b">7</span><span class="plus">=</span><span class="res">21</span></div><div class="row"><span class="b">7</span><span class="plus">×</span><span class="b">3</span><span class="plus">=</span><span class="res">21</span></div></div>' },
+  { face:'🚀', bubble:'Никогда не сдавайся!',
+    t:'Трудные 6, 7, 8',
+    text:'Не помнишь <b>6 × 8</b>? Вспомни <b>6 × 7 = 42</b> и прибавь 6: получится <b>48</b>. А квадраты <b>6×6=36, 7×7=49, 8×8=64</b> выучи как стишок!',
+    vis:'<div class="blox"><div class="row"><span class="b">6</span><span class="plus">×</span><span class="b">7</span><span class="plus">=</span><span class="res">42</span></div><div class="row"><span class="b">+6</span><span class="plus">→</span><span class="res">48</span></div></div>' },
+  { face:'⭐', bubble:'Ты прошёл урок! Покажи, что запомнил 😎',
+    t:'Готов к проверке?',
+    text:'Проверка — <b>18 примеров</b> со всех таблиц: три жизни, очки, серия и конфетти ждут!',
+    vis:'', last:true }
+];
+
+function revealBlocks(){
+  var pv = document.getElementById('pv');
+  if (!pv) return;
+  pv.innerHTML = '<div class="lbl">3 × 2 = 3 раза по 2</div><div class="blox"><div class="row"><span class="b">2</span><span class="plus">+</span><span class="b">2</span><span class="plus">+</span><span class="b">2</span><span class="plus">=</span><span class="res">6</span></div></div><div class="lbl">2 × 3 = 2 раза по 3</div><div class="blox c2"><div class="row"><span class="b">3</span><span class="plus">+</span><span class="b">3</span><span class="plus">=</span><span class="res">6</span></div></div>';
+}
+function setFingers(n){
+  var f = document.getElementById('fingers');
+  if (f){
+    Array.prototype.forEach.call(f.querySelectorAll('.finger'), function(b){
+      var k = parseInt(b.dataset.n, 10);
+      b.className = 'finger' + (k === n ? ' cur' : (k < n ? ' gone' : ''));
+    });
+  }
+  var fans = document.getElementById('fans');
+  if (!fans) return;
+  if (n === 1){ fans.innerHTML = '9 × 1 = <b>9</b>'; return; }
+  if (n === 10){ fans.innerHTML = 'слева 9 пальцев: 9 × 10 = <b>90</b>'; return; }
+  fans.innerHTML = 'загни ' + n + '-й палец: слева ' + (n - 1) + ', справа ' + (10 - n) + ' → 9 × ' + n + ' = <b>' + ((n - 1) * 10 + (10 - n)) + '</b>';
+}
+var L = null;
+function lesson(){ L = { i: 0 }; renderLesson(); }
+function renderLesson(){
+  var s = LESSON[L.i];
+  var total = LESSON.length;
+  var dots = '';
+  for (var k = 0; k < total; k++){ dots += '<span class="dot' + (k === L.i ? ' on' : '') + '"></span>'; }
+  var html = '<div class="lesson"><div class="ltop"><div class="dots">' + dots + '</div><button class="cls" id="lx">✕</button></div>';
+  html += '<div class="slide"><div class="mascot-b"><div class="face">' + s.face + '</div><div class="bubble">' + s.bubble + '</div></div>';
+  html += '<div class="l-title">' + s.t + '</div>';
+  html += '<div class="l-text">' + s.text + '</div>';
+  if (s.vis){
+    html += '<div class="l-vis">' + (typeof s.vis === 'function' ? s.vis() : s.vis) + '</div>';
+  }
+  html += '<div class="lrow">';
+  if (L.i > 0) html += '<button class="lbtn" id="lb">← Назад</button>';
+  if (!s.last) html += '<button class="lbtn" id="lx2">⏭ К практике</button>';
+  html += '<div class="grow"></div>';
+  if (L.i === 0) html += '<button class="lbtn prime" id="ln">Далее ▶</button>';
+  else if (s.last) html += '<button class="lbtn prime" id="lgo">▶ Начать проверку 🎯</button>';
+  else html += '<button class="lbtn prime" id="ln2">Далее ▶</button>';
+  html += '</div></div></div>';
+  gameEl.innerHTML = html;
+  var prev = document.getElementById('lb'); if (prev) prev.addEventListener('click', function(){ L.i--; renderLesson(); });
+  var skip = document.getElementById('lx2'); if (skip) skip.addEventListener('click', function(){ pick('all'); });
+  var nx = document.getElementById('ln'); if (nx) nx.addEventListener('click', function(){ L.i++; renderLesson(); });
+  var nx2 = document.getElementById('ln2'); if (nx2) nx2.addEventListener('click', function(){ L.i++; renderLesson(); });
+  var go = document.getElementById('lgo'); if (go) go.addEventListener('click', function(){ pick('all'); });
+  var cl = document.getElementById('lx'); if (cl) cl.addEventListener('click', function(){ picker(); });
+  if (s.setup) s.setup();
 }
 picker();
 </script>
